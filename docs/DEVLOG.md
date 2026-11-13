@@ -608,3 +608,29 @@ Implement Module M9 (FR-35 to FR-38: Zombie API Detector), Module M10 (FR-39 to 
 - Ruff format check (`ruff format --check .`) clean with 0 errors across 97 files.
 - Python bytecode compilation (`python -m compileall src sample_app`) clean with 0 errors.
 - Pristine sample app log fixtures (`sample_app/logs/access.log` = 15 lines, `sample_app/logs/app.log` = 8 lines).
+
+---
+
+## 2026-11-13: Task 13-V — Final Pre-Submission QA Audit, Updated Codebase Map & Requirement Traceability Matrix
+
+### Completed Objectives
+1. **Independent Pre-Submission QA Audit (`docs/AUDIT_FINAL.md`)**:
+   - Performed comprehensive, skeptical, read-only architectural, security, and functional verification across all 13 modules (M1–M13).
+   - Executed all 6 verification commands on PowerShell from repo root, confirming:
+     - 323 passed tests (0 failed, 0 errors, 100% pass rate).
+     - 89% total code coverage (exceeding project threshold of 88%).
+     - Zero Ruff linter issues and 97 files cleanly formatted.
+     - Python bytecode compilation clean across `src` and `sample_app`.
+     - Pristine sample app log fixtures (`access.log` = 15 lines, `app.log` = 8 lines).
+   - Confirmed zero Critical and zero High severity defects, issuing final pre-submission verdict: **PASS**.
+2. **Updated Codebase Map (`docs/CODEBASE_MAP.md`)**:
+   - Updated repository directory tree excluding virtual environments and cache directories.
+   - Performed complete AST inventory of all `.py` files under `src/apiscope/` and `sample_app/`, documenting all classes, dataclasses, Enums, Protocols, and public function/method signatures.
+   - Documented exact per-file test counts across `tests/unit/` (268 tests), `tests/integration/` (52 tests), and `tests/system/` (3 tests), summing to the exact total of 323 tests.
+3. **Software Engineering Requirements Traceability Matrix (`docs/TRACEABILITY_MATRIX.md`)**:
+   - Created comprehensive traceability matrices supporting SE Curriculum Deliverables D11 (Traceability Matrix) and D5 (Verification Plan):
+     - **Table 1**: Functional Requirements (`FR-01` through `FR-55`) mapped to architecture layer, implementing source file(s) & class(es), and verifying test file(s) & function(s).
+     - **Table 2**: Non-Functional Requirements (`NFR-01` through `NFR-06`) mapped to security/quality mechanism, implementing file(s), verifying test(s), and measured metrics.
+     - **Table 3**: Planted Bugs Evaluation Traceability (`BUG-01` through `BUG-12`) in `sample_app` mapped to target endpoint, detection mechanism (M4, M5, M8, M9, M10, M12), and verifying test(s).
+4. **Scope Fence & Read-Only Integrity**:
+   - Strictly enforced read-only fences: zero files created, modified, or deleted under `src/`, `tests/`, `sample_app/`, `examples/`, `.github/`, `README.md`, or `pyproject.toml`.
