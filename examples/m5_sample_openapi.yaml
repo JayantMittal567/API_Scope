@@ -1,0 +1,133 @@
+openapi: "3.0.3"
+info:
+  title: "ApiScope Sample Store API"
+  version: "1.0.0"
+  description: "Sample e-commerce API specification for M5 rule-based test generation."
+servers:
+  - url: "http://localhost:8000"
+paths:
+  /orders:
+    post:
+      summary: "Create a new order"
+      operationId: "createOrder"
+      tags:
+        - "orders"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderCreateRequest"
+      responses:
+        "201":
+          description: "Order created successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderResponse"
+        "400":
+          description: "Bad Request"
+        "401":
+          description: "Unauthorized"
+  /orders/{order_id}:
+    get:
+      summary: "Get order details by ID"
+      operationId: "getOrderById"
+      tags:
+        - "orders"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: "order_id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        "200":
+          description: "Order retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderDetailsResponse"
+        "404":
+          description: "Order not found"
+  /products:
+    get:
+      summary: "List available products"
+      operationId: "listProducts"
+      tags:
+        - "products"
+      security: []
+      parameters:
+        - name: "limit"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            minimum: 1
+            maximum: 100
+      responses:
+        "200":
+          description: "List of products"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Product"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+  schemas:
+    OrderCreateRequest:
+      type: "object"
+      required:
+        - "product_id"
+        - "quantity"
+      properties:
+        product_id:
+          type: "integer"
+          minimum: 1
+          maximum: 1000
+        quantity:
+          type: "integer"
+          minimum: 1
+          maximum: 50
+        coupon_code:
+          type: "string"
+          minLength: 4
+          maxLength: 12
+        priority:
+          type: "string"
+          enum:
+            - "standard"
+            - "express"
+    OrderResponse:
+      type: "object"
+      properties:
+        order_id:
+          type: "integer"
+        status:
+          type: "string"
+    OrderDetailsResponse:
+      type: "object"
+      properties:
+        order_id:
+          type: "integer"
+        product_id:
+          type: "integer"
+        quantity:
+          type: "integer"
+    Product:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+        name:
+          type: "string"

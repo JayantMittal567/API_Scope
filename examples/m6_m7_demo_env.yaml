@@ -1,0 +1,7 @@
+name: "demo"
+variables:
+  base_url: "http://localhost:8000"
+  api_key: "demo-secret-key"
+  timeout_seconds: 15
+secrets:
+  - "api_key"

@@ -1,0 +1,8 @@
+2026-11-12T10:00:00Z INFO [server] Sample e-commerce application initialized on port 8000
+2026-11-12T10:00:01Z INFO [products] In-memory catalog loaded with 2 products
+2026-11-12T10:00:05Z INFO [orders] Order 101 registered for user_id=1
+2026-11-12T10:00:08Z INFO [users] User profile accessed for user_id=1
+2026-11-12T10:00:10Z ERROR [orders] InvoiceGatewayTimeout: failed to persist invoice ledger for order_id=101
+2026-11-12T10:00:10Z ERROR [orders] Traceback (most recent call last): RuntimeError: InvoiceGatewayTimeout: failed to persist invoice ledger
+2026-11-12T10:00:15Z INFO [coupons] Coupon WELCOME50 validated for redemption
+2026-11-12T10:00:20Z INFO [health] Periodic health check probe: dependencies healthy

@@ -1,0 +1,206 @@
+openapi: "3.0.3"
+info:
+  title: "StockPile Asset & Surplus Management API"
+  version: "1.0.0"
+  description: "Enterprise asset tracking, inventory valuation, and surplus equipment marketplace API."
+
+paths:
+  /health:
+    get:
+      summary: "Service health probe"
+      operationId: "getHealth"
+      tags:
+        - "health"
+      responses:
+        "200":
+          description: "Health status"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  status:
+                    type: "string"
+                    example: "HEALTHY"
+
+  /assets:
+    get:
+      summary: "List inventory assets"
+      operationId: "listAssets"
+      tags:
+        - "assets"
+      parameters:
+        - name: "department"
+          in: "query"
+          schema:
+            type: "string"
+            example: "warehouse"
+      responses:
+        "200":
+          description: "List of assets"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/AssetDetails"
+
+    post:
+      summary: "Create and register a new asset"
+      operationId: "createAsset"
+      tags:
+        - "assets"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssetDetails"
+      responses:
+        "201":
+          description: "Asset created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssetDetails"
+
+  /assets/{asset_id}:
+    get:
+      summary: "Get asset details by ID"
+      operationId: "getAssetById"
+      tags:
+        - "assets"
+      parameters:
+        - name: "asset_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            example: "ast-1001"
+      responses:
+        "200":
+          description: "Asset retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssetDetails"
+
+  /surplus/listings:
+    post:
+      summary: "Create a surplus marketplace listing"
+      operationId: "createSurplusListing"
+      tags:
+        - "surplus"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SurplusListing"
+      responses:
+        "201":
+          description: "Surplus listing registered"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  listing_id:
+                    type: "string"
+                    example: "list-501"
+                  status:
+                    type: "string"
+                    example: "ACTIVE"
+
+  /surplus/listings/{listing_id}:
+    get:
+      summary: "Get surplus listing by ID"
+      operationId: "getSurplusListingById"
+      tags:
+        - "surplus"
+      parameters:
+        - name: "listing_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            example: "list-501"
+      responses:
+        "200":
+          description: "Listing details"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  listing_id:
+                    type: "string"
+                  status:
+                    type: "string"
+
+components:
+  schemas:
+    AssetBase:
+      type: "object"
+      required:
+        - "name"
+        - "category"
+      properties:
+        name:
+          type: "string"
+          example: "Heavy Duty Forklift"
+        category:
+          type: "string"
+          example: "logistics"
+        quantity:
+          type: "integer"
+          minimum: 1
+          example: 2
+
+    AuditMeta:
+      type: "object"
+      required:
+        - "asset_id"
+      properties:
+        asset_id:
+          type: "string"
+          example: "ast-1001"
+        registered_by:
+          type: "string"
+          example: "manager_alice"
+
+    AssetDetails:
+      allOf:
+        - $ref: "#/components/schemas/AssetBase"
+        - $ref: "#/components/schemas/AuditMeta"
+
+    FixedPriceListing:
+      type: "object"
+      required:
+        - "price"
+      properties:
+        listing_type:
+          type: "string"
+          default: "FIXED_PRICE"
+        price:
+          type: "number"
+          minimum: 1.0
+          example: 450.0
+
+    AuctionListing:
+      type: "object"
+      required:
+        - "reserve_price"
+      properties:
+        listing_type:
+          type: "string"
+          default: "AUCTION"
+        reserve_price:
+          type: "number"
+          minimum: 100.0
+          example: 300.0
+
+    SurplusListing:
+      oneOf:
+        - $ref: "#/components/schemas/FixedPriceListing"
+        - $ref: "#/components/schemas/AuctionListing"

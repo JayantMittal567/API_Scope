@@ -1,0 +1,272 @@
+name: "Planted Bug Probes Suite"
+module: "sample_app"
+tags:
+  - "planted-bugs"
+  - "evaluation"
+tests:
+  # ---------------------------------------------------------------------------
+  # Clean Baseline Tests (Must PASS on clean sample_app functionality)
+  # ---------------------------------------------------------------------------
+  - name: "Probe Clean - GET /products"
+    module: "products"
+    tags:
+      - "baseline"
+      - "positive"
+    request:
+      method: "GET"
+      url: "{{base_url}}/products"
+    assertions:
+      - type: "status"
+        equals: 200
+
+  - name: "Probe Clean - GET /products/2"
+    module: "products"
+    tags:
+      - "baseline"
+      - "positive"
+    request:
+      method: "GET"
+      url: "{{base_url}}/products/2"
+    assertions:
+      - type: "status"
+        equals: 200
+
+  - name: "Probe Clean - GET /orders/101"
+    module: "orders"
+    tags:
+      - "baseline"
+      - "positive"
+    request:
+      method: "GET"
+      url: "{{base_url}}/orders/101"
+      headers:
+        Authorization: "Bearer token-user-1"
+    assertions:
+      - type: "status"
+        equals: 200
+
+  - name: "Probe Clean - GET /coupons/WELCOME50"
+    module: "coupons"
+    tags:
+      - "baseline"
+      - "positive"
+    request:
+      method: "GET"
+      url: "{{base_url}}/coupons/WELCOME50"
+      headers:
+        Authorization: "Bearer {{user_1_token}}"
+    assertions:
+      - type: "status"
+        equals: 200
+
+  - name: "Probe Clean - GET /health"
+    module: "health"
+    tags:
+      - "baseline"
+      - "positive"
+    request:
+      method: "GET"
+      url: "{{base_url}}/health"
+    assertions:
+      - type: "status"
+        equals: 200
+
+  # ---------------------------------------------------------------------------
+  # Planted Bug Probes (BUG-01 to BUG-10)
+  # ---------------------------------------------------------------------------
+  - name: "Probe BUG-01 - DELETE /products/1 without auth (Expected: 401)"
+    module: "products"
+    tags:
+      - "bug-probe"
+      - "bug-01"
+      - "negative"
+    request:
+      method: "DELETE"
+      url: "{{base_url}}/products/1"
+    assertions:
+      - type: "status"
+        equals: 401
+
+  - name: "Probe BUG-02 - IDOR User 1 accessing User 2 Profile (Expected: 403)"
+    module: "users"
+    tags:
+      - "bug-probe"
+      - "bug-02"
+      - "negative"
+    request:
+      method: "GET"
+      url: "{{base_url}}/users/2/profile"
+      headers:
+        Authorization: "Bearer token-user-1"
+    assertions:
+      - type: "status"
+        equals: 403
+
+  - name: "Probe BUG-03 Step 1 - Redeem single-use coupon WELCOME50 first time"
+    module: "coupons"
+    tags:
+      - "bug-probe"
+      - "bug-03"
+      - "positive"
+    request:
+      method: "POST"
+      url: "{{base_url}}/coupons/redeem"
+      headers:
+        Content-Type: "application/json"
+      body:
+        code: "WELCOME50"
+    assertions:
+      - type: "status"
+        equals: 200
+
+  - name: "Probe BUG-03 Step 2 - Repeat redemption of single-use coupon (Expected: 400)"
+    module: "coupons"
+    tags:
+      - "bug-probe"
+      - "bug-03"
+      - "negative"
+    request:
+      method: "POST"
+      url: "{{base_url}}/coupons/redeem"
+      headers:
+        Content-Type: "application/json"
+      body:
+        code: "WELCOME50"
+    assertions:
+      - type: "status"
+        range: [400, 409]
+
+  - name: "Probe BUG-04 - Order Creation with Negative Quantity (Expected: 400/422)"
+    module: "orders"
+    tags:
+      - "bug-probe"
+      - "bug-04"
+      - "boundary"
+      - "negative"
+    request:
+      method: "POST"
+      url: "{{base_url}}/orders"
+      headers:
+        Authorization: "Bearer token-user-1"
+        Content-Type: "application/json"
+      body:
+        product_id: 1
+        quantity: -5
+    assertions:
+      - type: "status"
+        range: [400, 422]
+
+  - name: "Probe BUG-05 - Cancel Shipped Order 102 (Expected: 400)"
+    module: "orders"
+    tags:
+      - "bug-probe"
+      - "bug-05"
+      - "negative"
+    request:
+      method: "POST"
+      url: "{{base_url}}/orders/102/cancel"
+      headers:
+        Authorization: "Bearer token-user-1"
+    assertions:
+      - type: "status"
+        equals: 400
+
+  - name: "Probe BUG-06 - Order Creation returns 201 Created"
+    module: "orders"
+    tags:
+      - "bug-probe"
+      - "bug-06"
+      - "positive"
+    request:
+      method: "POST"
+      url: "{{base_url}}/orders"
+      headers:
+        Authorization: "Bearer token-user-1"
+        Content-Type: "application/json"
+      body:
+        product_id: 1
+        quantity: 2
+    assertions:
+      - type: "status"
+        equals: 201
+
+  - name: "Probe BUG-07 - Missing Required Price on Product Creation (Expected: 422)"
+    module: "products"
+    tags:
+      - "bug-probe"
+      - "bug-07"
+      - "negative"
+    request:
+      method: "POST"
+      url: "{{base_url}}/products"
+      headers:
+        Authorization: "Bearer token-admin"
+        Content-Type: "application/json"
+      body:
+        name: "Missing Price Item"
+    assertions:
+      - type: "status"
+        range: [400, 422]
+
+  - name: "Probe BUG-08 - Fast Recommendations Endpoint (Expected < 50ms)"
+    module: "products"
+    tags:
+      - "bug-probe"
+      - "bug-08"
+      - "performance"
+    request:
+      method: "GET"
+      url: "{{base_url}}/products/recommendations"
+    assertions:
+      - type: "status"
+        equals: 200
+      - type: "max_time_ms"
+        max_ms: 50
+
+  - name: "Probe BUG-09 - User Profile Schema Adherence without Leaks"
+    module: "users"
+    tags:
+      - "bug-probe"
+      - "bug-09"
+      - "contract"
+    request:
+      method: "GET"
+      url: "{{base_url}}/users/1/profile"
+      headers:
+        Authorization: "Bearer token-user-1"
+    assertions:
+      - type: "status"
+        equals: 200
+      - type: "json_schema"
+        schema:
+          type: "object"
+          required:
+            - "id"
+            - "username"
+            - "email"
+          additionalProperties: false
+          properties:
+            id:
+              type: "integer"
+            username:
+              type: "string"
+            email:
+              type: "string"
+
+  - name: "Probe BUG-10 - Invoice Sync Succeeds Without Silent Failure (Expected: synced == true)"
+    module: "orders"
+    tags:
+      - "bug-probe"
+      - "bug-10"
+      - "contract"
+    request:
+      method: "POST"
+      url: "{{base_url}}/orders/101/sync-invoice"
+      headers:
+        Authorization: "Bearer token-user-1"
+    assertions:
+      - type: "status"
+        equals: 200
+      - type: "json_path"
+        path: "$.synced"
+        equals: true

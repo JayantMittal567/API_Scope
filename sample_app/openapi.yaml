@@ -1,0 +1,451 @@
+openapi: "3.0.3"
+info:
+  title: "Sample E-Commerce Store API"
+  version: "1.0.0"
+  description: "Target application OpenAPI 3 specification with documented contract for ApiScope evaluation."
+servers:
+  - url: "http://localhost:8000"
+paths:
+  /products:
+    get:
+      summary: "List available products"
+      operationId: "listProducts"
+      tags:
+        - "products"
+      security: []
+      responses:
+        "200":
+          description: "List of products"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Product"
+    post:
+      summary: "Create a new product"
+      operationId: "createProduct"
+      tags:
+        - "products"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductCreateRequest"
+      responses:
+        "201":
+          description: "Product created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          description: "Invalid input"
+        "401":
+          description: "Unauthorized"
+  /products/{product_id}:
+    get:
+      summary: "Get product by ID"
+      operationId: "getProductById"
+      tags:
+        - "products"
+      security: []
+      parameters:
+        - name: "product_id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        "200":
+          description: "Product details"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: "Product not found"
+    delete:
+      summary: "Delete product by ID"
+      operationId: "deleteProduct"
+      tags:
+        - "products"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: "product_id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        "200":
+          description: "Product deleted"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Product not found"
+  /products/recommendations:
+    get:
+      summary: "Get recommended products"
+      operationId: "getRecommendations"
+      tags:
+        - "products"
+      security: []
+      responses:
+        "200":
+          description: "Recommended products"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Product"
+  /products/v1-catalog:
+    get:
+      summary: "Legacy v1 product catalog"
+      operationId: "getV1Catalog"
+      tags:
+        - "products"
+      deprecated: true
+      security: []
+      responses:
+        "200":
+          description: "Legacy catalog list"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Product"
+  /orders:
+    post:
+      summary: "Create a new order"
+      operationId: "createOrder"
+      tags:
+        - "orders"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderCreateRequest"
+      responses:
+        "201":
+          description: "Order created successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderResponse"
+        "400":
+          description: "Bad Request"
+        "401":
+          description: "Unauthorized"
+  /orders/{order_id}:
+    get:
+      summary: "Get order details"
+      operationId: "getOrderById"
+      tags:
+        - "orders"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: "order_id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        "200":
+          description: "Order details"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderResponse"
+        "404":
+          description: "Order not found"
+  /orders/{order_id}/cancel:
+    post:
+      summary: "Cancel pending order"
+      operationId: "cancelOrder"
+      tags:
+        - "orders"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: "order_id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        "200":
+          description: "Order cancelled"
+        "400":
+          description: "Cannot cancel order"
+        "404":
+          description: "Order not found"
+  /orders/{order_id}/sync-invoice:
+    post:
+      summary: "Synchronize order invoice"
+      operationId: "syncOrderInvoice"
+      tags:
+        - "orders"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: "order_id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        "200":
+          description: "Invoice synchronized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderSyncResponse"
+        "404":
+          description: "Order not found"
+  /coupons/{code}:
+    get:
+      summary: "Get coupon details"
+      operationId: "getCouponByCode"
+      tags:
+        - "coupons"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: "code"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Coupon details"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Coupon"
+        "404":
+          description: "Coupon not found"
+  /coupons/redeem:
+    post:
+      summary: "Redeem discount coupon"
+      operationId: "redeemCoupon"
+      tags:
+        - "coupons"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CouponRedeemRequest"
+      responses:
+        "200":
+          description: "Coupon redeemed"
+        "400":
+          description: "Invalid or already used coupon"
+        "401":
+          description: "Unauthorized"
+  /coupons/legacy-archive:
+    get:
+      summary: "Archived historical coupons"
+      operationId: "getLegacyCouponsArchive"
+      tags:
+        - "coupons"
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: "Archived coupons"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Coupon"
+  /users/{user_id}/profile:
+    get:
+      summary: "Get user profile"
+      operationId: "getUserProfile"
+      tags:
+        - "users"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: "user_id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        "200":
+          description: "User profile"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "User not found"
+  /health:
+    get:
+      summary: "Application dependency health status"
+      operationId: "getHealth"
+      tags:
+        - "health"
+      security: []
+      parameters:
+        - name: "degraded"
+          in: "query"
+          required: false
+          schema:
+            type: "boolean"
+      responses:
+        "200":
+          description: "Health status"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+  schemas:
+    Product:
+      type: "object"
+      required:
+        - "id"
+        - "name"
+        - "price"
+      properties:
+        id:
+          type: "integer"
+        name:
+          type: "string"
+        price:
+          type: "number"
+        stock:
+          type: "integer"
+    ProductCreateRequest:
+      type: "object"
+      required:
+        - "name"
+        - "price"
+      properties:
+        name:
+          type: "string"
+          minLength: 2
+        price:
+          type: "number"
+          minimum: 0.01
+        stock:
+          type: "integer"
+          minimum: 0
+    OrderCreateRequest:
+      type: "object"
+      required:
+        - "product_id"
+        - "quantity"
+      properties:
+        product_id:
+          type: "integer"
+          minimum: 1
+        quantity:
+          type: "integer"
+          minimum: 1
+          maximum: 50
+    OrderResponse:
+      type: "object"
+      required:
+        - "id"
+        - "product_id"
+        - "quantity"
+        - "status"
+      properties:
+        id:
+          type: "integer"
+        user_id:
+          type: "integer"
+        product_id:
+          type: "integer"
+        quantity:
+          type: "integer"
+        total_price:
+          type: "number"
+        status:
+          type: "string"
+    OrderSyncResponse:
+      type: "object"
+      required:
+        - "order_id"
+        - "synced"
+      properties:
+        order_id:
+          type: "integer"
+        synced:
+          type: "boolean"
+        error:
+          type: "string"
+    Coupon:
+      type: "object"
+      required:
+        - "code"
+        - "discount_pct"
+      properties:
+        code:
+          type: "string"
+        discount_pct:
+          type: "integer"
+        single_use:
+          type: "boolean"
+        used:
+          type: "boolean"
+    CouponRedeemRequest:
+      type: "object"
+      required:
+        - "code"
+      properties:
+        code:
+          type: "string"
+          minLength: 3
+    UserProfile:
+      type: "object"
+      required:
+        - "id"
+        - "username"
+        - "email"
+      additionalProperties: false
+      properties:
+        id:
+          type: "integer"
+        username:
+          type: "string"
+        email:
+          type: "string"
+    HealthResponse:
+      type: "object"
+      required:
+        - "status"
+        - "dependencies"
+      properties:
+        status:
+          type: "string"
+        dependencies:
+          type: "object"
+          additionalProperties:
+            type: "string"

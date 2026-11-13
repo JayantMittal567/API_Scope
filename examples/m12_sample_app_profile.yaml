@@ -1,0 +1,50 @@
+project_name: "Sample E-Commerce App"
+domain: "e-commerce"
+
+roles:
+  - role_name: "customer"
+    token_variable: "{{user_1_token}}"
+    allowed_endpoints:
+      - "GET /products"
+      - "POST /orders"
+      - "GET /users/1/profile"
+    forbidden_endpoints:
+      - "GET /debug/internal-metrics"
+    idor_check:
+      endpoint: "GET /users/{user_id}/profile"
+      own_id: 1
+      other_id: 2
+      expected_status: 403
+
+state_transitions:
+  - entity: "Order"
+    description: "Cannot cancel an order that has already shipped"
+    endpoint: "POST /orders/{order_id}/cancel"
+    invalid_state_id: 102
+    invalid_state_name: "SHIPPED"
+    expected_status_range:
+      - 400
+      - 409
+    body:
+      reason: "Customer changed mind"
+
+business_invariants:
+  - rule_id: "BI-01"
+    module: "coupons"
+    description: "Welcome discount coupons are strictly single-use"
+    endpoint: "POST /coupons/redeem"
+    rule_type: "single_use"
+    payload:
+      code: "WELCOME50"
+    first_expected_status: 200
+    repeat_expected_status_range:
+      - 400
+      - 409
+
+sensitive_fields_denylist:
+  - "password_hash"
+  - "internal_ssn"
+  - "secret"
+
+notes:
+  - "Configured for planted bugs evaluation: BUG-02 (IDOR), BUG-03 (Reusable coupon), BUG-05 (Cancel shipped order)."

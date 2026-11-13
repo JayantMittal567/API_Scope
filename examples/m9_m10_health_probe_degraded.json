@@ -1,0 +1,7 @@
+{
+  "status": "DEGRADED",
+  "dependencies": {
+    "database": "UP",
+    "payment_gateway": "DOWN"
+  }
+}

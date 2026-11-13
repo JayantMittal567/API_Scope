@@ -1,0 +1,88 @@
+name: "Sample App M12 AI Proposed Suite"
+module: "sample_app"
+tests:
+  - name: "AI-GEN BUG-02 IDOR Customer Profile Access"
+    module: "users"
+    tags:
+      - "security"
+      - "idor"
+      - "ai-generated"
+    source: "ai-generated"
+    status: "proposed"
+    request:
+      method: "GET"
+      url: "{{base_url}}/users/2/profile"
+      headers:
+        Authorization: "Bearer {{user_1_token}}"
+        Content-Type: "application/json"
+    extract: {}
+    assertions:
+      - type: "status"
+        equals: 403
+
+  - name: "AI-GEN BUG-03 Single-Use Coupon Redeem Step 1"
+    module: "coupons"
+    tags:
+      - "business-invariant"
+      - "single-use"
+      - "ai-generated"
+    source: "ai-generated"
+    status: "proposed"
+    request:
+      method: "POST"
+      url: "{{base_url}}/coupons/redeem"
+      headers:
+        Authorization: "Bearer {{user_1_token}}"
+        Content-Type: "application/json"
+      body:
+        code: "WELCOME50"
+    extract: {}
+    assertions:
+      - type: "status"
+        equals: 200
+
+  - name: "AI-GEN BUG-03 Single-Use Coupon Repeat Step 2"
+    module: "coupons"
+    tags:
+      - "business-invariant"
+      - "single-use"
+      - "ai-generated"
+    source: "ai-generated"
+    status: "proposed"
+    request:
+      method: "POST"
+      url: "{{base_url}}/coupons/redeem"
+      headers:
+        Authorization: "Bearer {{user_1_token}}"
+        Content-Type: "application/json"
+      body:
+        code: "WELCOME50"
+    extract: {}
+    assertions:
+      - type: "status"
+        range:
+          - 400
+          - 409
+
+  - name: "AI-GEN BUG-05 Cancel Shipped Order Invalid State"
+    module: "orders"
+    tags:
+      - "state-transition"
+      - "negative"
+      - "ai-generated"
+    source: "ai-generated"
+    status: "proposed"
+    request:
+      method: "POST"
+      url: "{{base_url}}/orders/102/cancel"
+      headers:
+        Authorization: "Bearer {{user_1_token}}"
+        Content-Type: "application/json"
+      body:
+        reason: "Customer changed mind"
+    extract: {}
+    assertions:
+      - type: "status"
+        range:
+          - 400
+          - 409

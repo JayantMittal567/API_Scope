@@ -1,0 +1,17 @@
+[
+  {
+    "item_sku": "0042",
+    "quantity": 3,
+    "expedited": true
+  },
+  {
+    "item_sku": "007",
+    "quantity": 1,
+    "expedited": false
+  },
+  {
+    "item_sku": "999",
+    "quantity": 10,
+    "expedited": true
+  }
+]

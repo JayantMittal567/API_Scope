@@ -1,0 +1,66 @@
+name: "M4 Order Chaining Suite"
+module: "orders"
+tags:
+  - "chaining"
+  - "e2e"
+tests:
+  - name: "Create User"
+    module: "users"
+    tags:
+      - "auth"
+    request:
+      method: "POST"
+      url: "https://api.example.com/users"
+      headers:
+        Content-Type: "application/json"
+      body:
+        username: "johndoe"
+        role: "customer"
+    extract:
+      user_id: "$.id"
+      auth_token: "$.token"
+    assertions:
+      - type: "status"
+        equals: 201
+      - type: "jsonpath"
+        path: "$.status"
+        equals: "ACTIVE"
+
+  - name: "Create Order"
+    module: "orders"
+    tags:
+      - "checkout"
+    request:
+      method: "POST"
+      url: "https://api.example.com/orders"
+      headers:
+        Authorization: "Bearer {{auth_token}}"
+        Content-Type: "application/json"
+      body:
+        user_id: "{{user_id}}"
+        item: "laptop"
+        quantity: 1
+    extract:
+      order_id: "$.order_id"
+    assertions:
+      - type: "status"
+        equals: 201
+      - type: "jsonpath"
+        path: "$.confirmed"
+        equals: true
+
+  - name: "Get Order"
+    module: "orders"
+    tags:
+      - "retrieval"
+    request:
+      method: "GET"
+      url: "https://api.example.com/orders/{{order_id}}"
+      headers:
+        Authorization: "Bearer {{auth_token}}"
+    assertions:
+      - type: "status"
+        equals: 200
+      - type: "jsonpath"
+        path: "$.status"
+        equals: "CONFIRMED"

@@ -1,0 +1,60 @@
+project_name: "StockPile Inventory & Surplus Platform"
+domain: "inventory-management"
+
+roles:
+  - role_name: "warehouse_manager"
+    token_variable: "{{manager_token}}"
+    allowed_endpoints:
+      - "GET /assets"
+      - "POST /assets"
+      - "POST /surplus/listings"
+    forbidden_endpoints: []
+
+  - role_name: "department_viewer"
+    token_variable: "{{viewer_token}}"
+    allowed_endpoints:
+      - "GET /assets"
+      - "GET /assets/{asset_id}"
+    forbidden_endpoints:
+      - "POST /assets"
+      - "POST /surplus/listings"
+    idor_check:
+      endpoint: "GET /assets/{asset_id}"
+      own_id: "ast-1001"
+      other_id: "ast-restricted-999"
+      expected_status: 403
+
+state_transitions:
+  - entity: "Asset"
+    description: "Cannot modify or list an asset that has been decommissioned"
+    endpoint: "POST /surplus/listings"
+    invalid_state_id: "ast-decommissioned-99"
+    invalid_state_name: "DECOMMISSIONED"
+    expected_status_range:
+      - 400
+      - 409
+    body:
+      asset_id: "ast-decommissioned-99"
+      listing_type: "AUCTION"
+
+business_invariants:
+  - rule_id: "STOCK-01"
+    module: "surplus"
+    description: "Surplus listing reservation tokens are single-use"
+    endpoint: "POST /surplus/listings"
+    rule_type: "single_use"
+    payload:
+      reservation_token: "RES-9988-ONCE"
+      listing_type: "FIXED_PRICE"
+      price: 150.0
+    first_expected_status: 201
+    repeat_expected_status_range:
+      - 400
+      - 409
+
+sensitive_fields_denylist:
+  - "financial_cost_basis"
+  - "internal_serial_key"
+
+notes:
+  - "Profile for StockPile inventory platform testing: authorization, state validation, and listing invariants."

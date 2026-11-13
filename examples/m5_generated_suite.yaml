@@ -1,0 +1,694 @@
+name: ApiScope Sample Store API Generated Suite
+module: orders
+tags:
+- rule-generated
+tests:
+- name: POST /orders - positive
+  module: orders
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: 1
+      coupon_code: test_coupon_
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        order_id:
+          type: integer
+        status:
+          type: string
+- name: GET /orders/{order_id} - positive
+  module: orders
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/orders/1'
+    headers:
+      Authorization: Bearer {{auth_token}}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        order_id:
+          type: integer
+        product_id:
+          type: integer
+        quantity:
+          type: integer
+- name: GET /products - positive
+  module: products
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/products'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+- name: POST /orders - missing required field 'product_id'
+  module: orders
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      quantity: 1
+      coupon_code: test_coupon_
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /orders - missing required field 'quantity'
+  module: orders
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      coupon_code: test_coupon_
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /orders - invalid type for 'product_id'
+  module: orders
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: INVALID_TYPE_STRING
+      quantity: 1
+      coupon_code: test_coupon_
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /orders - invalid type for 'quantity'
+  module: orders
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: INVALID_TYPE_STRING
+      coupon_code: test_coupon_
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /orders - invalid type for 'coupon_code'
+  module: orders
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: 1
+      coupon_code: 12345
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /orders - invalid type for 'priority'
+  module: orders
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: 1
+      coupon_code: test_coupon_
+      priority: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /orders - missing authentication
+  module: orders
+  tags:
+  - negative
+  - auth
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: 1
+      coupon_code: test_coupon_
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 401
+    - 403
+- name: GET /orders/{order_id} - resource not found (invalid path param)
+  module: orders
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/orders/999999999'
+    headers:
+      Authorization: Bearer {{auth_token}}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: GET /orders/{order_id} - missing authentication
+  module: orders
+  tags:
+  - negative
+  - auth
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/orders/1'
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 401
+    - 403
+- name: DELETE /orders - unsupported method
+  module: orders
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/orders'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /orders/{order_id} - unsupported method
+  module: orders
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/orders/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /products - unsupported method
+  module: products
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/products'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: POST /orders - boundary 'product_id' at minimum 1
+  module: orders
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: 1
+      coupon_code: test_coupon_
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: POST /orders - boundary 'product_id' below minimum
+  module: orders
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 0
+      quantity: 1
+      coupon_code: test_coupon_
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /orders - boundary 'product_id' at maximum 1000
+  module: orders
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1000
+      quantity: 1
+      coupon_code: test_coupon_
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: POST /orders - boundary 'product_id' above maximum
+  module: orders
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1001
+      quantity: 1
+      coupon_code: test_coupon_
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /orders - boundary 'quantity' at minimum 1
+  module: orders
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: 1
+      coupon_code: test_coupon_
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: POST /orders - boundary 'quantity' below minimum
+  module: orders
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: 0
+      coupon_code: test_coupon_
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /orders - boundary 'quantity' at maximum 50
+  module: orders
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: 50
+      coupon_code: test_coupon_
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: POST /orders - boundary 'quantity' above maximum
+  module: orders
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: 51
+      coupon_code: test_coupon_
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /orders - boundary 'coupon_code' at minLength 4
+  module: orders
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: 1
+      coupon_code: aaaa
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: POST /orders - boundary 'coupon_code' below minLength
+  module: orders
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: 1
+      coupon_code: aaa
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /orders - boundary 'coupon_code' at maxLength 12
+  module: orders
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: 1
+      coupon_code: aaaaaaaaaaaa
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: POST /orders - boundary 'coupon_code' above maxLength
+  module: orders
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: 1
+      coupon_code: aaaaaaaaaaaaa
+      priority: standard
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /orders - boundary 'priority' invalid enum value
+  module: orders
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/orders'
+    headers:
+      Authorization: Bearer {{auth_token}}
+      Content-Type: application/json
+    body:
+      product_id: 1
+      quantity: 1
+      coupon_code: test_coupon_
+      priority: __INVALID_ENUM_VALUE__
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: GET /products - boundary query 'limit' at minimum 1
+  module: products
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/products'
+    params:
+      limit: 1
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /products - boundary query 'limit' below minimum
+  module: products
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/products'
+    params:
+      limit: 0
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: GET /products - boundary query 'limit' at maximum 100
+  module: products
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/products'
+    params:
+      limit: 100
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /products - boundary query 'limit' above maximum
+  module: products
+  tags:
+  - boundary
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/products'
+    params:
+      limit: 101
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
