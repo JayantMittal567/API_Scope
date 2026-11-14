@@ -67,7 +67,7 @@ class LLMConfig:
                 object.__setattr__(self, "base_url", "https://api.openai.com/v1")
         if not self.model:
             if self.provider == "gemini":
-                object.__setattr__(self, "model", "gemini-2.5-flash")
+                object.__setattr__(self, "model", "gemini-3.5-flash-lite")
             elif self.provider == "openai":
                 object.__setattr__(self, "model", "gpt-4o-mini")
 
@@ -148,7 +148,7 @@ class LLMConfig:
         if model:
             mod = model.strip()
         elif prov == "gemini":
-            mod = "gemini-2.5-flash"
+            mod = "gemini-3.5-flash-lite"
         elif prov == "openai":
             mod = "gpt-4o-mini"
         else:
