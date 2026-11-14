@@ -4,6 +4,7 @@ This temporary diagnostic runner does not change ApiScope's CLI or database.
 It is restricted to approved GET paths on localhost:8080 and writes a
 minimal result summary without raw response bodies.
 """
+
 from __future__ import annotations
 
 import json
