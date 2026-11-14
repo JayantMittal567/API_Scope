@@ -17,6 +17,7 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
+from click.utils import strip_ansi
 from typer.testing import CliRunner
 
 from apiscope.cli.main import (
@@ -88,20 +89,23 @@ def _create_mock_run_result(path: Path, run_id: str = "run-cli-test") -> Path:
 def test_cli_guided_help() -> None:
     """Verify 'apiscope guided' and alias 'apiscope analyze-project' expose all CLI flags."""
     res1 = runner.invoke(app, ["guided", "--help"])
+    res1_help = strip_ansi(res1.output)
     assert res1.exit_code == EXIT_OK
-    assert "--spec" in res1.output
-    assert "--repo" in res1.output
-    assert "--output-dir" in res1.output
-    assert "--target-origin" in res1.output
-    assert "--execute" in res1.output
-    assert "--preview-only" in res1.output
-    assert "--run-file" in res1.output
-    assert "--strict" in res1.output
-    assert "--format" in res1.output
+    assert "--spec" in res1_help
+    assert "--repo" in res1_help
+    assert "--output-dir" in res1_help
+    assert "--target-origin" in res1_help
+    assert "--execute" in res1_help
+    assert "--preview-only" in res1_help
+    assert "--run-file" in res1_help
+    assert "--strict" in res1_help
+    assert "--format" in res1_help
 
     res2 = runner.invoke(app, ["analyze-project", "--help"])
+
+    res2_help = strip_ansi(res2.output)
     assert res2.exit_code == EXIT_OK
-    assert "--spec" in res2.output
+    assert "--spec" in res2_help
 
 
 def test_cli_guided_missing_spec() -> None:
