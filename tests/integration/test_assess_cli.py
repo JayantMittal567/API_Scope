@@ -18,6 +18,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import yaml
+from click.utils import strip_ansi
 from typer.testing import CliRunner
 
 from apiscope.cli.main import (
@@ -128,18 +129,19 @@ def _create_sample_run_file(path: Path, failed: bool = False) -> Path:
 def test_assess_cli_help() -> None:
     """Verify that 'apiscope assess --help' lists all expected flags and descriptions."""
     result = runner.invoke(app, ["assess", "--help"])
+    result_help = strip_ansi(result.output)
     assert result.exit_code == EXIT_OK
-    assert "Correlate multi-source diagnostic outputs" in result.output
-    assert "--spec" in result.output
-    assert "--run-file" in result.output
-    assert "--repo" in result.output
-    assert "--workflow-report" in result.output
-    assert "--investigation-report" in result.output
-    assert "--silent-report" in result.output
-    assert "--inventory-report" in result.output
-    assert "--strict" in result.output
-    assert "--output" in result.output
-    assert "--format" in result.output
+    assert "Correlate multi-source diagnostic outputs" in result_help
+    assert "--spec" in result_help
+    assert "--run-file" in result_help
+    assert "--repo" in result_help
+    assert "--workflow-report" in result_help
+    assert "--investigation-report" in result_help
+    assert "--silent-report" in result_help
+    assert "--inventory-report" in result_help
+    assert "--strict" in result_help
+    assert "--output" in result_help
+    assert "--format" in result_help
 
 
 def test_assess_cli_with_spec_and_clean_run(tmp_path: Path) -> None:
