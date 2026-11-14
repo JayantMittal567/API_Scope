@@ -40,10 +40,14 @@ htmlcov/
 .ruff_cache/
 .mypy_cache/
 
-# Local environment variables
+# Local environment variables and credentials
 .env
 .env.local
 .env.*.local
+credentials.json
+credentials.yaml
+*.key
+*.pem
 
 # Databases
 *.sqlite

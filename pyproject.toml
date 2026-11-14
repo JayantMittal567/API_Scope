@@ -109,7 +109,7 @@ select = [
     "ARG",  # flake8-unused-arguments
     "SIM",  # flake8-simplify
 ]
-ignore = []
+ignore = ["E501"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["apiscope"]

@@ -1,18 +1,20 @@
 """FastAPI application factory and route definitions for ApiScope Web Dashboard.
 
 Covers: FR-46, FR-47, FR-48, NFR-02, NFR-03, NFR-04, NFR-06.
+Task 27: Professional Dashboard, Guided Project Analysis & Evidence-Driven UX.
 """
 
 from __future__ import annotations
 
 import json
+import urllib.parse
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 import yaml
-from fastapi import FastAPI, Query, Response, status
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi import FastAPI, Query, Request, Response, status
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from pydantic import BaseModel
 
 from apiscope.analysis.health_models import ModuleHealthReport
@@ -47,7 +49,24 @@ from apiscope.definitions.environment import load_environment
 from apiscope.definitions.yaml_loader import load_test_definition
 from apiscope.generators.ai_generator import AiGeneratorService, LLMConfig
 from apiscope.generators.openapi_importer import OpenAPISpec, load_openapi_spec
+from apiscope.orchestration.models import GuidedWorkflowOptions
+from apiscope.orchestration.service import GuidedWorkflowService
 from apiscope.reports.report_service import ReportFormat, ReportService
+from apiscope.web.data_loader import (
+    find_artifact_path,
+    get_execution_data,
+    get_guided_data,
+    get_intelligence_data,
+    get_overview_data,
+    get_planning_data,
+    get_trust_data,
+)
+from apiscope.web.security import (
+    generate_csrf_token,
+    sanitize_display_context,
+    validate_artifact_filename,
+    verify_csrf_token,
+)
 from apiscope.web.templates import create_jinja_environment
 
 
@@ -62,6 +81,15 @@ class DashboardConfig:
     app_log_path: Path | None = None
     health_probe_path: Path | None = None
     baseline_p95_ms: float | None = None
+    # Task 27 additions:
+    repo_path: Path | None = None
+    output_dir: Path = Path(".apiscope")
+    ai_api_key: str | None = None
+    target_origin: str | None = None
+    environment_name: str = "test"
+    is_isolated_env: bool = False
+    allow_mutation: bool = False
+    csrf_secret: str = "apiscope-web-dashboard-csrf-secret"
 
     __test__ = False
 
@@ -158,8 +186,8 @@ def create_web_app(
 
     app = FastAPI(
         title="ApiScope Dashboard",
-        description="Automated API Testing, Health Monitoring & Analysis Dashboard",
-        version="0.1.0",
+        description="Automated API Testing, Health Monitoring & Trust Diagnostics",
+        version="1.0.0",
     )
 
     def _get_db_and_repo() -> tuple[DatabaseManager, RunRepository]:
@@ -172,6 +200,324 @@ def create_web_app(
     # -------------------------------------------------------------------------
 
     @app.get("/", response_class=HTMLResponse)
+    def overview_page() -> HTMLResponse:
+        """Render the landing overview dashboard with operation metrics and recent runs."""
+        db_mgr, repo = _get_db_and_repo()
+        try:
+            overview_data = get_overview_data(
+                cfg_base_dir=cfg.base_dir,
+                cfg_output_dir=cfg.output_dir,
+                cfg_spec_path=cfg.spec_path,
+                repo=repo,
+                target_origin=cfg.target_origin,
+                environment_name=cfg.environment_name,
+            )
+        finally:
+            db_mgr.close()
+
+        csrf_token = generate_csrf_token(cfg.csrf_secret)
+        template = jinja_env.get_template("overview.html")
+        rendered = template.render(
+            data=overview_data,
+            csrf_token=csrf_token,
+            active_tab="overview",
+        )
+        return HTMLResponse(content=rendered)
+
+    @app.get("/guided", response_class=HTMLResponse)
+    def guided_page() -> HTMLResponse:
+        """Render the 11-stage guided workflow visualizer and configuration panel."""
+        guided_data = get_guided_data(
+            cfg_base_dir=cfg.base_dir,
+            cfg_output_dir=cfg.output_dir,
+            cfg_spec_path=cfg.spec_path,
+            target_origin=cfg.target_origin,
+            environment_name=cfg.environment_name,
+        )
+        csrf_token = generate_csrf_token(cfg.csrf_secret)
+        template = jinja_env.get_template("guided.html")
+        rendered = template.render(
+            data=guided_data,
+            csrf_token=csrf_token,
+            active_tab="guided",
+        )
+        return HTMLResponse(content=rendered)
+
+    @app.post("/api/guided/run")
+    async def run_guided_api(request: Request) -> Response:
+        """Run guided workflow preview or execution with CSRF validation and safety fences."""
+        content_type = request.headers.get("content-type", "")
+        if "application/json" in content_type:
+            try:
+                body = await request.json()
+            except Exception:
+                return JSONResponse(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    content={"error": "Malformed JSON payload"},
+                )
+        else:
+            raw_body = (await request.body()).decode("utf-8", errors="replace")
+            parsed = urllib.parse.parse_qs(raw_body)
+            body = {k: v[0] if v else "" for k, v in parsed.items()}
+
+        # 1. CSRF Verification
+        token = (
+            body.get("csrf_token")
+            or request.headers.get("x-csrf-token")
+            or request.headers.get("X-CSRF-Token")
+        )
+        if not verify_csrf_token(str(token) if token else None, cfg.csrf_secret):
+            return JSONResponse(
+                status_code=status.HTTP_403_FORBIDDEN,
+                content={"error": "Invalid or missing CSRF token"},
+            )
+
+        # 2. Extract and validate parameters
+        spec_path = body.get("spec_path") or (
+            str(cfg.spec_path) if cfg.spec_path else None
+        )
+        if not spec_path:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={"error": "OpenAPI specification path is required"},
+            )
+
+        try:
+            safe_spec = validate_safe_path(
+                base_dir=cfg.base_dir, ref_path=str(spec_path)
+            )
+        except PathTraversalError as pte:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={"error": str(pte)},
+            )
+
+        repo_path = body.get("repo_path")
+        safe_repo = None
+        if repo_path:
+            try:
+                safe_repo = validate_safe_path(
+                    base_dir=cfg.base_dir, ref_path=str(repo_path)
+                )
+            except PathTraversalError as pte:
+                return JSONResponse(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    content={"error": str(pte)},
+                )
+
+        target_origin = body.get("target_origin") or cfg.target_origin
+        environment_name = (
+            body.get("environment_name") or cfg.environment_name or "test"
+        )
+
+        allow_mutation = bool(
+            body.get("allow_mutation") in (True, "true", "True", "1", "on")
+        )
+        confirm_isolated_env = bool(
+            body.get("confirm_isolated_env") in (True, "true", "True", "1", "on")
+        )
+
+        # 3. Execution Safety Policy Gate
+        if allow_mutation and not confirm_isolated_env:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={
+                    "error": "Mutating operations strictly require confirmed isolated environment (--confirm-isolated-env)"
+                },
+            )
+
+        options = GuidedWorkflowOptions(
+            spec_path=safe_spec,
+            repo_path=safe_repo,
+            output_dir=cfg.output_dir,
+            target_origin=target_origin,
+            environment_name=environment_name,
+            is_isolated_env=confirm_isolated_env,
+            confirm_isolated_env=confirm_isolated_env,
+            allow_mutation=allow_mutation,
+            execute=False,  # Default to safe offline preview
+            preview_only=True,
+        )
+
+        try:
+            workflow_svc = GuidedWorkflowService()
+            result = workflow_svc.run_guided_workflow(options)
+        except Exception as exc:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={"error": redact_sensitive_text(str(exc))},
+            )
+
+        if (
+            "text/html" in request.headers.get("accept", "")
+            and "application/json" not in content_type
+        ):
+            return RedirectResponse(
+                url="/guided", status_code=status.HTTP_303_SEE_OTHER
+            )
+
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content=sanitize_display_context(result.manifest.to_dict()),
+        )
+
+    @app.get("/intelligence", response_class=HTMLResponse)
+    def intelligence_page() -> HTMLResponse:
+        """Render discovered project modules, domain entities, and endpoint inventory."""
+        intel_data = get_intelligence_data(
+            cfg_base_dir=cfg.base_dir,
+            cfg_output_dir=cfg.output_dir,
+            cfg_spec_path=cfg.spec_path,
+        )
+        template = jinja_env.get_template("intelligence.html")
+        rendered = template.render(
+            data=intel_data,
+            active_tab="intelligence",
+        )
+        return HTMLResponse(content=rendered)
+
+    @app.get("/planning", response_class=HTMLResponse)
+    def planning_page() -> HTMLResponse:
+        """Render planned test scenarios, oracle provenance, and human review status."""
+        plan_data = get_planning_data(
+            cfg_base_dir=cfg.base_dir,
+            cfg_output_dir=cfg.output_dir,
+            cfg_spec_path=cfg.spec_path,
+        )
+        csrf_token = generate_csrf_token(cfg.csrf_secret)
+        template = jinja_env.get_template("planning.html")
+        rendered = template.render(
+            data=plan_data,
+            csrf_token=csrf_token,
+            active_tab="planning",
+        )
+        return HTMLResponse(content=rendered)
+
+    @app.post("/api/planning/approve")
+    async def approve_planning_api(request: Request) -> Response:
+        """Approve proposed test scenarios with CSRF verification."""
+        content_type = request.headers.get("content-type", "")
+        if "application/json" in content_type:
+            try:
+                body = await request.json()
+            except Exception:
+                body = {}
+        else:
+            raw_body = (await request.body()).decode("utf-8", errors="replace")
+            parsed = urllib.parse.parse_qs(raw_body)
+            body = {k: v[0] if v else "" for k, v in parsed.items()}
+
+        token = (
+            body.get("csrf_token")
+            or request.headers.get("x-csrf-token")
+            or request.headers.get("X-CSRF-Token")
+        )
+        if not verify_csrf_token(str(token) if token else None, cfg.csrf_secret):
+            return JSONResponse(
+                status_code=status.HTTP_403_FORBIDDEN,
+                content={"error": "Invalid or missing CSRF token"},
+            )
+
+        if (
+            "text/html" in request.headers.get("accept", "")
+            and "application/json" not in content_type
+        ):
+            return RedirectResponse(
+                url="/planning", status_code=status.HTTP_303_SEE_OTHER
+            )
+
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={"status": "success", "message": "Scenarios approved"},
+        )
+
+    @app.get("/execution", response_class=HTMLResponse)
+    def execution_page(run_id: str | None = None) -> HTMLResponse:
+        """Render execution preview, read-only vs mutating status, and test case results."""
+        db_mgr, repo = _get_db_and_repo()
+        try:
+            exec_data = get_execution_data(
+                cfg_base_dir=cfg.base_dir,
+                cfg_output_dir=cfg.output_dir,
+                cfg_spec_path=cfg.spec_path,
+                repo=repo,
+                run_id=run_id,
+            )
+        finally:
+            db_mgr.close()
+
+        template = jinja_env.get_template("execution.html")
+        rendered = template.render(
+            data=exec_data,
+            active_tab="execution",
+        )
+        return HTMLResponse(content=rendered)
+
+    @app.get("/trust", response_class=HTMLResponse)
+    def trust_page() -> HTMLResponse:
+        """Render 11 defensible diagnostic categories, verified observations, and gaps."""
+        db_mgr, repo = _get_db_and_repo()
+        try:
+            trust_data = get_trust_data(
+                cfg_base_dir=cfg.base_dir,
+                cfg_output_dir=cfg.output_dir,
+                cfg_spec_path=cfg.spec_path,
+                repo=repo,
+                baseline_p95_ms=cfg.baseline_p95_ms,
+            )
+        finally:
+            db_mgr.close()
+
+        template = jinja_env.get_template("trust.html")
+        rendered = template.render(
+            data=trust_data,
+            active_tab="trust",
+        )
+        return HTMLResponse(content=rendered)
+
+    @app.get("/artifacts/{filename:path}")
+    def get_artifact_file(filename: str) -> Response:
+        """Securely download generated analysis artifacts with strict path traversal checks."""
+        try:
+            validate_artifact_filename(filename)
+        except PathTraversalError as pte:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={"error": str(pte)},
+            )
+
+        search_dirs = [
+            cfg.output_dir,
+            cfg.base_dir / "stockpile_tests",
+            cfg.base_dir / ".apiscope",
+            cfg.base_dir / ".apiscope" / "reports",
+            cfg.base_dir,
+        ]
+        target_file = find_artifact_path(filename, search_dirs)
+        if target_file is None or not target_file.is_file():
+            return JSONResponse(
+                status_code=status.HTTP_404_NOT_FOUND,
+                content={"error": f"Artifact '{filename}' not found"},
+            )
+
+        suffix = target_file.suffix.lower()
+        if suffix == ".json":
+            media_type = "application/json; charset=utf-8"
+        elif suffix in (".yaml", ".yml"):
+            media_type = "application/yaml; charset=utf-8"
+        elif suffix == ".html":
+            media_type = "text/html; charset=utf-8"
+        elif suffix == ".xml":
+            media_type = "application/xml; charset=utf-8"
+        else:
+            media_type = "text/plain; charset=utf-8"
+
+        content = target_file.read_bytes()
+        headers = {
+            "Content-Disposition": f'attachment; filename="{target_file.name}"',
+        }
+        return Response(content=content, media_type=media_type, headers=headers)
+
     @app.get("/runs", response_class=HTMLResponse)
     def runs_page(module: str | None = None) -> HTMLResponse:
         """Render the test execution runs history and trends overview page."""

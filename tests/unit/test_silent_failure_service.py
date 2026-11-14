@@ -16,10 +16,13 @@ import pytest
 from apiscope.analysis.silent_failure_service import (
     MAX_LOG_FILE_BYTES,
     MAX_LOG_LINES,
+    SilentFailureFinding,
+    SilentFailureReport,
     SilentFailureService,
     SilentSignalType,
     VerificationState,
     load_app_log,
+    load_run_file,
     parse_app_log,
 )
 from apiscope.core.exceptions import ConfigurationError, PathTraversalError
@@ -790,3 +793,436 @@ def test_inconsistent_repeated_observation_s8() -> None:
     ]
     assert len(s8_findings) == 1
     assert s8_findings[0].verification_state == VerificationState.SUSPECTED_BEHAVIOUR
+
+
+def test_silent_failure_report_filtering_and_serialization() -> None:
+    """Test filter_findings_by_module and serialization methods."""
+    finding_orders = SilentFailureFinding(
+        finding_id="f1",
+        signal_type=SilentSignalType.S4_SUSPICIOUS_2XX,
+        verification_state=VerificationState.SUSPECTED_BEHAVIOUR,
+        module="orders",
+        endpoint_or_source="POST /orders",
+        description="Warning header present",
+        evidence="warning: 299 deprecated",
+    )
+    finding_users = SilentFailureFinding(
+        finding_id="f2",
+        signal_type=SilentSignalType.S1_LOG_ERROR,
+        verification_state=VerificationState.SUSPECTED_BEHAVIOUR,
+        module="users",
+        endpoint_or_source="app.log",
+        description="Auth error in log",
+        evidence="ERROR: invalid token",
+    )
+
+    report = SilentFailureReport(
+        evaluated_at=datetime.now(UTC),
+        has_silent_failures=True,
+        verdict_banner="PASS WITH WARNINGS",
+        total_signals=2,
+        counts_by_type={"S4_SUSPICIOUS_2XX": 1, "S1_LOG_ERROR": 1},
+        signals=[],
+        findings=[finding_orders, finding_users],
+        suspicious_count=2,
+    )
+
+    filtered_orders = report.filter_findings_by_module("orders")
+    assert len(filtered_orders) == 1
+    assert filtered_orders[0].module == "orders"
+
+    filtered_empty = report.filter_findings_by_module("payments")
+    assert len(filtered_empty) == 0
+
+    json_out = report.to_json()
+    assert "findings" in json_out
+    assert "summary_counts" in json_out
+
+    yaml_out = report.to_yaml()
+    assert "verdict_banner: PASS WITH WARNINGS" in yaml_out
+
+
+def test_load_run_file_workflow_format(tmp_path: Path) -> None:
+    """Test loading workflow execution result format into a RunResult."""
+    wf_data = {
+        "workflow_id": "checkout_flow",
+        "duration_ms": 120.0,
+        "environment_name": "staging",
+        "setup_results": [
+            {
+                "step_number": 1,
+                "name": "Create Cart",
+                "step_type": "SETUP",
+                "status": "PASSED",
+                "method": "POST",
+                "url": "http://localhost:8000/cart",
+                "status_code": 201,
+                "elapsed_ms": 30.0,
+                "assertions": [{"passed": True}],
+                "extracted_variables": {"cart_id": "c123"},
+            }
+        ],
+        "test_results": [
+            {
+                "step_number": 2,
+                "name": "Add Item",
+                "step_type": "TEST",
+                "status": "PASSED",
+                "method": "POST",
+                "url": "http://localhost:8000/cart/c123/items",
+                "status_code": 200,
+                "elapsed_ms": 40.0,
+                "assertions": [{"passed": True}],
+            }
+        ],
+        "cleanup_results": [
+            {
+                "step_number": 3,
+                "name": "Delete Cart",
+                "step_type": "CLEANUP",
+                "status": "PASSED",
+                "method": "DELETE",
+                "url": "http://localhost:8000/cart/c123",
+                "status_code": 204,
+                "elapsed_ms": 20.0,
+                "assertions": [],
+            }
+        ],
+    }
+
+    wf_file = tmp_path / "wf_run.json"
+    wf_file.write_text(json.dumps(wf_data), encoding="utf-8")
+
+    run_result = load_run_file(wf_file)
+    assert run_result.run_id == "wf-run-checkout_flow"
+    assert run_result.total_tests == 3
+    assert run_result.passed_tests == 3
+    assert run_result.environment_name == "staging"
+    assert run_result.results[0].status_code == 201
+    assert run_result.results[2].method == "DELETE"
+
+
+def test_load_run_file_error_handling(tmp_path: Path) -> None:
+    """Test missing file, malformed JSON, and unrecognized structure in load_run_file."""
+    # 1. Missing file
+    missing = tmp_path / "nonexistent.json"
+    with pytest.raises(ConfigurationError, match="Test run file not found"):
+        load_run_file(missing)
+
+    # 2. Malformed JSON
+    bad_json = tmp_path / "corrupt.json"
+    bad_json.write_text("{not valid json", encoding="utf-8")
+    with pytest.raises(ConfigurationError, match="Error reading/parsing test run file"):
+        load_run_file(bad_json)
+
+    # 3. Unrecognized structure (neither 'results' nor 'cases' nor 'workflow_id')
+    unrecognized = tmp_path / "empty_obj.json"
+    unrecognized.write_text('{"foo": "bar"}', encoding="utf-8")
+    with pytest.raises(ConfigurationError, match="Unrecognized run data structure"):
+        load_run_file(unrecognized)
+
+
+def test_load_app_log_read_error(tmp_path: Path) -> None:
+    """Test error handling when reading log file from disk fails."""
+    log_file = tmp_path / "read_err.log"
+    log_file.write_text("sample content", encoding="utf-8")
+
+    with (
+        patch("pathlib.Path.read_text", side_effect=OSError("Disk I/O error")),
+        pytest.raises(ConfigurationError, match="Error reading application log file"),
+    ):
+        load_app_log(log_file)
+
+
+def test_silent_failure_service_with_workflow_result() -> None:
+    """Test passing workflow_result directly to SilentFailureService.analyze."""
+    mock_wf = MagicMock()
+    mock_run = RunResult(
+        run_id="run-from-wf",
+        environment_name="test",
+        started_at=datetime.now(UTC),
+        finished_at=datetime.now(UTC),
+        duration_ms=50.0,
+        total_tests=1,
+        passed_tests=1,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=[
+            _make_case(
+                name="step_get",
+                module="workflow",
+                method="GET",
+                url="http://localhost:8000/api/items",
+                status_code=200,
+            )
+        ],
+    )
+    mock_wf.to_run_result.return_value = mock_run
+
+    service = SilentFailureService()
+    report = service.analyze(workflow_result=mock_wf)
+    assert report is not None
+    assert mock_wf.to_run_result.called
+
+
+def test_silent_failure_service_analyze_with_baseline_run() -> None:
+    """Test analyze with baseline_run: regression, insufficient data, and incompatible context."""
+    service = SilentFailureService()
+
+    # 1. Regression detected
+    base_cases = [
+        _make_case(f"b_{i}", elapsed_ms=50.0, url="http://localhost:8000/api/orders")
+        for i in range(10)
+    ]
+    curr_cases = [
+        _make_case(f"c_{i}", elapsed_ms=130.0, url="http://localhost:8000/api/orders")
+        for i in range(10)
+    ]
+    now = datetime.now(UTC)
+    base_run = RunResult(
+        run_id="base-1",
+        environment_name="prod",
+        started_at=now,
+        finished_at=now,
+        duration_ms=500.0,
+        total_tests=10,
+        passed_tests=10,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=base_cases,
+    )
+    curr_run = RunResult(
+        run_id="curr-1",
+        environment_name="prod",
+        started_at=now,
+        finished_at=now,
+        duration_ms=1300.0,
+        total_tests=10,
+        passed_tests=10,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=curr_cases,
+    )
+
+    report_reg = service.analyze(run_result=curr_run, baseline_run=base_run)
+    assert report_reg.has_silent_failures is True
+    s3_findings = [
+        f
+        for f in report_reg.findings
+        if f.signal_type == SilentSignalType.S3_LATENCY_DRIFT
+    ]
+    assert len(s3_findings) == 1
+    assert s3_findings[0].verification_state == VerificationState.VERIFIED_OBSERVATION
+    assert report_reg.latency_drift_report is not None
+
+    # 2. Insufficient data (N=2 < 5)
+    base_small = RunResult(
+        run_id="base-s",
+        environment_name="prod",
+        started_at=now,
+        finished_at=now,
+        duration_ms=100.0,
+        total_tests=2,
+        passed_tests=2,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=base_cases[:2],
+    )
+    curr_small = RunResult(
+        run_id="curr-s",
+        environment_name="prod",
+        started_at=now,
+        finished_at=now,
+        duration_ms=260.0,
+        total_tests=2,
+        passed_tests=2,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=curr_cases[:2],
+    )
+    report_ins = service.analyze(run_result=curr_small, baseline_run=base_small)
+    s3_ins = [
+        f
+        for f in report_ins.findings
+        if f.signal_type == SilentSignalType.S3_LATENCY_DRIFT
+    ]
+    assert len(s3_ins) == 1
+    assert s3_ins[0].verification_state == VerificationState.INCONCLUSIVE
+
+    # 3. Incompatible context
+    base_incomp = RunResult(
+        run_id="base-inc",
+        environment_name="staging",
+        started_at=now,
+        finished_at=now,
+        duration_ms=500.0,
+        total_tests=10,
+        passed_tests=10,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=base_cases,
+    )
+    report_inc = service.analyze(run_result=curr_run, baseline_run=base_incomp)
+    s3_inc = [
+        f
+        for f in report_inc.findings
+        if f.signal_type == SilentSignalType.S3_LATENCY_DRIFT
+    ]
+    assert len(s3_inc) == 1
+    assert s3_inc[0].verification_state == VerificationState.INCONCLUSIVE
+
+
+def test_silent_failure_service_module_filter() -> None:
+    """Test module parameter filtering in SilentFailureService.analyze."""
+    case_orders = _make_case(
+        name="test_order",
+        module="orders",
+        method="POST",
+        url="http://localhost:8000/orders",
+        status_code=200,
+        response_body='{"status": "error"}',
+    )
+    case_users = _make_case(
+        name="test_user",
+        module="users",
+        method="POST",
+        url="http://localhost:8000/users",
+        status_code=200,
+        response_body='{"status": "failed"}',
+    )
+
+    now = datetime.now(UTC)
+    run = RunResult(
+        run_id="run-filter",
+        environment_name="test",
+        started_at=now,
+        finished_at=now,
+        duration_ms=50.0,
+        total_tests=2,
+        passed_tests=2,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=[case_orders, case_users],
+    )
+
+    service = SilentFailureService()
+    report = service.analyze(run_result=run, module="orders")
+    assert report.total_signals == 1
+    assert all(s.module == "orders" for s in report.signals)
+    assert all(f.module == "orders" for f in report.findings)
+
+
+def test_signal_s5_delete_resource_still_exists() -> None:
+    """Test S5 DELETE 204 followed by GET 200 OK (resource not deleted)."""
+    del_case = _make_case(
+        name="delete_item_101",
+        module="items",
+        method="DELETE",
+        url="http://localhost:8000/api/items/101",
+        status_code=204,
+        response_body="",
+    )
+    get_case = _make_case(
+        name="verify_item_101",
+        module="items",
+        method="GET",
+        url="http://localhost:8000/api/items/101",
+        status_code=200,
+        response_body='{"id": 101, "name": "Item Still Here"}',
+    )
+
+    now = datetime.now(UTC)
+    run = RunResult(
+        run_id="run-del-mismatch",
+        environment_name="test",
+        started_at=now,
+        finished_at=now,
+        duration_ms=40.0,
+        total_tests=2,
+        passed_tests=2,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=[del_case, get_case],
+    )
+
+    service = SilentFailureService()
+    report = service.analyze(run_result=run)
+
+    assert report.has_silent_failures is True
+    s5_findings = [
+        f
+        for f in report.findings
+        if f.signal_type == SilentSignalType.S5_UNVERIFIED_EFFECT
+    ]
+    assert len(s5_findings) >= 1
+    assert s5_findings[0].verification_state == VerificationState.VERIFIED_OBSERVATION
+    assert (
+        "Resource still exists after claimed DELETE success"
+        in s5_findings[0].description
+    )
+
+
+def test_signal_s7_invariant_operators() -> None:
+    """Test S7 business invariant operators: gt, neq, and eq."""
+    case = _make_case(
+        name="test_account_invariants",
+        module="accounts",
+        method="GET",
+        url="http://localhost:8000/api/accounts/1",
+        status_code=200,
+        response_body='{"balance": 0.0, "status": "suspended", "currency": "EUR"}',
+    )
+
+    now = datetime.now(UTC)
+    run = RunResult(
+        run_id="run-s7-ops",
+        environment_name="test",
+        started_at=now,
+        finished_at=now,
+        duration_ms=20.0,
+        total_tests=1,
+        passed_tests=1,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=[case],
+    )
+
+    invariants = [
+        {
+            "name": "Positive balance",
+            "field": "balance",
+            "operator": "gt",
+            "value": 0.0,
+        },
+        {
+            "name": "Active status",
+            "field": "status",
+            "operator": "neq",
+            "value": "suspended",
+        },
+        {"name": "USD currency", "field": "currency", "operator": "eq", "value": "USD"},
+    ]
+
+    service = SilentFailureService()
+    report = service.analyze(run_result=run, approved_invariants=invariants)
+
+    assert report.has_silent_failures is True
+    s7_findings = [
+        f
+        for f in report.findings
+        if f.signal_type == SilentSignalType.S7_INVARIANT_VIOLATION
+    ]
+    assert len(s7_findings) == 3
+    assert all(
+        f.verification_state == VerificationState.VERIFIED_OBSERVATION
+        for f in s7_findings
+    )

@@ -16,12 +16,22 @@ import typer
 import yaml
 
 import apiscope
+from apiscope.analysis.endpoint_inventory import (
+    EndpointInventoryReport,
+    EndpointInventoryService,
+)
 from apiscope.analysis.health_models import HealthVerdict, ModuleHealthReport
 from apiscope.analysis.health_service import HealthService
+from apiscope.analysis.latency_drift import (
+    LatencyDriftAnalyzer,
+    LatencyDriftReport,
+)
 from apiscope.analysis.silent_failure_service import (
+    SilentFailureReport,
     SilentFailureService,
     SilentFailureSignal,
     load_app_log,
+    load_run_file,
 )
 from apiscope.analysis.zombie_service import (
     ZombieFinding,
@@ -61,8 +71,19 @@ from apiscope.investigation import (
     FailureInvestigationReport,
     FailureInvestigationService,
 )
+from apiscope.orchestration import (
+    GuidedWorkflowOptions,
+    GuidedWorkflowResult,
+    GuidedWorkflowService,
+    StageStatus,
+)
 from apiscope.planning.service import TestPlanningService
 from apiscope.reports.report_service import ReportService
+from apiscope.trust import (
+    DiagnosticVerdict,
+    TrustAssessmentReport,
+    TrustAssessmentService,
+)
 from apiscope.web import DashboardConfig, create_web_app
 
 # Canonical CLI Exit Codes (FR-26)
@@ -1028,6 +1049,14 @@ def zombie(
             help="Optional file path to write JSON zombie report",
         ),
     ] = None,
+    repo: Annotated[
+        Path | None,
+        typer.Option(
+            "--repo",
+            "-r",
+            help="Optional path to source repository for code reconciliation",
+        ),
+    ] = None,
     strict: Annotated[
         bool,
         typer.Option(
@@ -1047,9 +1076,11 @@ def zombie(
             if not db.exists():
                 raise ConfigurationError(f"Database file not found: {db}")
             db_manager = DatabaseManager(db)
-            repo = RunRepository(db_manager)
+            run_repo = RunRepository(db_manager)
             run_result = (
-                repo.get_run(run_id) if run_id is not None else repo.get_latest_run()
+                run_repo.get_run(run_id)
+                if run_id is not None
+                else run_repo.get_latest_run()
             )
 
         service = ZombieService()
@@ -1058,6 +1089,8 @@ def zombie(
             access_entries=access_entries,
             run_result=run_result,
             module=module,
+            repo_path=repo,
+            include_inventory=repo is not None,
         )
 
         typer.echo(f"Zombie API Analysis: {report.total_findings} finding(s) detected")
@@ -2665,14 +2698,28 @@ def investigate(
         raise typer.Exit(code=EXIT_TOOL_ERROR) from err
 
 
-def main() -> None:
-    """Primary entry point for the console script."""
-    app()
+def _print_silent_report(report: SilentFailureReport) -> None:
+    """Print structured silent failure diagnostic report to console."""
+    typer.echo("\n" + "=" * 60)
+    typer.echo("  SILENT FAILURE DIAGNOSTIC REPORT")
+    typer.echo("=" * 60)
+    typer.echo(f"Verdict: {report.verdict_banner}")
+    typer.echo(
+        f"Findings: {len(report.findings)} | Signals: {report.total_signals} | "
+        f"Silent Failures: {report.has_silent_failures}"
+    )
+    typer.echo(
+        f"Summary: {report.verified_mismatches_count} verified mismatches, "
+        f"{report.suspicious_count} suspicious signals, "
+        f"{report.untested_effects_count} untested/unverified effects, "
+        f"{report.inconclusive_count} inconclusive"
+    )
 
-
-if __name__ == "__main__":
-    main()
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          f"  * [{f.verification_state.value}] [{f.signal_type.value}] {f.module}: {f.description}"
+    if report.findings:
+        typer.echo("\n[Diagnostic Findings]")
+        for f in report.findings:
+            typer.echo(
+                f"  * [{f.verification_state.value}] [{f.signal_type.value}] {f.module}: {f.description}"
             )
             typer.echo(f"      Evidence: {f.evidence}")
             if f.suggested_action:
@@ -2990,6 +3037,935 @@ def latency_drift(
             else:
                 safe_out.write_text(report.to_json(indent=2), encoding="utf-8")
             typer.echo(f"\nLatency drift report written to: {safe_out}")
+
+    except typer.Exit:
+        raise
+    except ApiScopeError as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+    except Exception as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+
+
+def _print_endpoint_inventory_report(report: EndpointInventoryReport) -> None:
+    """Print structured endpoint inventory and coverage intelligence report to console."""
+    typer.echo("\n" + "=" * 60)
+    typer.echo("  API ENDPOINT INVENTORY & COVERAGE INTELLIGENCE")
+    typer.echo("=" * 60)
+    typer.echo(
+        f"Target Context: {report.target_context} | "
+        f"Total Canonical Endpoints: {report.total_canonical_operations}"
+    )
+    if report.evidence_sources_evaluated:
+        typer.echo(f"Evaluated Sources: {', '.join(report.evidence_sources_evaluated)}")
+    if report.evidence_limitations:
+        typer.echo(f"Evidence Limitations: {'; '.join(report.evidence_limitations)}")
+
+    cov = report.coverage_summary
+    typer.echo("\n[Operation Coverage Summary]")
+    typer.echo(f"  * Documented Operations:   {cov.total_documented_operations}")
+    typer.echo(
+        f"  * Planned Operations:      {cov.planned_operations_count} ({cov.planned_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Generated Operations:    {cov.generated_operations_count} ({cov.generated_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Attempted Operations:    {cov.attempted_operations_count} ({cov.attempted_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Completed Operations:    {cov.completed_operations_count} ({cov.completed_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Passed Operations:       {cov.passed_operations_count} ({cov.passed_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Failed Operations:       {cov.failed_operations_count} ({cov.failed_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Blocked/Skipped Ops:     {cov.blocked_or_skipped_operations_count} ({cov.blocked_or_skipped_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Untested Operations:     {cov.untested_operations_count} ({cov.untested_coverage_pct:.1f}%)"
+    )
+
+    typer.echo("\n[Read-Only vs Mutation Coverage]")
+    typer.echo(
+        f"  * Read-Only Operations:    {cov.readonly_attempted_operations} / {cov.readonly_total_operations} "
+        f"({cov.readonly_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Mutation Operations:     {cov.mutation_attempted_operations} / {cov.mutation_total_operations} "
+        f"({cov.mutation_coverage_pct:.1f}%)"
+    )
+
+    if report.module_breakdown:
+        typer.echo("\n[Module Coverage Breakdown]")
+        for mod, m_cov in sorted(report.module_breakdown.items()):
+            typer.echo(
+                f"  * {mod}: {m_cov.attempted} / {m_cov.total_documented} "
+                f"({m_cov.coverage_pct:.1f}% attempted, {m_cov.passed} passed, {m_cov.untested} untested)"
+            )
+
+    typer.echo(f"\n[Evidence-Based Findings] (Total: {len(report.findings)})")
+    for f in report.findings[:25]:
+        typer.echo(
+            f"  * [{f.classification.value}] {f.method} {f.canonical_endpoint} "
+            f"(module: {f.module}, confidence: {f.confidence.value})"
+        )
+        typer.echo(f"      Details: {f.details}")
+        if f.alternative_explanations:
+            typer.echo(
+                f"      Alternative Explanations: {'; '.join(f.alternative_explanations)}"
+            )
+        if f.recommended_action:
+            typer.echo(f"      Recommended Action: {f.recommended_action}")
+
+    if len(report.findings) > 25:
+        typer.echo(
+            f"  ... and {len(report.findings) - 25} more findings (see full report output)"
+        )
+
+
+@app.command("diagnose-zombies")
+def diagnose_zombies(
+    spec: Annotated[
+        Path | None,
+        typer.Option(
+            "--spec",
+            "-s",
+            help="Path to OpenAPI 3 specification",
+        ),
+    ] = None,
+    repo: Annotated[
+        Path | None,
+        typer.Option(
+            "--repo",
+            "-r",
+            help="Path to source repository for code reconciliation",
+        ),
+    ] = None,
+    run_file: Annotated[
+        Path | None,
+        typer.Option(
+            "--run-file",
+            "-f",
+            help="Path to recorded test run JSON report file",
+        ),
+    ] = None,
+    workflow: Annotated[
+        Path | None,
+        typer.Option(
+            "--workflow",
+            "-w",
+            help="Path to executed workflow result JSON file",
+        ),
+    ] = None,
+    run_id: Annotated[
+        str | None,
+        typer.Option(
+            "--run-id",
+            help="Execution run ID to load from SQLite database",
+        ),
+    ] = None,
+    db: Annotated[
+        Path,
+        typer.Option(
+            "--db",
+            help="Path to SQLite history database",
+        ),
+    ] = Path(".apiscope/history.db"),
+    access_log: Annotated[
+        Path | None,
+        typer.Option(
+            "--access-log",
+            "-l",
+            help="Path to access log file",
+        ),
+    ] = None,
+    plan: Annotated[
+        Path | None,
+        typer.Option(
+            "--plan",
+            "-p",
+            help="Path to test plan JSON/YAML file",
+        ),
+    ] = None,
+    suite: Annotated[
+        Path | None,
+        typer.Option(
+            "--suite",
+            help="Path to test collection suite YAML file",
+        ),
+    ] = None,
+    module: Annotated[
+        str | None,
+        typer.Option(
+            "--module",
+            "-m",
+            help="Filter findings by module",
+        ),
+    ] = None,
+    target_service: Annotated[
+        str,
+        typer.Option(
+            "--target-service",
+            help="Service context identifier (default: primary)",
+        ),
+    ] = "primary",
+    output: Annotated[
+        Path | None,
+        typer.Option(
+            "--output",
+            "-o",
+            help="Path to save output report",
+        ),
+    ] = None,
+    format: Annotated[
+        str,
+        typer.Option(
+            "--format",
+            help="Output serialization format ('json' or 'yaml')",
+        ),
+    ] = "json",
+    strict: Annotated[
+        bool,
+        typer.Option(
+            "--strict",
+            help="Exit with code 2 if any zombie candidates or runtime mismatches are found",
+        ),
+    ] = False,
+) -> None:
+    """Analyze endpoint inventory, source/spec reconciliation, and execution coverage."""
+    try:
+        safe_spec: Path | None = None
+        if spec is not None:
+            p_s = Path(spec)
+            eff_base = p_s.parent if p_s.is_absolute() else Path.cwd()
+            safe_spec = validate_safe_path(base_dir=eff_base, ref_path=spec)
+            if not safe_spec.is_file():
+                raise ConfigurationError(f"OpenAPI spec file not found: {spec}")
+
+        safe_repo: Path | None = None
+        if repo is not None:
+            p_r = Path(repo)
+            eff_base = p_r.parent if p_r.is_absolute() else Path.cwd()
+            safe_repo = validate_safe_path(base_dir=eff_base, ref_path=repo)
+            if not safe_repo.is_dir():
+                raise ConfigurationError(
+                    f"Source repository directory not found: {repo}"
+                )
+
+        active_run: RunResult | None = None
+        if run_id:
+            db_mgr = DatabaseManager(db)
+            repo_db = RunRepository(db_mgr)
+            active_run = repo_db.get_run(run_id)
+            if active_run is None:
+                typer.echo(
+                    f"Error: Run '{run_id}' not found in SQLite database '{db}'",
+                    err=True,
+                )
+                raise typer.Exit(code=EXIT_TOOL_ERROR)
+        elif run_file:
+            p_f = Path(run_file)
+            eff_base = p_f.parent if p_f.is_absolute() else Path.cwd()
+            safe_f = validate_safe_path(base_dir=eff_base, ref_path=run_file)
+            active_run = load_run_file(safe_f)
+        elif workflow:
+            p_w = Path(workflow)
+            eff_base = p_w.parent if p_w.is_absolute() else Path.cwd()
+            safe_w = validate_safe_path(base_dir=eff_base, ref_path=workflow)
+            active_run = load_run_file(safe_w)
+
+        parsed_plan: Any | None = None
+        if plan is not None:
+            p_p = Path(plan)
+            eff_base = p_p.parent if p_p.is_absolute() else Path.cwd()
+            safe_p = validate_safe_path(base_dir=eff_base, ref_path=plan)
+            content = safe_p.read_text(encoding="utf-8")
+            if safe_p.suffix.lower() in (".yaml", ".yml"):
+                parsed_plan = yaml.safe_load(content)
+            else:
+                parsed_plan = json.loads(content)
+
+        parsed_suite: TestCollection | None = None
+        if suite is not None:
+            p_su = Path(suite)
+            eff_base = p_su.parent if p_su.is_absolute() else Path.cwd()
+            safe_su = validate_safe_path(base_dir=eff_base, ref_path=suite)
+            parsed_suite = load_collection(safe_su)
+
+        parsed_access_entries: list[Any] | None = None
+        if access_log is not None:
+            p_al = Path(access_log)
+            eff_base = p_al.parent if p_al.is_absolute() else Path.cwd()
+            safe_al = validate_safe_path(base_dir=eff_base, ref_path=access_log)
+            parsed_access_entries = load_access_log(safe_al)
+
+        service = EndpointInventoryService()
+        report = service.analyze(
+            spec=safe_spec,
+            repo_path=safe_repo,
+            run_result=active_run,
+            test_plan=parsed_plan,
+            test_collection=parsed_suite,
+            access_entries=parsed_access_entries,
+            target_service=target_service,
+            module_filter=module,
+        )
+
+        _print_endpoint_inventory_report(report)
+
+        if output is not None:
+            out_p = Path(output)
+            eff_base = out_p.parent if out_p.is_absolute() else Path.cwd()
+            safe_out = validate_safe_path(base_dir=eff_base, ref_path=output)
+            safe_out.parent.mkdir(parents=True, exist_ok=True)
+            if format.lower() == "yaml":
+                safe_out.write_text(report.to_yaml(), encoding="utf-8")
+            else:
+                safe_out.write_text(report.to_json(indent=2), encoding="utf-8")
+            typer.echo(f"\nEndpoint inventory report written to: {safe_out}")
+
+        zombie_candidates = report.classification_counts.get("ZOMBIE_CANDIDATE", 0)
+        runtime_mismatches = report.classification_counts.get(
+            "RUNTIME_MISMATCH_CANDIDATE", 0
+        )
+        if strict and (zombie_candidates > 0 or runtime_mismatches > 0):
+            raise typer.Exit(code=EXIT_WARNINGS_STRICT)
+
+        raise typer.Exit(code=EXIT_OK)
+
+    except typer.Exit:
+        raise
+    except ApiScopeError as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+    except Exception as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+
+
+def _print_trust_assessment_report(report: TrustAssessmentReport) -> None:
+    """Print structured trust and evidence assessment report to console."""
+    typer.echo("\n" + "=" * 60)
+    typer.echo("  UNIFIED TRUST & EVIDENCE ENGINE — DIAGNOSTIC ASSESSMENT")
+    typer.echo("=" * 60)
+    typer.echo(
+        f"Assessment ID: {report.assessment_id} | Target Context: {report.target_context}"
+    )
+    if report.observation_window:
+        typer.echo(f"Observation Window: {report.observation_window}")
+    if report.evidence_sources_evaluated:
+        typer.echo(f"Evaluated Sources: {', '.join(report.evidence_sources_evaluated)}")
+    if report.evidence_limitations:
+        typer.echo(f"Evidence Limitations: {'; '.join(report.evidence_limitations)}")
+
+    cov = report.coverage
+    typer.echo("\n[Operation Coverage Summary]")
+    typer.echo(f"  * Documented Operations:   {cov.total_documented_operations}")
+    typer.echo(
+        f"  * Planned Operations:      {cov.planned_operations_count} ({cov.planned_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Attempted Operations:    {cov.attempted_operations_count} ({cov.attempted_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Completed Operations:    {cov.completed_operations_count} ({cov.completed_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Passed Operations:       {cov.passed_operations_count} ({cov.passed_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Failed Operations:       {cov.failed_operations_count} ({cov.failed_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Blocked/Skipped Ops:     {cov.blocked_or_skipped_operations_count} ({cov.blocked_or_skipped_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Untested Operations:     {cov.untested_operations_count} ({cov.untested_coverage_pct:.1f}%)"
+    )
+
+    typer.echo("\n[Read-Only vs Mutation Coverage]")
+    typer.echo(
+        f"  * Read-Only Operations:    {cov.readonly_attempted_operations} / {cov.readonly_total_operations} "
+        f"({cov.readonly_coverage_pct:.1f}%)"
+    )
+    typer.echo(
+        f"  * Mutation Operations:     {cov.mutation_attempted_operations} / {cov.mutation_total_operations} "
+        f"({cov.mutation_coverage_pct:.1f}%)"
+    )
+
+    typer.echo("\n[Diagnostic Verdict Breakdown]")
+    for v_name, count in sorted(report.verdict_counts.items()):
+        typer.echo(f"  * {v_name:<30}: {count}")
+
+    typer.echo(
+        f"\n[Primary Diagnostic Findings] (Total: {len(report.findings)}, "
+        f"Grouped Symptoms: {report.grouped_symptoms_count})"
+    )
+    for f in report.findings[:25]:
+        verified_tag = (
+            "VERIFIED OBSERVATION" if f.is_verified_observation else "SUSPECTED CAUSE"
+        )
+        typer.echo(
+            f"  * [{f.verdict.value}] {f.endpoint} "
+            f"(module: {f.module}, confidence: {f.confidence.value}, severity: {f.severity.value}, type: {verified_tag})"
+        )
+        typer.echo(f"      What Happened: {f.what_happened}")
+        typer.echo(f"      Why Reported:  {f.why_reported}")
+        if f.supporting_evidence:
+            typer.echo(f"      Evidence:      {'; '.join(f.supporting_evidence[:3])}")
+        if f.recommended_action:
+            typer.echo(f"      Action:        {f.recommended_action}")
+        if f.downstream_symptoms:
+            typer.echo(
+                f"      Downstream:    {len(f.downstream_symptoms)} symptom(s) grouped"
+            )
+
+    if len(report.findings) > 25:
+        typer.echo(
+            f"  ... and {len(report.findings) - 25} more findings (see full report output)"
+        )
+
+    if report.remaining_verification_gaps:
+        typer.echo("\n[Remaining Verification Gaps]")
+        for gap in report.remaining_verification_gaps:
+            typer.echo(f"  * {gap}")
+
+
+@app.command("assess")
+def assess(
+    run_id: Annotated[
+        str | None,
+        typer.Option(
+            "--run-id",
+            help="Specific Run ID from SQLite database",
+        ),
+    ] = None,
+    run_file: Annotated[
+        Path | None,
+        typer.Option(
+            "--run-file",
+            help="Path to JSON test run results or workflow execution report",
+        ),
+    ] = None,
+    spec: Annotated[
+        Path | None,
+        typer.Option(
+            "--spec",
+            "-s",
+            help="Path to OpenAPI 3 specification",
+        ),
+    ] = None,
+    repo: Annotated[
+        Path | None,
+        typer.Option(
+            "--repo",
+            "-r",
+            help="Path to source repository for code reconciliation",
+        ),
+    ] = None,
+    workflow_report: Annotated[
+        Path | None,
+        typer.Option(
+            "--workflow-report",
+            help="Path to JSON workflow execution report",
+        ),
+    ] = None,
+    investigation_report: Annotated[
+        Path | None,
+        typer.Option(
+            "--investigation-report",
+            help="Path to JSON failure investigation report",
+        ),
+    ] = None,
+    silent_report: Annotated[
+        Path | None,
+        typer.Option(
+            "--silent-report",
+            help="Path to JSON silent failure diagnostic report",
+        ),
+    ] = None,
+    inventory_report: Annotated[
+        Path | None,
+        typer.Option(
+            "--inventory-report",
+            help="Path to JSON endpoint inventory report",
+        ),
+    ] = None,
+    access_log: Annotated[
+        Path | None,
+        typer.Option(
+            "--access-log",
+            "-l",
+            help="Path to access log file",
+        ),
+    ] = None,
+    db: Annotated[
+        Path | None,
+        typer.Option(
+            "--db",
+            help="Path to SQLite database",
+        ),
+    ] = None,
+    module: Annotated[
+        str | None,
+        typer.Option(
+            "--module",
+            "-m",
+            help="Filter findings by module",
+        ),
+    ] = None,
+    target_service: Annotated[
+        str,
+        typer.Option(
+            "--target-service",
+            help="Target service context identifier (default: primary)",
+        ),
+    ] = "primary",
+    output: Annotated[
+        Path | None,
+        typer.Option(
+            "--output",
+            "-o",
+            help="Path to save output trust report",
+        ),
+    ] = None,
+    format: Annotated[
+        str,
+        typer.Option(
+            "--format",
+            help="Output serialization format ('json' or 'yaml')",
+        ),
+    ] = "json",
+    strict: Annotated[
+        bool,
+        typer.Option(
+            "--strict",
+            help="Exit with code 2 if any verified mismatches or suspected application defects are found",
+        ),
+    ] = False,
+) -> None:
+    """Correlate multi-source diagnostic outputs into trustworthy, deduplicated verdicts."""
+    try:
+        active_run: RunResult | None = None
+
+        if run_file is not None:
+            p_rf = Path(run_file)
+            eff_base = p_rf.parent if p_rf.is_absolute() else Path.cwd()
+            safe_rf = validate_safe_path(base_dir=eff_base, ref_path=run_file)
+            active_run = load_run_file(safe_rf)
+        elif workflow_report is not None:
+            p_wf = Path(workflow_report)
+            eff_base = p_wf.parent if p_wf.is_absolute() else Path.cwd()
+            safe_wf = validate_safe_path(base_dir=eff_base, ref_path=workflow_report)
+            active_run = load_run_file(safe_wf)
+        elif db is not None or run_id is not None:
+            db_p = Path(db) if db else Path(".apiscope/history.db")
+            eff_base = db_p.parent if db_p.is_absolute() else Path.cwd()
+            safe_db = validate_safe_path(base_dir=eff_base, ref_path=db_p)
+            if not safe_db.is_file():
+                raise ConfigurationError(f"Database file not found: {safe_db}")
+            db_manager = DatabaseManager(safe_db)
+            run_repo = RunRepository(db_manager)
+            active_run = (
+                run_repo.get_run(run_id) if run_id else run_repo.get_latest_run()
+            )
+            if run_id and active_run is None:
+                raise ConfigurationError(f"Run '{run_id}' not found in SQLite database")
+
+        safe_spec = None
+        if spec is not None:
+            p_s = Path(spec)
+            eff_base = p_s.parent if p_s.is_absolute() else Path.cwd()
+            safe_spec_path = validate_safe_path(base_dir=eff_base, ref_path=spec)
+            if not safe_spec_path.is_file():
+                raise ConfigurationError(f"OpenAPI spec file not found: {spec}")
+            safe_spec = load_openapi_spec(safe_spec_path)
+
+        safe_repo = None
+        if repo is not None:
+            p_r = Path(repo)
+            eff_base = p_r.parent if p_r.is_absolute() else Path.cwd()
+            safe_repo = validate_safe_path(base_dir=eff_base, ref_path=repo)
+            if not safe_repo.is_dir():
+                raise ConfigurationError(
+                    f"Source repository path is not a directory: {repo}"
+                )
+
+        parsed_investigation: FailureInvestigationReport | None = None
+        if investigation_report is not None:
+            p_ir = Path(investigation_report)
+            eff_base = p_ir.parent if p_ir.is_absolute() else Path.cwd()
+            safe_ir = validate_safe_path(
+                base_dir=eff_base, ref_path=investigation_report
+            )
+            raw_inv = json.loads(safe_ir.read_text(encoding="utf-8"))
+            parsed_investigation = FailureInvestigationReport.from_dict(raw_inv)
+
+        parsed_silent: dict[str, Any] | None = None
+        if silent_report is not None:
+            p_sr = Path(silent_report)
+            eff_base = p_sr.parent if p_sr.is_absolute() else Path.cwd()
+            safe_sr = validate_safe_path(base_dir=eff_base, ref_path=silent_report)
+            parsed_silent = json.loads(safe_sr.read_text(encoding="utf-8"))
+
+        parsed_inventory: dict[str, Any] | None = None
+        if inventory_report is not None:
+            p_invr = Path(inventory_report)
+            eff_base = p_invr.parent if p_invr.is_absolute() else Path.cwd()
+            safe_invr = validate_safe_path(base_dir=eff_base, ref_path=inventory_report)
+            parsed_inventory = json.loads(safe_invr.read_text(encoding="utf-8"))
+
+        parsed_access_entries = None
+        if access_log is not None:
+            p_al = Path(access_log)
+            eff_base = p_al.parent if p_al.is_absolute() else Path.cwd()
+            safe_al = validate_safe_path(base_dir=eff_base, ref_path=access_log)
+            parsed_access_entries = load_access_log(safe_al)
+
+        trust_service = TrustAssessmentService()
+        report = trust_service.assess(
+            run_result=active_run,
+            spec=safe_spec,
+            repo_path=safe_repo,
+            investigation_report=parsed_investigation,
+            silent_report=parsed_silent,
+            inventory_report=parsed_inventory,
+            access_entries=parsed_access_entries,
+            target_service=target_service,
+            module_filter=module,
+        )
+
+        _print_trust_assessment_report(report)
+
+        if output is not None:
+            out_p = Path(output)
+            eff_base = out_p.parent if out_p.is_absolute() else Path.cwd()
+            safe_out = validate_safe_path(base_dir=eff_base, ref_path=output)
+            safe_out.parent.mkdir(parents=True, exist_ok=True)
+            if format.lower() == "yaml":
+                safe_out.write_text(report.to_yaml(), encoding="utf-8")
+            else:
+                safe_out.write_text(report.to_json(indent=2), encoding="utf-8")
+            typer.echo(f"\nTrust assessment report written to: {safe_out}")
+
+        critical_count = (
+            report.verdict_counts.get(
+                DiagnosticVerdict.VERIFIED_CONTRACT_MISMATCH.value, 0
+            )
+            + report.verdict_counts.get(
+                DiagnosticVerdict.VERIFIED_SEMANTIC_MISMATCH.value, 0
+            )
+            + report.verdict_counts.get(
+                DiagnosticVerdict.SUSPECTED_APPLICATION_DEFECT.value, 0
+            )
+        )
+        if strict and critical_count > 0:
+            raise typer.Exit(code=EXIT_WARNINGS_STRICT)
+
+        raise typer.Exit(code=EXIT_OK)
+
+    except typer.Exit:
+        raise
+    except ApiScopeError as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+    except Exception as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+
+
+def _print_guided_workflow_summary(result: GuidedWorkflowResult) -> None:
+    """Render structured, human-readable terminal output for guided workflow."""
+    m = result.manifest
+    typer.echo("")
+    typer.echo("============================================================")
+    typer.echo("  APISCOPE 1.0 — GUIDED PROJECT-TESTING WORKFLOW")
+    typer.echo("============================================================")
+    typer.echo(f"Workflow ID:    {m.workflow_id}")
+    typer.echo(f"Overall Status: {m.overall_status}")
+    typer.echo(f"Spec File:      {m.spec_path}")
+    if m.repo_path:
+        typer.echo(f"Repository:     {m.repo_path}")
+    if m.target_origin:
+        typer.echo(f"Target Origin:  {m.target_origin} (Env: {m.environment_name})")
+    else:
+        typer.echo("Target Origin:  None (Offline Analysis Mode)")
+
+    typer.echo("\n[Workflow Stage Progress]")
+    for idx, (s_name, rec) in enumerate(m.stage_records.items(), 1):
+        color = typer.colors.GREEN
+        if rec.status in (StageStatus.FAILED, StageStatus.BLOCKED):
+            color = typer.colors.RED
+        elif rec.status in (
+            StageStatus.COMPLETED_WITH_WARNINGS,
+            StageStatus.NEEDS_REVIEW,
+        ):
+            color = typer.colors.YELLOW
+        elif rec.status == StageStatus.SKIPPED:
+            color = typer.colors.WHITE
+
+        status_str = typer.style(f"[{rec.status.value}]", fg=color, bold=True)
+        typer.echo(f"  {idx:2d}. {s_name:<40} {status_str} ({rec.duration_ms:.0f}ms)")
+        if rec.summary:
+            typer.echo(f"      * {rec.summary}")
+
+    if result.preview:
+        p = result.preview
+        typer.echo("\n[Dry-Run Execution Preview]")
+        typer.echo(
+            f"  * Planned Scenarios:      {p.total_scenarios_planned} "
+            f"({p.deterministic_scenarios_count} deterministic, {p.ai_scenarios_count} AI proposed)"
+        )
+        typer.echo(f"  * Compiled Test Cases:    {p.compiled_test_count}")
+        typer.echo(
+            f"  * Documented Operations:  {p.readonly_operations_count} Read-Only, {p.mutating_operations_count} Mutating"
+        )
+        typer.echo(
+            f"  * Fixture Resolution:     {p.fixture_readiness_summary.get('resolved', 0)} resolved, "
+            f"{p.fixture_readiness_summary.get('unresolved', 0)} unresolved"
+        )
+        typer.echo(f"  * Execution Authorized:   {p.is_execution_authorized}")
+        if p.authorization_blockers:
+            for b in p.authorization_blockers:
+                typer.echo(f"      ! Blocker: {b}")
+
+    if result.trust_report:
+        tr = result.trust_report
+        cov = tr.coverage
+        typer.echo("\n[Canonical Operation Coverage]")
+        typer.echo(f"  * Documented:             {cov.total_documented_operations}")
+        typer.echo(
+            f"  * Attempted:              {cov.attempted_operations_count} ({cov.attempted_coverage_pct:.1f}%)"
+        )
+        typer.echo(
+            f"  * Passed:                 {cov.passed_operations_count} ({cov.passed_coverage_pct:.1f}%)"
+        )
+        typer.echo(
+            f"  * Untested:               {cov.untested_operations_count} ({cov.untested_coverage_pct:.1f}%)"
+        )
+        typer.echo("\n[Diagnostic Verdict Breakdown]")
+        for v_name, cnt in sorted(tr.verdict_counts.items()):
+            if cnt > 0:
+                typer.echo(f"  * {v_name:<30}: {cnt}")
+
+    if m.next_actions:
+        typer.echo("\n[Recommended Next Actions]")
+        for act in m.next_actions:
+            typer.echo(f"  * {act}")
+
+
+@app.command("guided")
+@app.command("analyze-project")
+def guided(
+    spec: Annotated[
+        Path,
+        typer.Option(
+            "--spec",
+            "-s",
+            help="Path to OpenAPI 3 specification (YAML or JSON)",
+        ),
+    ],
+    repo: Annotated[
+        Path | None,
+        typer.Option(
+            "--repo",
+            "-r",
+            help="Optional path to source code repository for reconciliation",
+        ),
+    ] = None,
+    output_dir: Annotated[
+        Path | None,
+        typer.Option(
+            "--output-dir",
+            "-o",
+            help="Directory to write workflow manifest and artifacts",
+        ),
+    ] = None,
+    target_origin: Annotated[
+        str | None,
+        typer.Option(
+            "--target-origin",
+            help="Authorized target origin URL (e.g. 'http://localhost:8080')",
+        ),
+    ] = None,
+    environment: Annotated[
+        str,
+        typer.Option(
+            "--environment",
+            "-e",
+            help="Target environment name (default: 'test')",
+        ),
+    ] = "test",
+    confirm_isolated_env: Annotated[
+        bool,
+        typer.Option(
+            "--confirm-isolated-env",
+            help="Confirm that target environment is isolated/disposable for mutations",
+        ),
+    ] = False,
+    allow_mutation: Annotated[
+        bool,
+        typer.Option(
+            "--allow-mutation",
+            help="Authorize mutating HTTP requests (POST, PUT, PATCH)",
+        ),
+    ] = False,
+    allow_destructive: Annotated[
+        bool,
+        typer.Option(
+            "--allow-destructive",
+            help="Authorize destructive HTTP requests (DELETE)",
+        ),
+    ] = False,
+    execute: Annotated[
+        bool,
+        typer.Option(
+            "--execute",
+            help="Proceed with controlled test execution against target origin",
+        ),
+    ] = False,
+    preview_only: Annotated[
+        bool,
+        typer.Option(
+            "--preview-only",
+            help="Guarantee execution is skipped and generate offline preview only",
+        ),
+    ] = False,
+    run_file: Annotated[
+        Path | None,
+        typer.Option(
+            "--run-file",
+            help="Optional pre-recorded test run file to analyze offline",
+        ),
+    ] = None,
+    fixture_file: Annotated[
+        Path | None,
+        typer.Option(
+            "--fixture-file",
+            help="Optional path to external fixtures file",
+        ),
+    ] = None,
+    ai: Annotated[
+        bool,
+        typer.Option(
+            "--ai",
+            "--enable-ai",
+            help="Enable budget-aware Gemini AI test planning",
+        ),
+    ] = False,
+    ai_provider: Annotated[
+        str,
+        typer.Option(
+            "--ai-provider",
+            help="AI provider ('gemini' or 'openai')",
+        ),
+    ] = "gemini",
+    ai_key: Annotated[
+        str | None,
+        typer.Option(
+            "--ai-key",
+            help="API key for AI provider",
+        ),
+    ] = None,
+    ai_model: Annotated[
+        str | None,
+        typer.Option(
+            "--ai-model",
+            help="Model override identifier",
+        ),
+    ] = None,
+    module: Annotated[
+        str | None,
+        typer.Option(
+            "--module",
+            "-m",
+            help="Filter workflow to specific module",
+        ),
+    ] = None,
+    format: Annotated[
+        str,
+        typer.Option(
+            "--format",
+            help="Manifest serialization format ('json' or 'yaml')",
+        ),
+    ] = "json",
+    strict: Annotated[
+        bool,
+        typer.Option(
+            "--strict",
+            help="Exit with code 2 if any verified mismatches or application defects are found",
+        ),
+    ] = False,
+) -> None:
+    """Execute unified, guided end-to-end API testing workflow from a single command."""
+    try:
+        p_s = Path(spec)
+        eff_base = p_s.parent if p_s.is_absolute() else Path.cwd()
+        safe_spec = validate_safe_path(base_dir=eff_base, ref_path=spec)
+        if not safe_spec.is_file():
+            raise ConfigurationError(f"OpenAPI spec file not found: {spec}")
+
+        safe_repo = None
+        if repo is not None:
+            p_r = Path(repo)
+            eff_base = p_r.parent if p_r.is_absolute() else Path.cwd()
+            safe_repo = validate_safe_path(base_dir=eff_base, ref_path=repo)
+            if not safe_repo.is_dir():
+                raise ConfigurationError(
+                    f"Source repository path is not a directory: {repo}"
+                )
+
+        safe_rf = None
+        if run_file is not None:
+            p_rf = Path(run_file)
+            eff_base = p_rf.parent if p_rf.is_absolute() else Path.cwd()
+            safe_rf = validate_safe_path(base_dir=eff_base, ref_path=run_file)
+
+        safe_ff = None
+        if fixture_file is not None:
+            p_ff = Path(fixture_file)
+            eff_base = p_ff.parent if p_ff.is_absolute() else Path.cwd()
+            safe_ff = validate_safe_path(base_dir=eff_base, ref_path=fixture_file)
+
+        opts = GuidedWorkflowOptions(
+            spec_path=safe_spec,
+            repo_path=safe_repo,
+            output_dir=output_dir,
+            target_origin=target_origin,
+            environment_name=environment,
+            is_isolated_env=confirm_isolated_env,
+            allow_mutation=allow_mutation,
+            allow_destructive=allow_destructive,
+            execute=execute,
+            preview_only=preview_only,
+            existing_run_file=safe_rf,
+            fixture_file=safe_ff,
+            enable_ai=ai,
+            ai_provider=ai_provider,
+            ai_api_key=ai_key,
+            ai_model=ai_model,
+            module_filter=module,
+            format=format,
+            strict=strict,
+        )
+
+        service = GuidedWorkflowService()
+        result = service.run_guided_workflow(opts)
+
+        _print_guided_workflow_summary(result)
+
+        if strict and result.exit_code == 2:
+            raise typer.Exit(code=EXIT_WARNINGS_STRICT)
+
+        if not result.is_success and result.exit_code != 0:
+            raise typer.Exit(code=result.exit_code)
+
+        raise typer.Exit(code=EXIT_OK)
 
     except typer.Exit:
         raise

@@ -22,6 +22,7 @@ from apiscope.analysis.latency_drift import (
     LatencyDriftAnalyzer,
     _calculate_median,
     _calculate_p95,
+    _extract_origin,
 )
 from apiscope.core.results import CaseResult, CaseStatus, RunResult
 
@@ -249,3 +250,42 @@ def test_latency_drift_report_serialization() -> None:
     yaml_str = report.to_yaml()
     parsed_yaml = yaml.safe_load(yaml_str)
     assert parsed_yaml["summary_metrics"]["total_operations_compared"] == 1
+
+
+def test_latency_drift_unmatched_bucket_in_current_only() -> None:
+    """Test when an operation is present in the current run but absent in baseline."""
+    base_cases = [
+        _make_case(f"b_{i}", url="http://localhost:8080/api/old", elapsed_ms=50.0)
+        for i in range(5)
+    ]
+    curr_cases = [
+        _make_case(f"c_old_{i}", url="http://localhost:8080/api/old", elapsed_ms=50.0)
+        for i in range(5)
+    ] + [
+        _make_case(
+            f"c_new_{i}", url="http://localhost:8080/api/new_endpoint", elapsed_ms=80.0
+        )
+        for i in range(5)
+    ]
+
+    base_run = _make_run("run-b", base_cases)
+    curr_run = _make_run("run-c", curr_cases)
+
+    analyzer = LatencyDriftAnalyzer(min_samples_threshold=5)
+    report = analyzer.compare_runs(base_run, curr_run)
+
+    assert report.total_operations_compared == 2
+    new_comp = [c for c in report.comparisons if "new_endpoint" in c.operation][0]
+    assert new_comp.baseline_samples == 0
+    assert new_comp.current_samples == 5
+    assert new_comp.verdict == DriftVerdict.INSUFFICIENT_DATA
+
+
+def test_latency_drift_malformed_url_fallback() -> None:
+    """Test fallback when URL cannot be parsed by urlparse."""
+    assert _extract_origin("http://[::1:8080/invalid") == ""
+
+    # Test bucket fallback with empty or weird url
+    case_weird = _make_case("weird", url="")
+    buckets = LatencyDriftAnalyzer._bucket_cases([case_weird])
+    assert len(buckets) == 1

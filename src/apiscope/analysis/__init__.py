@@ -9,6 +9,17 @@ Houses specialized diagnostic services:
   redaction (M10).
 """
 
+from apiscope.analysis.endpoint_inventory import (
+    CanonicalEndpointIdentity,
+    EndpointClassification,
+    EndpointInventoryRecord,
+    EndpointInventoryReport,
+    EndpointInventoryService,
+    EvidenceBasedEndpointFinding,
+    InventoryConfidence,
+    ModuleCoverageMetrics,
+    OperationCoverageMetrics,
+)
 from apiscope.analysis.evaluator_experiment import (
     EvaluationExperimentReport,
     StrategyEvaluationMetrics,
@@ -63,21 +74,30 @@ from apiscope.analysis.zombie_service import (
 )
 
 __all__ = [
+    "AccessLogEntry",
+    "AppLogEntry",
+    "CanonicalEndpointIdentity",
+    "CategoryCheckStats",
     "DEFAULT_COVERAGE_THRESHOLD_PCT",
     "DEFAULT_LATENCY_TOLERANCE_FACTOR",
     "DriftVerdict",
+    "EndpointClassification",
+    "EndpointInventoryRecord",
+    "EndpointInventoryReport",
+    "EndpointInventoryService",
+    "EvaluationExperimentReport",
+    "EvidenceBasedEndpointFinding",
+    "HealthService",
+    "HealthVerdict",
+    "InventoryConfidence",
     "LatencyComparison",
     "LatencyDriftAnalyzer",
     "LatencyDriftReport",
     "MAX_LOG_FILE_BYTES",
     "MAX_LOG_LINES",
-    "AccessLogEntry",
-    "AppLogEntry",
-    "CategoryCheckStats",
-    "EvaluationExperimentReport",
-    "HealthService",
-    "HealthVerdict",
+    "ModuleCoverageMetrics",
     "ModuleHealthReport",
+    "OperationCoverageMetrics",
     "SilentFailureFinding",
     "SilentFailureReport",
     "SilentFailureService",

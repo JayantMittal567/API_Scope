@@ -40,10 +40,21 @@ class ZombieClass(StrEnum):
 
     __test__ = False
 
+    # Legacy M9/M10 classifications (preserved for full backwards compatibility)
     UNUSED = "UNUSED"
     UNDOCUMENTED = "UNDOCUMENTED"
     UNTESTED = "UNTESTED"
     DEPRECATED_BUT_CALLED = "DEPRECATED-BUT-CALLED"
+
+    # Task 24 evidence-based classifications
+    DOCUMENTED_AND_OBSERVED = "DOCUMENTED_AND_OBSERVED"
+    DOCUMENTED_NOT_OBSERVED = "DOCUMENTED_NOT_OBSERVED"
+    SOURCE_ONLY_CANDIDATE = "SOURCE_ONLY_CANDIDATE"
+    SPEC_ONLY_CANDIDATE = "SPEC_ONLY_CANDIDATE"
+    RUNTIME_MISMATCH_CANDIDATE = "RUNTIME_MISMATCH_CANDIDATE"
+    DEPRECATED_OR_OBSOLETE_CANDIDATE = "DEPRECATED_OR_OBSOLETE_CANDIDATE"
+    ZOMBIE_CANDIDATE = "ZOMBIE_CANDIDATE"
+    INSUFFICIENT_EVIDENCE = "INSUFFICIENT_EVIDENCE"
 
 
 @dataclass(frozen=True)
@@ -96,6 +107,7 @@ class ZombieReport:
     counts_by_class: dict[str, int]
     counts_by_module: dict[str, dict[str, int]]
     findings: list[ZombieFinding]
+    inventory_report: Any | None = None
 
     def filter_by_module(self, module: str) -> list[ZombieFinding]:
         """Return findings matching a specific module name (case-insensitive)."""
@@ -104,13 +116,18 @@ class ZombieReport:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert report to a 100% JSON-serializable dictionary."""
-        return {
+        base: dict[str, Any] = {
             "evaluated_at": self.evaluated_at.isoformat(),
             "total_findings": self.total_findings,
             "counts_by_class": dict(self.counts_by_class),
             "counts_by_module": {k: dict(v) for k, v in self.counts_by_module.items()},
             "findings": [f.to_dict() for f in self.findings],
         }
+        if self.inventory_report is not None and hasattr(
+            self.inventory_report, "to_dict"
+        ):
+            base["inventory_report"] = self.inventory_report.to_dict()
+        return base
 
 
 def parse_access_log(content: str) -> list[AccessLogEntry]:
@@ -263,6 +280,38 @@ class ZombieService:
         """Initialize ZombieService with an optional clock callable."""
         self._clock = clock or (lambda: datetime.now(UTC))
 
+    def analyze_inventory(
+        self,
+        spec: Any | None = None,
+        repo_path: Path | str | None = None,
+        source_findings: Any | None = None,
+        run_result: RunResult | None = None,
+        runs: list[RunResult] | None = None,
+        test_plan: Any | None = None,
+        test_collection: TestCollection | None = None,
+        access_entries: Sequence[AccessLogEntry] | None = None,
+        access_log_path: Path | str | None = None,
+        target_service: str = "primary",
+        module_filter: str | None = None,
+    ) -> Any:
+        """Execute full endpoint inventory, reconciliation, and coverage intelligence analysis."""
+        from apiscope.analysis.endpoint_inventory import EndpointInventoryService
+
+        inv_service = EndpointInventoryService(clock=self._clock)
+        return inv_service.analyze(
+            spec=spec,
+            repo_path=repo_path,
+            source_findings=source_findings,
+            run_result=run_result,
+            runs=runs,
+            test_plan=test_plan,
+            test_collection=test_collection,
+            access_entries=access_entries,
+            access_log_path=access_log_path,
+            target_service=target_service,
+            module_filter=module_filter,
+        )
+
     def analyze(
         self,
         openapi_spec: OpenAPISpec,
@@ -270,6 +319,9 @@ class ZombieService:
         run_result: RunResult | None = None,
         test_collection: TestCollection | None = None,
         module: str | None = None,
+        repo_path: Path | str | None = None,
+        test_plan: Any | None = None,
+        include_inventory: bool = False,
     ) -> ZombieReport:
         """Analyze access log entries and test results against an OpenAPI spec.
 
@@ -279,6 +331,9 @@ class ZombieService:
             run_result: Optional executed test RunResult for UNTESTED detection.
             test_collection: Optional TestCollection for UNTESTED detection.
             module: Optional module name filter.
+            repo_path: Optional path to repository for source reconciliation.
+            test_plan: Optional TestPlan for planned coverage computation.
+            include_inventory: Whether to attach an EndpointInventoryReport.
 
         Returns:
             ZombieReport containing categorized findings and aggregate summaries.
@@ -435,16 +490,34 @@ class ZombieService:
             )
         )
 
-        # 6. Aggregate counts
-        counts_by_class: dict[str, int] = {c.value: 0 for c in ZombieClass}
+        # 6. Aggregate counts (strictly preserving the 4 canonical legacy keys for backwards compatibility)
+        legacy_classes = ("UNUSED", "UNDOCUMENTED", "UNTESTED", "DEPRECATED-BUT-CALLED")
+        counts_by_class: dict[str, int] = dict.fromkeys(legacy_classes, 0)
         counts_by_module: dict[str, dict[str, int]] = {}
 
         for f in filtered_findings:
-            counts_by_class[f.classification.value] += 1
+            if f.classification.value in counts_by_class:
+                counts_by_class[f.classification.value] += 1
             mod_dict = counts_by_module.setdefault(
-                f.module, {c.value: 0 for c in ZombieClass}
+                f.module, dict.fromkeys(legacy_classes, 0)
             )
-            mod_dict[f.classification.value] += 1
+            if f.classification.value in mod_dict:
+                mod_dict[f.classification.value] += 1
+
+        inv_report = None
+        if include_inventory:
+            from apiscope.analysis.endpoint_inventory import EndpointInventoryService
+
+            inv_service = EndpointInventoryService(clock=self._clock)
+            inv_report = inv_service.analyze(
+                spec=openapi_spec,
+                repo_path=repo_path,
+                run_result=run_result,
+                test_plan=test_plan,
+                test_collection=test_collection,
+                access_entries=access_entries,
+                module_filter=module,
+            )
 
         return ZombieReport(
             evaluated_at=self._clock(),
@@ -452,4 +525,5 @@ class ZombieService:
             counts_by_class=counts_by_class,
             counts_by_module=counts_by_module,
             findings=filtered_findings,
+            inventory_report=inv_report,
         )

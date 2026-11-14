@@ -13,6 +13,7 @@ Verifies:
 from __future__ import annotations
 
 import json
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
@@ -21,8 +22,12 @@ from typer.testing import CliRunner
 
 from apiscope.cli.main import (
     EXIT_OK,
+    EXIT_TOOL_ERROR,
     app,
 )
+from apiscope.core.results import CaseResult, CaseStatus, RunResult
+from apiscope.data.connection import DatabaseManager
+from apiscope.data.repositories import RunRepository
 
 runner = CliRunner()
 
@@ -256,3 +261,278 @@ def test_latency_drift_cli_insufficient_samples(tmp_path: Path) -> None:
     assert res.exit_code == EXIT_OK
     assert "INSUFFICIENT_DATA" in res.output
     assert "Insufficient sampling" in res.output
+
+
+def test_diagnose_silent_cli_with_db_run_id(tmp_path: Path) -> None:
+    """Test diagnose-silent resolving run from SQLite database by run-id."""
+    db_file = tmp_path / "diag.db"
+    db_manager = DatabaseManager(db_file)
+    repo = RunRepository(db_manager)
+
+    now = datetime.now(UTC)
+    case = CaseResult(
+        test_name="case_1",
+        module="orders",
+        tags=["order"],
+        status=CaseStatus.PASSED,
+        verified=True,
+        method="GET",
+        url="http://localhost:8000/orders",
+        status_code=200,
+        elapsed_ms=25.0,
+        request_headers={},
+        response_headers={},
+        assertion_results=[],
+        extracted_variables={},
+        extraction_errors=[],
+    )
+    run_res = RunResult(
+        run_id="run-db-1",
+        environment_name="staging",
+        started_at=now,
+        finished_at=now,
+        duration_ms=25.0,
+        total_tests=1,
+        passed_tests=1,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=[case],
+    )
+    repo.save_run(run_res)
+
+    res = runner.invoke(
+        app,
+        ["diagnose-silent", "--db", str(db_file), "--run-id", "run-db-1"],
+    )
+    assert res.exit_code == EXIT_OK
+    assert "SILENT FAILURE DIAGNOSTIC REPORT" in res.output
+
+
+def test_diagnose_silent_cli_nonexistent_run_id(tmp_path: Path) -> None:
+    """Test diagnose-silent with missing run-id exits with error."""
+    db_file = tmp_path / "empty.db"
+    db_manager = DatabaseManager(db_file)
+    RunRepository(db_manager)
+
+    res = runner.invoke(
+        app,
+        ["diagnose-silent", "--db", str(db_file), "--run-id", "missing-run"],
+    )
+    assert res.exit_code == EXIT_TOOL_ERROR
+    assert "Run 'missing-run' not found in SQLite database" in res.output
+
+
+def test_diagnose_silent_cli_with_health_file(tmp_path: Path) -> None:
+    """Test diagnose-silent with --health-file evaluating S2."""
+    run_file = tmp_path / "run.json"
+    run_file.write_text(json.dumps(_create_sample_run("r1", [20.0])), encoding="utf-8")
+
+    health_file = tmp_path / "health.json"
+    health_file.write_text(
+        json.dumps({"status": "DEGRADED", "dependencies": {"redis": "DOWN"}}),
+        encoding="utf-8",
+    )
+
+    res = runner.invoke(
+        app,
+        ["diagnose-silent", "--file", str(run_file), "--health-file", str(health_file)],
+    )
+    assert res.exit_code == EXIT_OK
+    assert "S2_DEPENDENCY_PROBE" in res.output
+    assert "DEGRADED" in res.output
+
+
+def test_diagnose_silent_cli_with_baseline_run(tmp_path: Path) -> None:
+    """Test diagnose-silent with --baseline-run evaluating S3 latency drift."""
+    base_file = tmp_path / "base.json"
+    base_file.write_text(
+        json.dumps(_create_sample_run("b", [50.0] * 6)), encoding="utf-8"
+    )
+
+    curr_file = tmp_path / "curr.json"
+    curr_file.write_text(
+        json.dumps(_create_sample_run("c", [130.0] * 6)), encoding="utf-8"
+    )
+
+    res = runner.invoke(
+        app,
+        ["diagnose-silent", "--file", str(curr_file), "--baseline-run", str(base_file)],
+    )
+    assert res.exit_code == EXIT_OK
+    assert "S3_LATENCY_DRIFT" in res.output
+
+
+def test_diagnose_silent_cli_with_workflow(tmp_path: Path) -> None:
+    """Test diagnose-silent with --workflow loading workflow JSON."""
+    wf_data = {
+        "workflow_id": "wf_smoke",
+        "duration_ms": 35.0,
+        "environment_name": "test",
+        "setup_results": [],
+        "test_results": [
+            {
+                "step_number": 1,
+                "name": "Read Items",
+                "step_type": "TEST",
+                "status": "PASSED",
+                "method": "GET",
+                "url": "http://localhost:8000/api/items",
+                "status_code": 200,
+                "elapsed_ms": 35.0,
+            }
+        ],
+        "cleanup_results": [],
+    }
+    wf_file = tmp_path / "wf.json"
+    wf_file.write_text(json.dumps(wf_data), encoding="utf-8")
+
+    res = runner.invoke(app, ["diagnose-silent", "--workflow", str(wf_file)])
+    assert res.exit_code == EXIT_OK
+    assert "SILENT FAILURE DIAGNOSTIC REPORT" in res.output
+
+
+def test_latency_drift_cli_with_db_run_ids(tmp_path: Path) -> None:
+    """Test latency-drift looking up baseline and current runs by ID from SQLite DB."""
+    db_file = tmp_path / "drift.db"
+    db_manager = DatabaseManager(db_file)
+    repo = RunRepository(db_manager)
+
+    now = datetime.now(UTC)
+    cases_base = [
+        CaseResult(
+            test_name=f"case_b_{i}",
+            module="items",
+            tags=[],
+            status=CaseStatus.PASSED,
+            verified=True,
+            method="GET",
+            url="http://localhost:8000/items",
+            status_code=200,
+            elapsed_ms=50.0,
+            request_headers={},
+            response_headers={},
+            assertion_results=[],
+            extracted_variables={},
+            extraction_errors=[],
+        )
+        for i in range(6)
+    ]
+    run_base = RunResult(
+        run_id="run-base-db",
+        environment_name="staging",
+        started_at=now,
+        finished_at=now,
+        duration_ms=300.0,
+        total_tests=6,
+        passed_tests=6,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=cases_base,
+    )
+    repo.save_run(run_base)
+
+    cases_curr = [
+        CaseResult(
+            test_name=f"case_c_{i}",
+            module="items",
+            tags=[],
+            status=CaseStatus.PASSED,
+            verified=True,
+            method="GET",
+            url="http://localhost:8000/items",
+            status_code=200,
+            elapsed_ms=120.0,
+            request_headers={},
+            response_headers={},
+            assertion_results=[],
+            extracted_variables={},
+            extraction_errors=[],
+        )
+        for i in range(6)
+    ]
+    run_curr = RunResult(
+        run_id="run-curr-db",
+        environment_name="staging",
+        started_at=now,
+        finished_at=now,
+        duration_ms=720.0,
+        total_tests=6,
+        passed_tests=6,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=cases_curr,
+    )
+    repo.save_run(run_curr)
+
+    res = runner.invoke(
+        app,
+        [
+            "latency-drift",
+            "--db",
+            str(db_file),
+            "--baseline",
+            "run-base-db",
+            "--current",
+            "run-curr-db",
+        ],
+    )
+    assert res.exit_code == EXIT_OK
+    assert "REGRESSION_DETECTED" in res.output
+
+
+def test_latency_drift_cli_unresolvable_run_id(tmp_path: Path) -> None:
+    """Test latency-drift with nonexistent ID exits with tool error."""
+    db_file = tmp_path / "empty.db"
+    db_manager = DatabaseManager(db_file)
+    RunRepository(db_manager)
+
+    res = runner.invoke(
+        app,
+        [
+            "latency-drift",
+            "--db",
+            str(db_file),
+            "--baseline",
+            "missing-b",
+            "--current",
+            "missing-c",
+        ],
+    )
+    assert res.exit_code == EXIT_TOOL_ERROR
+    assert "Could not resolve test run" in res.output
+
+
+def test_latency_drift_cli_export_yaml(tmp_path: Path) -> None:
+    """Test latency-drift export with format=yaml."""
+    base_file = tmp_path / "base.json"
+    base_file.write_text(
+        json.dumps(_create_sample_run("b", [50.0] * 6)), encoding="utf-8"
+    )
+
+    curr_file = tmp_path / "curr.json"
+    curr_file.write_text(
+        json.dumps(_create_sample_run("c", [52.0] * 6)), encoding="utf-8"
+    )
+
+    out_yaml = tmp_path / "drift.yaml"
+    res = runner.invoke(
+        app,
+        [
+            "latency-drift",
+            "--baseline",
+            str(base_file),
+            "--current",
+            str(curr_file),
+            "--output",
+            str(out_yaml),
+            "--format",
+            "yaml",
+        ],
+    )
+    assert res.exit_code == EXIT_OK
+    assert out_yaml.is_file()
+    parsed = yaml.safe_load(out_yaml.read_text(encoding="utf-8"))
+    assert "summary_metrics" in parsed
