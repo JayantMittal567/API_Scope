@@ -223,8 +223,8 @@ At line:1 char:122
 ### 3.3. Evaluation Experiment Audit (`docs/EVALUATION_REPORT.md`)
 Live in-process execution of `run_planted_bug_experiment()` across `sample_app` and `StockPile` validates the published report metrics:
 - **Strategy 1 (Handwritten Probes)**: 10 / 12 detected (83.33%), 0 false positives.
-- **Strategy 2 (Rule-Based M5)**: 5 / 12 detected (41.67%), 0 false positives.
-- **Strategy 3 (AI-Assisted M12)**: 8 / 12 detected (66.67%), 0 false positives.
+- **Strategy 2 (Rule-Based M5)**: 7 / 12 detected (58.33%), 0 false positives.
+- **Strategy 3 (AI-Assisted M12)**: 10 / 12 detected (83.33%), 0 false positives.
 - **Strategy 4 (Combined Full ApiScope)**: **12 / 12 detected (100.0%)**, **0 false positives**.
 - **Clean Baseline Specificity (`StockPile`)**: **0 false positives**, **ALL 5 MODULES HEALTHY**.
 

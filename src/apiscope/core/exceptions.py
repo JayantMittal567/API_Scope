@@ -43,3 +43,7 @@ class PathTraversalError(DefinitionError):
 
 class VariableResolutionError(ApiScopeError):
     """Raised when a referenced variable cannot be resolved in the current context."""
+
+
+class ExecutionSafetyError(ApiScopeError):
+    """Raised when an operation violates execution safety policy."""

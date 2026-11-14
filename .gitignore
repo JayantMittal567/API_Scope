@@ -59,6 +59,9 @@ htmlcov/
 *.swo
 *~
 
+# ApiScope runtime artifacts and state
+.apiscope/
+
 # Operating system files
 .DS_Store
 Thumbs.db

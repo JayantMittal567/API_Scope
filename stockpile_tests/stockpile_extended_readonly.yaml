@@ -1,0 +1,1413 @@
+name: StockPile extended read-only verification suite (Phase 2)
+module: stockpile-controller
+tags:
+- extended
+- read-only
+- phase-2
+tests:
+- name: 'StockPile read-only: GET /api/health'
+  module: stockpile-controller
+  tags:
+  - health
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/health
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - status
+      - database
+      - databaseType
+      - totalProducts
+      - totalMovements
+      - timestamp
+      properties:
+        status:
+          type: string
+        database:
+          type: string
+        databaseType:
+          type: string
+        totalProducts:
+          type: integer
+          minimum: 0
+        totalMovements:
+          type: integer
+          minimum: 0
+        timestamp:
+          type: string
+  - type: jsonpath
+    path: $.status
+    equals: UP
+  - type: jsonpath
+    path: $.database
+    equals: CONNECTED
+  - type: jsonpath
+    path: $.databaseType
+    equals: SQLite
+
+- name: 'StockPile read-only: GET /api/dashboard'
+  module: stockpile-controller
+  tags:
+  - dashboard
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/dashboard
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - totalProducts
+      - totalQuantity
+      - inventoryValuePaise
+      - summary
+      - liveState
+      - periodActivity
+      properties:
+        totalProducts:
+          type: integer
+          minimum: 0
+        totalQuantity:
+          type: integer
+          minimum: 0
+        inventoryValuePaise:
+          type: integer
+          minimum: 0
+        summary:
+          type: object
+        liveState:
+          type: object
+        periodActivity:
+          type: object
+  - type: jsonpath
+    path: $.liveState.totalProducts
+    type_check: integer
+  - type: jsonpath
+    path: $.periodActivity.period
+    equals: TODAY
+
+- name: 'StockPile read-only: GET /api/products'
+  module: stockpile-controller
+  tags:
+  - products
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/products
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        required:
+        - id
+        - name
+        - sku
+        - category
+        - purchasePricePaise
+        - sellingPricePaise
+        - quantity
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          sku:
+            type: string
+          category:
+            type: string
+          purchasePricePaise:
+            type: integer
+            minimum: 0
+          sellingPricePaise:
+            type: integer
+            minimum: 0
+          quantity:
+            type: integer
+            minimum: 0
+  - type: jsonpath
+    path: $[0].id
+    type_check: integer
+  - type: jsonpath
+    path: $[0].sku
+    type_check: string
+
+- name: 'StockPile read-only: GET /api/products/1'
+  module: stockpile-controller
+  tags:
+  - products
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/products/1
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - id
+      - name
+      - sku
+      - category
+      - purchasePricePaise
+      - sellingPricePaise
+      - quantity
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        sku:
+          type: string
+        category:
+          type: string
+        purchasePricePaise:
+          type: integer
+          minimum: 0
+        sellingPricePaise:
+          type: integer
+          minimum: 0
+        quantity:
+          type: integer
+          minimum: 0
+  - type: jsonpath
+    path: $.id
+    equals: 1
+  - type: jsonpath
+    path: $.sku
+    equals: ELE-WM-764
+  - type: jsonpath
+    path: $.category
+    equals: Electrical device
+
+- name: 'StockPile read-only: GET /api/products/1/movements'
+  module: stockpile-controller
+  tags:
+  - products
+  - movements
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/products/1/movements
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        required:
+        - movementId
+        - productId
+        - movementType
+        - quantity
+        - previousQuantity
+        - newQuantity
+        properties:
+          movementId:
+            type: integer
+          productId:
+            type: integer
+          movementType:
+            type: string
+          quantity:
+            type: integer
+          previousQuantity:
+            type: integer
+          newQuantity:
+            type: integer
+  - type: jsonpath
+    path: $[0].productId
+    equals: 1
+
+- name: 'StockPile read-only: GET /api/suppliers'
+  module: stockpile-controller
+  tags:
+  - suppliers
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/suppliers
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        required:
+        - id
+        - name
+        - phone
+        - email
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          contactPerson:
+            type:
+            - string
+            - 'null'
+          phone:
+            type: string
+          email:
+            type: string
+  - type: jsonpath
+    path: $[0].id
+    type_check: integer
+  - type: jsonpath
+    path: $[0].name
+    type_check: string
+
+- name: 'StockPile read-only: GET /api/suppliers/3'
+  module: stockpile-controller
+  tags:
+  - suppliers
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/suppliers/3
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - id
+      - name
+      - phone
+      - email
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+  - type: jsonpath
+    path: $.id
+    equals: 3
+  - type: jsonpath
+    path: $.name
+    equals: Amit Kumar Traders
+
+- name: 'StockPile read-only: GET /api/suppliers/3/products'
+  module: stockpile-controller
+  tags:
+  - suppliers
+  - products
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/suppliers/3/products
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        required:
+        - id
+        - productId
+        - name
+        - sku
+        - supplierId
+        properties:
+          id:
+            type: integer
+          productId:
+            type: integer
+          name:
+            type: string
+          sku:
+            type: string
+          supplierId:
+            type: integer
+  - type: jsonpath
+    path: $[0].supplierId
+    equals: 3
+
+- name: 'StockPile read-only: GET /api/stock-audits'
+  module: stockpile-controller
+  tags:
+  - stock-audits
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/stock-audits
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        required:
+        - id
+        - auditId
+        - status
+        - totalProducts
+        - productsCounted
+        - productsWithDiscrepancies
+        properties:
+          id:
+            type: integer
+          auditId:
+            type: integer
+          status:
+            type: string
+          totalProducts:
+            type: integer
+            minimum: 0
+          productsCounted:
+            type: integer
+            minimum: 0
+          productsWithDiscrepancies:
+            type: integer
+            minimum: 0
+  - type: jsonpath
+    path: $[0].id
+    type_check: integer
+  - type: jsonpath
+    path: $[0].status
+    type_check: string
+
+- name: 'StockPile read-only: GET /api/stock-audits/summary'
+  module: stockpile-controller
+  tags:
+  - stock-audits
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/stock-audits/summary
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - openAudits
+      - pendingDiscrepancies
+      - inventoryLossTodayPaise
+      - completedAuditsThisMonth
+      properties:
+        openAudits:
+          type: integer
+          minimum: 0
+        pendingDiscrepancies:
+          type: integer
+          minimum: 0
+        inventoryLossTodayPaise:
+          type: integer
+          minimum: 0
+        completedAuditsThisMonth:
+          type: integer
+          minimum: 0
+  - type: jsonpath
+    path: $.openAudits
+    type_check: integer
+  - type: jsonpath
+    path: $.pendingDiscrepancies
+    type_check: integer
+
+- name: 'StockPile read-only: GET /api/stock-audits/5'
+  module: stockpile-controller
+  tags:
+  - stock-audits
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/stock-audits/5
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - id
+      - auditId
+      - status
+      - totalProducts
+      - countedProducts
+      - discrepancyCount
+      - items
+      properties:
+        id:
+          type: integer
+        auditId:
+          type: integer
+        status:
+          type: string
+        totalProducts:
+          type: integer
+          minimum: 0
+        countedProducts:
+          type: integer
+          minimum: 0
+        discrepancyCount:
+          type: integer
+          minimum: 0
+        items:
+          type: array
+  - type: jsonpath
+    path: $.id
+    equals: 5
+  - type: jsonpath
+    path: $.status
+    equals: COMPLETED
+
+- name: 'StockPile read-only: GET /api/purchase-orders'
+  module: stockpile-controller
+  tags:
+  - purchase-orders
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/purchase-orders
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        required:
+        - id
+        - orderId
+        - supplierId
+        - status
+        - totalAmountPaise
+        - itemCount
+        properties:
+          id:
+            type: integer
+          orderId:
+            type: integer
+          supplierId:
+            type: integer
+          status:
+            type: string
+          totalAmountPaise:
+            type: integer
+            minimum: 0
+          itemCount:
+            type: integer
+            minimum: 0
+  - type: jsonpath
+    path: $[0].id
+    type_check: integer
+  - type: jsonpath
+    path: $[0].supplierId
+    type_check: integer
+
+- name: 'StockPile read-only: GET /api/purchase-orders/4'
+  module: stockpile-controller
+  tags:
+  - purchase-orders
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/purchase-orders/4
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - id
+      - orderId
+      - supplierId
+      - status
+      - totalAmountPaise
+      - items
+      properties:
+        id:
+          type: integer
+        orderId:
+          type: integer
+        supplierId:
+          type: integer
+        status:
+          type: string
+        totalAmountPaise:
+          type: integer
+          minimum: 0
+        items:
+          type: array
+  - type: jsonpath
+    path: $.id
+    equals: 4
+  - type: jsonpath
+    path: $.status
+    equals: RECEIVED
+  - type: jsonpath
+    path: $.supplierId
+    equals: 4
+
+- name: 'StockPile read-only: GET /api/sales'
+  module: stockpile-controller
+  tags:
+  - sales
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/sales
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        required:
+        - id
+        - saleId
+        - subtotalPaise
+        - discountPaise
+        - totalPaise
+        - totalCostPaise
+        - paymentMethod
+        - status
+        properties:
+          id:
+            type: integer
+          saleId:
+            type: integer
+          subtotalPaise:
+            type: integer
+            minimum: 0
+          discountPaise:
+            type: integer
+            minimum: 0
+          totalPaise:
+            type: integer
+            minimum: 0
+          totalCostPaise:
+            type: integer
+            minimum: 0
+          grossProfitPaise:
+            type: integer
+          paymentMethod:
+            type: string
+          status:
+            type: string
+  - type: jsonpath
+    path: $[0].id
+    type_check: integer
+  - type: jsonpath
+    path: $[0].status
+    equals: COMPLETED
+
+- name: 'StockPile read-only: GET /api/sales/summary'
+  module: stockpile-controller
+  tags:
+  - sales
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/sales/summary
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - salesTodayPaise
+      - salesTodayCount
+      - totalSalesPaise
+      - totalSalesCount
+      properties:
+        salesTodayPaise:
+          type: integer
+          minimum: 0
+        salesTodayCount:
+          type: integer
+          minimum: 0
+        totalSalesPaise:
+          type: integer
+          minimum: 0
+        totalSalesCount:
+          type: integer
+          minimum: 0
+  - type: jsonpath
+    path: $.totalSalesCount
+    type_check: integer
+  - type: jsonpath
+    path: $.totalSalesPaise
+    type_check: integer
+
+- name: 'StockPile read-only: GET /api/sales/trend'
+  module: stockpile-controller
+  tags:
+  - sales
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/sales/trend
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        required:
+        - saleDate
+        - totalPaise
+        - orderCount
+        properties:
+          saleDate:
+            type: string
+          totalPaise:
+            type: integer
+            minimum: 0
+          orderCount:
+            type: integer
+            minimum: 0
+  - type: jsonpath
+    path: $[0].orderCount
+    type_check: integer
+
+- name: 'StockPile read-only: GET /api/sales/8'
+  module: stockpile-controller
+  tags:
+  - sales
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/sales/8
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - id
+      - saleId
+      - subtotalPaise
+      - totalPaise
+      - paymentMethod
+      - status
+      - items
+      properties:
+        id:
+          type: integer
+        saleId:
+          type: integer
+        subtotalPaise:
+          type: integer
+          minimum: 0
+        discountPaise:
+          type: integer
+          minimum: 0
+        totalPaise:
+          type: integer
+          minimum: 0
+        totalCostPaise:
+          type: integer
+          minimum: 0
+        grossProfitPaise:
+          type: integer
+        paymentMethod:
+          type: string
+        status:
+          type: string
+        items:
+          type: array
+  - type: jsonpath
+    path: $.id
+    equals: 8
+  - type: jsonpath
+    path: $.totalPaise
+    equals: 72200
+  - type: jsonpath
+    path: $.paymentMethod
+    equals: CASH
+
+- name: 'StockPile read-only: GET /api/surplus-listings'
+  module: stockpile-controller
+  tags:
+  - surplus
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/surplus-listings
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        required:
+        - id
+        - productId
+        - quantityListed
+        - quantitySold
+        - quantityRemaining
+        - status
+        properties:
+          id:
+            type: integer
+          productId:
+            type: integer
+          productName:
+            type: string
+          quantityListed:
+            type: integer
+            minimum: 1
+          quantitySold:
+            type: integer
+            minimum: 0
+          quantityRemaining:
+            type: integer
+            minimum: 0
+          status:
+            type: string
+  - type: jsonpath
+    path: $[0].id
+    type_check: integer
+  - type: jsonpath
+    path: $[0].status
+    type_check: string
+
+- name: 'StockPile read-only: GET /api/surplus-listings/summary'
+  module: stockpile-controller
+  tags:
+  - surplus
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/surplus-listings/summary
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - totalListings
+      - activeListings
+      - totalUnitsListed
+      - totalUnitsSold
+      - totalUnitsRemaining
+      properties:
+        totalListings:
+          type: integer
+          minimum: 0
+        activeListings:
+          type: integer
+          minimum: 0
+        totalUnitsListed:
+          type: integer
+          minimum: 0
+        totalUnitsSold:
+          type: integer
+          minimum: 0
+        totalUnitsRemaining:
+          type: integer
+          minimum: 0
+  - type: jsonpath
+    path: $.totalListings
+    type_check: integer
+  - type: jsonpath
+    path: $.totalUnitsListed
+    type_check: integer
+
+- name: 'StockPile read-only: GET /api/surplus-listings/suggestions'
+  module: stockpile-controller
+  tags:
+  - surplus
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/surplus-listings/suggestions
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        required:
+        - productId
+        - productName
+        - sku
+        - currentQuantity
+        - suggestedSurplusQuantity
+        properties:
+          productId:
+            type: integer
+          productName:
+            type: string
+          sku:
+            type: string
+          currentQuantity:
+            type: integer
+            minimum: 0
+          suggestedSurplusQuantity:
+            type: integer
+            minimum: 0
+  - type: jsonpath
+    path: $[0].productId
+    type_check: integer
+
+- name: 'StockPile read-only: GET /api/surplus-listings/1'
+  module: stockpile-controller
+  tags:
+  - surplus
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/surplus-listings/1
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - id
+      - productId
+      - quantityListed
+      - quantitySold
+      - status
+      - sales
+      properties:
+        id:
+          type: integer
+        productId:
+          type: integer
+        quantityListed:
+          type: integer
+          minimum: 1
+        quantitySold:
+          type: integer
+          minimum: 0
+        status:
+          type: string
+        sales:
+          type: array
+  - type: jsonpath
+    path: $.id
+    equals: 1
+  - type: jsonpath
+    path: $.productId
+    equals: 2
+  - type: jsonpath
+    path: $.status
+    equals: SOLD
+
+- name: 'StockPile read-only: GET /api/reports/summary'
+  module: stockpile-controller
+  tags:
+  - reports
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/reports/summary
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - currency
+      - periodType
+      - grossSalesPaise
+      - discountsPaise
+      - netRevenuePaise
+      - cogsPaise
+      - grossProfitPaise
+      properties:
+        currency:
+          type: string
+        periodType:
+          type: string
+        grossSalesPaise:
+          type: integer
+          minimum: 0
+        discountsPaise:
+          type: integer
+          minimum: 0
+        netRevenuePaise:
+          type: integer
+        cogsPaise:
+          type: integer
+          minimum: 0
+        grossProfitPaise:
+          type: integer
+  - type: jsonpath
+    path: $.currency
+    equals: INR
+  - type: jsonpath
+    path: $.periodType
+    equals: MONTHLY
+
+- name: 'StockPile read-only: GET /api/reports/profit-loss'
+  module: stockpile-controller
+  tags:
+  - reports
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/reports/profit-loss
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - currency
+      - periodType
+      - grossSalesPaise
+      - netRevenuePaise
+      - grossProfitPaise
+      - grossMarginPercentage
+      properties:
+        currency:
+          type: string
+        periodType:
+          type: string
+        grossSalesPaise:
+          type: integer
+          minimum: 0
+        netRevenuePaise:
+          type: integer
+        grossProfitPaise:
+          type: integer
+        grossMarginPercentage:
+          type: number
+  - type: jsonpath
+    path: $.currency
+    equals: INR
+  - type: jsonpath
+    path: $.periodType
+    equals: MONTHLY
+
+- name: 'StockPile read-only: GET /api/reports/sales'
+  module: stockpile-controller
+  tags:
+  - reports
+  - sales
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/reports/sales
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - currency
+      - periodType
+      - completedSalesCount
+      - unitsSold
+      - netRevenuePaise
+      - paymentMethods
+      - sales
+      properties:
+        currency:
+          type: string
+        periodType:
+          type: string
+        completedSalesCount:
+          type: integer
+          minimum: 0
+        unitsSold:
+          type: integer
+          minimum: 0
+        netRevenuePaise:
+          type: integer
+        paymentMethods:
+          type: array
+        sales:
+          type: array
+  - type: jsonpath
+    path: $.currency
+    equals: INR
+  - type: jsonpath
+    path: $.periodType
+    equals: MONTHLY
+
+- name: 'StockPile read-only: GET /api/reports/inventory-loss'
+  module: stockpile-controller
+  tags:
+  - reports
+  - stock-audits
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/reports/inventory-loss
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - currency
+      - periodType
+      - totalLossPaise
+      - totalUnitsLost
+      - incidentCount
+      - incidents
+      properties:
+        currency:
+          type: string
+        periodType:
+          type: string
+        totalLossPaise:
+          type: integer
+          minimum: 0
+        totalUnitsLost:
+          type: integer
+          minimum: 0
+        incidentCount:
+          type: integer
+          minimum: 0
+        incidents:
+          type: array
+  - type: jsonpath
+    path: $.currency
+    equals: INR
+  - type: jsonpath
+    path: $.totalLossPaise
+    type_check: integer
+
+- name: 'StockPile read-only: GET /api/reports/purchases'
+  module: stockpile-controller
+  tags:
+  - reports
+  - purchase-orders
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/reports/purchases
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - currency
+      - periodType
+      - totalOrdersCount
+      - totalSpendPaise
+      - totalUnitsOrdered
+      - totalUnitsReceived
+      - orders
+      properties:
+        currency:
+          type: string
+        periodType:
+          type: string
+        totalOrdersCount:
+          type: integer
+          minimum: 0
+        totalSpendPaise:
+          type: integer
+          minimum: 0
+        totalUnitsOrdered:
+          type: integer
+          minimum: 0
+        totalUnitsReceived:
+          type: integer
+          minimum: 0
+        orders:
+          type: array
+  - type: jsonpath
+    path: $.currency
+    equals: INR
+  - type: jsonpath
+    path: $.totalOrdersCount
+    type_check: integer
+
+- name: 'StockPile read-only: GET /api/expenses'
+  module: stockpile-controller
+  tags:
+  - expenses
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/expenses
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        required:
+        - id
+        - category
+        - amountPaise
+        - createdAt
+        properties:
+          id:
+            type: integer
+          category:
+            type: string
+          amountPaise:
+            type: integer
+            minimum: 0
+          createdAt:
+            type: string
+  - type: jsonpath
+    path: $[0].id
+    type_check: integer
+  - type: jsonpath
+    path: $[0].amountPaise
+    type_check: integer
+
+- name: 'StockPile read-only: GET /api/intelligence'
+  module: stockpile-controller
+  tags:
+  - intelligence
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/intelligence
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        required:
+        - productId
+        - productName
+        - sku
+        - currentQuantity
+        - reorderPoint
+        - status
+        properties:
+          productId:
+            type: integer
+          productName:
+            type: string
+          sku:
+            type: string
+          currentQuantity:
+            type: integer
+            minimum: 0
+          minStockLevel:
+            type: integer
+            minimum: 0
+          targetStockLevel:
+            type: integer
+            minimum: 0
+          reorderPoint:
+            type: integer
+            minimum: 0
+          status:
+            type: string
+  - type: jsonpath
+    path: $[0].productId
+    type_check: integer
+  - type: jsonpath
+    path: $[0].status
+    type_check: string
+
+- name: 'StockPile read-only: GET /api/intelligence/sales'
+  module: stockpile-controller
+  tags:
+  - intelligence
+  - sales
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/intelligence/sales
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      required:
+      - summary
+      - products
+      properties:
+        summary:
+          type: object
+        products:
+          type: array
+  - type: jsonpath
+    path: $.products
+    type_check: array
+
+- name: 'StockPile read-only: GET /api/movements'
+  module: stockpile-controller
+  tags:
+  - movements
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/movements
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        required:
+        - movementId
+        - productId
+        - movementType
+        - quantity
+        - previousQuantity
+        - newQuantity
+        properties:
+          movementId:
+            type: integer
+          productId:
+            type: integer
+          productName:
+            type: string
+          movementType:
+            type: string
+          quantity:
+            type: integer
+          previousQuantity:
+            type: integer
+          newQuantity:
+            type: integer
+  - type: jsonpath
+    path: $[0].movementId
+    type_check: integer
+  - type: jsonpath
+    path: $[0].movementType
+    type_check: string

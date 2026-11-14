@@ -1,0 +1,3531 @@
+{
+  "plan_id": "plan_openapi_definition_9382",
+  "title": "OpenAPI definition",
+  "schema_version": "1.0.0",
+  "generated_at": "2026-11-14T12:33:25.935296+00:00",
+  "summary": {
+    "total_scenarios": 205,
+    "compiled_count": 66,
+    "needs_review_count": 89,
+    "needs_fixture_count": 50,
+    "blocked_count": 0,
+    "total_tests_generated": 66,
+    "scenarios_by_category": {
+      "CONTRACT_POSITIVE": 60,
+      "RESPONSE_SCHEMA": 56,
+      "RESOURCE_EXISTENCE": 27,
+      "AUTH_SECURITY": 30,
+      "ERROR_HANDLING": 24,
+      "CONSISTENCY_CHECK": 8
+    },
+    "scenarios_by_origin": {
+      "DETERMINISTIC": 205
+    }
+  },
+  "unresolved_prerequisites": [
+    "Path parameter '{auditId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+    "Path parameter '{id}' on DELETE /api/expenses/{id} requires existing resource fixture.",
+    "Path parameter '{id}' on DELETE /api/products/{id} requires existing resource fixture.",
+    "Path parameter '{id}' on DELETE /api/suppliers/{id} requires existing resource fixture.",
+    "Path parameter '{id}' on GET /api/products/{id} requires existing resource fixture.",
+    "Path parameter '{id}' on GET /api/products/{id}/movements requires existing resource fixture.",
+    "Path parameter '{id}' on GET /api/purchase-orders/{id} requires existing resource fixture.",
+    "Path parameter '{id}' on GET /api/sales/{id} requires existing resource fixture.",
+    "Path parameter '{id}' on GET /api/stock-audits/{id} requires existing resource fixture.",
+    "Path parameter '{id}' on GET /api/suppliers/{id} requires existing resource fixture.",
+    "Path parameter '{id}' on GET /api/suppliers/{id}/products requires existing resource fixture.",
+    "Path parameter '{id}' on GET /api/surplus-listings/{id} requires existing resource fixture.",
+    "Path parameter '{id}' on POST /api/purchase-orders/{id}/cancel requires existing resource fixture.",
+    "Path parameter '{id}' on POST /api/purchase-orders/{id}/place requires existing resource fixture.",
+    "Path parameter '{id}' on POST /api/purchase-orders/{id}/receive requires existing resource fixture.",
+    "Path parameter '{id}' on POST /api/sales/{id}/cancel requires existing resource fixture.",
+    "Path parameter '{id}' on POST /api/stock-audits/{id}/cancel requires existing resource fixture.",
+    "Path parameter '{id}' on POST /api/stock-audits/{id}/complete requires existing resource fixture.",
+    "Path parameter '{id}' on POST /api/surplus-listings/{id}/cancel requires existing resource fixture.",
+    "Path parameter '{id}' on POST /api/surplus-listings/{id}/sell requires existing resource fixture.",
+    "Path parameter '{id}' on PUT /api/expenses/{id} requires existing resource fixture.",
+    "Path parameter '{id}' on PUT /api/products/{id} requires existing resource fixture.",
+    "Path parameter '{id}' on PUT /api/purchase-orders/{id} requires existing resource fixture.",
+    "Path parameter '{id}' on PUT /api/suppliers/{id} requires existing resource fixture.",
+    "Path parameter '{id}' on PUT /api/surplus-listings/{id} requires existing resource fixture.",
+    "Path parameter '{itemId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+    "Path parameter '{productId}' on DELETE /api/products/{productId}/supplier requires existing resource fixture.",
+    "Path parameter '{productId}' on PUT /api/products/{productId}/supplier requires existing resource fixture.",
+    "Single-step scenario targeting parameterized path '/api/expenses/{id}' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/products/{id}' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/products/{id}/movements' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/products/{productId}/supplier' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/cancel' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/place' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/receive' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/sales/{id}' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/sales/{id}/cancel' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/stock-audits/{auditId}/items/{itemId}' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/stock-audits/{id}' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/stock-audits/{id}/cancel' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/stock-audits/{id}/complete' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/suppliers/{id}' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/suppliers/{id}/products' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}/cancel' lacks a preceding setup fixture or resource producer.",
+    "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}/sell' lacks a preceding setup fixture or resource producer.",
+    "Unresolved dependency: database_isolation_or_transaction_rollback",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/expenses/{id}'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}/movements'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/cancel'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/place'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/receive'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}/cancel'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{auditId}/items/{itemId}'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/cancel'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/complete'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}/products'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/cancel'",
+    "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/sell'"
+  ],
+  "results": [
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-POS-001",
+      "title": "Happy Path: GET /api/surplus-listings/{id}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'",
+        "Path parameter '{id}' on GET /api/surplus-listings/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'",
+        "Path parameter '{id}' on GET /api/surplus-listings/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-SCH-002",
+      "title": "Schema Conformance: 200 Response on GET /api/surplus-listings/{id}",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'",
+        "Path parameter '{id}' on GET /api/surplus-listings/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'",
+        "Path parameter '{id}' on GET /api/surplus-listings/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-RES-003",
+      "title": "Resource Not Found: GET /api/surplus-listings/{id}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for GET /api/surplus-listings/{id}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-POS-004",
+      "title": "Happy Path: PUT /api/surplus-listings/{id}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'",
+        "Path parameter '{id}' on PUT /api/surplus-listings/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'",
+        "Path parameter '{id}' on PUT /api/surplus-listings/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-SCH-005",
+      "title": "Schema Conformance: 200 Response on PUT /api/surplus-listings/{id}",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'",
+        "Path parameter '{id}' on PUT /api/surplus-listings/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'",
+        "Path parameter '{id}' on PUT /api/surplus-listings/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-SEC-006",
+      "title": "Security Audit: Undocumented Mutation on PUT /api/surplus-listings/{id}",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (PUT /api/surplus-listings/{id}) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on PUT /api/surplus-listings/{id} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on PUT /api/surplus-listings/{id} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-RES-007",
+      "title": "Resource Not Found: PUT /api/surplus-listings/{id}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for PUT /api/surplus-listings/{id}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-ERR-008",
+      "title": "Malformed JSON: PUT /api/surplus-listings/{id}",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for PUT /api/surplus-listings/{id}; server may return 415, 422, or default.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'",
+        "Path parameter '{id}' on PUT /api/surplus-listings/{id} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}'",
+        "Path parameter '{id}' on PUT /api/surplus-listings/{id} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-POS-009",
+      "title": "Happy Path: GET /api/suppliers/{id}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'",
+        "Path parameter '{id}' on GET /api/suppliers/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/suppliers/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'",
+        "Path parameter '{id}' on GET /api/suppliers/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/suppliers/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-SCH-010",
+      "title": "Schema Conformance: 200 Response on GET /api/suppliers/{id}",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'",
+        "Path parameter '{id}' on GET /api/suppliers/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/suppliers/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'",
+        "Path parameter '{id}' on GET /api/suppliers/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/suppliers/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-RES-011",
+      "title": "Resource Not Found: GET /api/suppliers/{id}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for GET /api/suppliers/{id}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-POS-012",
+      "title": "Happy Path: PUT /api/suppliers/{id}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'",
+        "Path parameter '{id}' on PUT /api/suppliers/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/suppliers/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'",
+        "Path parameter '{id}' on PUT /api/suppliers/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/suppliers/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-SCH-013",
+      "title": "Schema Conformance: 200 Response on PUT /api/suppliers/{id}",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'",
+        "Path parameter '{id}' on PUT /api/suppliers/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/suppliers/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'",
+        "Path parameter '{id}' on PUT /api/suppliers/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/suppliers/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-SEC-014",
+      "title": "Security Audit: Undocumented Mutation on PUT /api/suppliers/{id}",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (PUT /api/suppliers/{id}) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on PUT /api/suppliers/{id} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on PUT /api/suppliers/{id} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-RES-015",
+      "title": "Resource Not Found: PUT /api/suppliers/{id}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for PUT /api/suppliers/{id}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-ERR-016",
+      "title": "Malformed JSON: PUT /api/suppliers/{id}",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for PUT /api/suppliers/{id}; server may return 415, 422, or default.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'",
+        "Path parameter '{id}' on PUT /api/suppliers/{id} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'",
+        "Path parameter '{id}' on PUT /api/suppliers/{id} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-POS-017",
+      "title": "Happy Path: DELETE /api/suppliers/{id}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'",
+        "Path parameter '{id}' on DELETE /api/suppliers/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/suppliers/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'",
+        "Path parameter '{id}' on DELETE /api/suppliers/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/suppliers/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-SEC-018",
+      "title": "Security Audit: Undocumented Mutation on DELETE /api/suppliers/{id}",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (DELETE /api/suppliers/{id}) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on DELETE /api/suppliers/{id} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on DELETE /api/suppliers/{id} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-RES-019",
+      "title": "Resource Not Found: DELETE /api/suppliers/{id}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for DELETE /api/suppliers/{id}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-POS-020",
+      "title": "Happy Path: PUT /api/stock-audits/{auditId}/items/{itemId}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{auditId}/items/{itemId}'",
+        "Path parameter '{auditId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+        "Path parameter '{itemId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{auditId}/items/{itemId}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{auditId}/items/{itemId}'",
+        "Path parameter '{auditId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+        "Path parameter '{itemId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{auditId}/items/{itemId}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-SCH-021",
+      "title": "Schema Conformance: 200 Response on PUT /api/stock-audits/{auditId}/items/{itemId}",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{auditId}/items/{itemId}'",
+        "Path parameter '{auditId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+        "Path parameter '{itemId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{auditId}/items/{itemId}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{auditId}/items/{itemId}'",
+        "Path parameter '{auditId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+        "Path parameter '{itemId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{auditId}/items/{itemId}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-SEC-022",
+      "title": "Security Audit: Undocumented Mutation on PUT /api/stock-audits/{auditId}/items/{itemId}",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (PUT /api/stock-audits/{auditId}/items/{itemId}) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{auditId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+        "Path parameter '{itemId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{auditId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+        "Path parameter '{itemId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-RES-023",
+      "title": "Resource Not Found: PUT /api/stock-audits/{auditId}/items/{itemId}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for PUT /api/stock-audits/{auditId}/items/{itemId}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{auditId}/items/{itemId}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{auditId}/items/{itemId}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-ERR-024",
+      "title": "Malformed JSON: PUT /api/stock-audits/{auditId}/items/{itemId}",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for PUT /api/stock-audits/{auditId}/items/{itemId}; server may return 415, 422, or default.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{auditId}/items/{itemId}'",
+        "Path parameter '{auditId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+        "Path parameter '{itemId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{auditId}/items/{itemId}'",
+        "Path parameter '{auditId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+        "Path parameter '{itemId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-POS-025",
+      "title": "Happy Path: GET /api/purchase-orders/{id}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'",
+        "Path parameter '{id}' on GET /api/purchase-orders/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'",
+        "Path parameter '{id}' on GET /api/purchase-orders/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-SCH-026",
+      "title": "Schema Conformance: 200 Response on GET /api/purchase-orders/{id}",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'",
+        "Path parameter '{id}' on GET /api/purchase-orders/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'",
+        "Path parameter '{id}' on GET /api/purchase-orders/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-RES-027",
+      "title": "Resource Not Found: GET /api/purchase-orders/{id}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for GET /api/purchase-orders/{id}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-POS-028",
+      "title": "Happy Path: PUT /api/purchase-orders/{id}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'",
+        "Path parameter '{id}' on PUT /api/purchase-orders/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'",
+        "Path parameter '{id}' on PUT /api/purchase-orders/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-SCH-029",
+      "title": "Schema Conformance: 200 Response on PUT /api/purchase-orders/{id}",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'",
+        "Path parameter '{id}' on PUT /api/purchase-orders/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'",
+        "Path parameter '{id}' on PUT /api/purchase-orders/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-SEC-030",
+      "title": "Security Audit: Undocumented Mutation on PUT /api/purchase-orders/{id}",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (PUT /api/purchase-orders/{id}) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on PUT /api/purchase-orders/{id} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on PUT /api/purchase-orders/{id} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-RES-031",
+      "title": "Resource Not Found: PUT /api/purchase-orders/{id}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for PUT /api/purchase-orders/{id}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-ERR-032",
+      "title": "Malformed JSON: PUT /api/purchase-orders/{id}",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for PUT /api/purchase-orders/{id}; server may return 415, 422, or default.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'",
+        "Path parameter '{id}' on PUT /api/purchase-orders/{id} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'",
+        "Path parameter '{id}' on PUT /api/purchase-orders/{id} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-POS-033",
+      "title": "Happy Path: PUT /api/products/{productId}/supplier",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'",
+        "Path parameter '{productId}' on PUT /api/products/{productId}/supplier requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{productId}/supplier' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'",
+        "Path parameter '{productId}' on PUT /api/products/{productId}/supplier requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{productId}/supplier' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-SCH-034",
+      "title": "Schema Conformance: 200 Response on PUT /api/products/{productId}/supplier",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'",
+        "Path parameter '{productId}' on PUT /api/products/{productId}/supplier requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{productId}/supplier' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'",
+        "Path parameter '{productId}' on PUT /api/products/{productId}/supplier requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{productId}/supplier' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-SEC-035",
+      "title": "Security Audit: Undocumented Mutation on PUT /api/products/{productId}/supplier",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (PUT /api/products/{productId}/supplier) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{productId}' on PUT /api/products/{productId}/supplier requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{productId}' on PUT /api/products/{productId}/supplier requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-RES-036",
+      "title": "Resource Not Found: PUT /api/products/{productId}/supplier",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for PUT /api/products/{productId}/supplier.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-ERR-037",
+      "title": "Malformed JSON: PUT /api/products/{productId}/supplier",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for PUT /api/products/{productId}/supplier; server may return 415, 422, or default.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'",
+        "Path parameter '{productId}' on PUT /api/products/{productId}/supplier requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'",
+        "Path parameter '{productId}' on PUT /api/products/{productId}/supplier requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-POS-038",
+      "title": "Happy Path: DELETE /api/products/{productId}/supplier",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'",
+        "Path parameter '{productId}' on DELETE /api/products/{productId}/supplier requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{productId}/supplier' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'",
+        "Path parameter '{productId}' on DELETE /api/products/{productId}/supplier requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{productId}/supplier' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-SEC-039",
+      "title": "Security Audit: Undocumented Mutation on DELETE /api/products/{productId}/supplier",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (DELETE /api/products/{productId}/supplier) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{productId}' on DELETE /api/products/{productId}/supplier requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{productId}' on DELETE /api/products/{productId}/supplier requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-RES-040",
+      "title": "Resource Not Found: DELETE /api/products/{productId}/supplier",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for DELETE /api/products/{productId}/supplier.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-POS-041",
+      "title": "Happy Path: GET /api/products/{id}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'",
+        "Path parameter '{id}' on GET /api/products/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'",
+        "Path parameter '{id}' on GET /api/products/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-SCH-042",
+      "title": "Schema Conformance: 200 Response on GET /api/products/{id}",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'",
+        "Path parameter '{id}' on GET /api/products/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'",
+        "Path parameter '{id}' on GET /api/products/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-RES-043",
+      "title": "Resource Not Found: GET /api/products/{id}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for GET /api/products/{id}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-POS-044",
+      "title": "Happy Path: PUT /api/products/{id}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'",
+        "Path parameter '{id}' on PUT /api/products/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'",
+        "Path parameter '{id}' on PUT /api/products/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-SCH-045",
+      "title": "Schema Conformance: 200 Response on PUT /api/products/{id}",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'",
+        "Path parameter '{id}' on PUT /api/products/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'",
+        "Path parameter '{id}' on PUT /api/products/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-SEC-046",
+      "title": "Security Audit: Undocumented Mutation on PUT /api/products/{id}",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (PUT /api/products/{id}) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on PUT /api/products/{id} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on PUT /api/products/{id} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-RES-047",
+      "title": "Resource Not Found: PUT /api/products/{id}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for PUT /api/products/{id}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-ERR-048",
+      "title": "Malformed JSON: PUT /api/products/{id}",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for PUT /api/products/{id}; server may return 415, 422, or default.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'",
+        "Path parameter '{id}' on PUT /api/products/{id} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'",
+        "Path parameter '{id}' on PUT /api/products/{id} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-POS-049",
+      "title": "Happy Path: DELETE /api/products/{id}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'",
+        "Path parameter '{id}' on DELETE /api/products/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'",
+        "Path parameter '{id}' on DELETE /api/products/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-SEC-050",
+      "title": "Security Audit: Undocumented Mutation on DELETE /api/products/{id}",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (DELETE /api/products/{id}) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on DELETE /api/products/{id} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on DELETE /api/products/{id} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-RES-051",
+      "title": "Resource Not Found: DELETE /api/products/{id}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for DELETE /api/products/{id}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-POS-052",
+      "title": "Happy Path: PUT /api/expenses/{id}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/expenses/{id}'",
+        "Path parameter '{id}' on PUT /api/expenses/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/expenses/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/expenses/{id}'",
+        "Path parameter '{id}' on PUT /api/expenses/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/expenses/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-SCH-053",
+      "title": "Schema Conformance: 200 Response on PUT /api/expenses/{id}",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/expenses/{id}'",
+        "Path parameter '{id}' on PUT /api/expenses/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/expenses/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/expenses/{id}'",
+        "Path parameter '{id}' on PUT /api/expenses/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/expenses/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-SEC-054",
+      "title": "Security Audit: Undocumented Mutation on PUT /api/expenses/{id}",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (PUT /api/expenses/{id}) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on PUT /api/expenses/{id} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on PUT /api/expenses/{id} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-RES-055",
+      "title": "Resource Not Found: PUT /api/expenses/{id}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for PUT /api/expenses/{id}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/expenses/{id}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/expenses/{id}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-ERR-056",
+      "title": "Malformed JSON: PUT /api/expenses/{id}",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for PUT /api/expenses/{id}; server may return 415, 422, or default.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/expenses/{id}'",
+        "Path parameter '{id}' on PUT /api/expenses/{id} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/expenses/{id}'",
+        "Path parameter '{id}' on PUT /api/expenses/{id} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-POS-057",
+      "title": "Happy Path: DELETE /api/expenses/{id}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/expenses/{id}'",
+        "Path parameter '{id}' on DELETE /api/expenses/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/expenses/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/expenses/{id}'",
+        "Path parameter '{id}' on DELETE /api/expenses/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/expenses/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-SEC-058",
+      "title": "Security Audit: Undocumented Mutation on DELETE /api/expenses/{id}",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (DELETE /api/expenses/{id}) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on DELETE /api/expenses/{id} requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on DELETE /api/expenses/{id} requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-RES-059",
+      "title": "Resource Not Found: DELETE /api/expenses/{id}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for DELETE /api/expenses/{id}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/expenses/{id}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/expenses/{id}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-POS-060",
+      "title": "Happy Path: GET /api/surplus-listings",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SURPLUS_LISTINGS-POS-060] GET /api/surplus-listings"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-SCH-061",
+      "title": "Schema Conformance: 200 Response on GET /api/surplus-listings",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SURPLUS_LISTINGS-SCH-061] GET /api/surplus-listings"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-POS-062",
+      "title": "Happy Path: POST /api/surplus-listings",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SURPLUS_LISTINGS-POS-062] POST /api/surplus-listings"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-SCH-063",
+      "title": "Schema Conformance: 201 Response on POST /api/surplus-listings",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SURPLUS_LISTINGS-SCH-063] POST /api/surplus-listings"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-SEC-064",
+      "title": "Security Audit: Undocumented Mutation on POST /api/surplus-listings",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/surplus-listings) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-ERR-065",
+      "title": "Malformed JSON: POST /api/surplus-listings",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/surplus-listings; server may return 415, 422, or default."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-POS-066",
+      "title": "Happy Path: POST /api/surplus-listings/{id}/sell",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/sell'",
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/sell requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}/sell' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/sell'",
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/sell requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}/sell' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-SCH-067",
+      "title": "Schema Conformance: 201 Response on POST /api/surplus-listings/{id}/sell",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/sell'",
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/sell requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}/sell' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/sell'",
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/sell requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}/sell' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-SEC-068",
+      "title": "Security Audit: Undocumented Mutation on POST /api/surplus-listings/{id}/sell",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/surplus-listings/{id}/sell) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/sell requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/sell requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-RES-069",
+      "title": "Resource Not Found: POST /api/surplus-listings/{id}/sell",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for POST /api/surplus-listings/{id}/sell.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/sell'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/sell'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-ERR-070",
+      "title": "Malformed JSON: POST /api/surplus-listings/{id}/sell",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/surplus-listings/{id}/sell; server may return 415, 422, or default.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/sell'",
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/sell requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/sell'",
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/sell requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-POS-071",
+      "title": "Happy Path: POST /api/surplus-listings/{id}/cancel",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-SCH-072",
+      "title": "Schema Conformance: 200 Response on POST /api/surplus-listings/{id}/cancel",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/surplus-listings/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-SEC-073",
+      "title": "Security Audit: Undocumented Mutation on POST /api/surplus-listings/{id}/cancel",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/surplus-listings/{id}/cancel) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/cancel requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/cancel requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-RES-074",
+      "title": "Resource Not Found: POST /api/surplus-listings/{id}/cancel",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for POST /api/surplus-listings/{id}/cancel.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/cancel'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/cancel'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-ERR-075",
+      "title": "Malformed JSON: POST /api/surplus-listings/{id}/cancel",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/surplus-listings/{id}/cancel; server may return 415, 422, or default.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/cancel requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/surplus-listings/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/surplus-listings/{id}/cancel requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-POS-076",
+      "title": "Happy Path: GET /api/suppliers",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SUPPLIERS-POS-076] GET /api/suppliers"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-SCH-077",
+      "title": "Schema Conformance: 200 Response on GET /api/suppliers",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SUPPLIERS-SCH-077] GET /api/suppliers"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-POS-078",
+      "title": "Happy Path: POST /api/suppliers",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SUPPLIERS-POS-078] POST /api/suppliers"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-SCH-079",
+      "title": "Schema Conformance: 201 Response on POST /api/suppliers",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SUPPLIERS-SCH-079] POST /api/suppliers"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-SEC-080",
+      "title": "Security Audit: Undocumented Mutation on POST /api/suppliers",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/suppliers) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-ERR-081",
+      "title": "Malformed JSON: POST /api/suppliers",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/suppliers; server may return 415, 422, or default."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-POS-082",
+      "title": "Happy Path: GET /api/stock-audits",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-STOCK_AUDITS-POS-082] GET /api/stock-audits"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-SCH-083",
+      "title": "Schema Conformance: 200 Response on GET /api/stock-audits",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-STOCK_AUDITS-SCH-083] GET /api/stock-audits"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-POS-084",
+      "title": "Happy Path: POST /api/stock-audits",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-STOCK_AUDITS-POS-084] POST /api/stock-audits"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-SCH-085",
+      "title": "Schema Conformance: 201 Response on POST /api/stock-audits",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-STOCK_AUDITS-SCH-085] POST /api/stock-audits"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-SEC-086",
+      "title": "Security Audit: Undocumented Mutation on POST /api/stock-audits",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/stock-audits) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-ERR-087",
+      "title": "Malformed JSON: POST /api/stock-audits",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/stock-audits; server may return 415, 422, or default."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-POS-088",
+      "title": "Happy Path: POST /api/stock-audits/{id}/complete",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/complete'",
+        "Path parameter '{id}' on POST /api/stock-audits/{id}/complete requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{id}/complete' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/complete'",
+        "Path parameter '{id}' on POST /api/stock-audits/{id}/complete requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{id}/complete' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-SCH-089",
+      "title": "Schema Conformance: 200 Response on POST /api/stock-audits/{id}/complete",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/complete'",
+        "Path parameter '{id}' on POST /api/stock-audits/{id}/complete requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{id}/complete' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/complete'",
+        "Path parameter '{id}' on POST /api/stock-audits/{id}/complete requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{id}/complete' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-SEC-090",
+      "title": "Security Audit: Undocumented Mutation on POST /api/stock-audits/{id}/complete",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/stock-audits/{id}/complete) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on POST /api/stock-audits/{id}/complete requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on POST /api/stock-audits/{id}/complete requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-RES-091",
+      "title": "Resource Not Found: POST /api/stock-audits/{id}/complete",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for POST /api/stock-audits/{id}/complete.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/complete'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/complete'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-POS-092",
+      "title": "Happy Path: POST /api/stock-audits/{id}/cancel",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/stock-audits/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/stock-audits/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-SCH-093",
+      "title": "Schema Conformance: 200 Response on POST /api/stock-audits/{id}/cancel",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/stock-audits/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/stock-audits/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-SEC-094",
+      "title": "Security Audit: Undocumented Mutation on POST /api/stock-audits/{id}/cancel",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/stock-audits/{id}/cancel) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on POST /api/stock-audits/{id}/cancel requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on POST /api/stock-audits/{id}/cancel requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-RES-095",
+      "title": "Resource Not Found: POST /api/stock-audits/{id}/cancel",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for POST /api/stock-audits/{id}/cancel.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/cancel'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/cancel'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-ERR-096",
+      "title": "Malformed JSON: POST /api/stock-audits/{id}/cancel",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/stock-audits/{id}/cancel; server may return 415, 422, or default.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/stock-audits/{id}/cancel requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/stock-audits/{id}/cancel requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SALES-POS-097",
+      "title": "Happy Path: GET /api/sales",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SALES-POS-097] GET /api/sales"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SALES-SCH-098",
+      "title": "Schema Conformance: 200 Response on GET /api/sales",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SALES-SCH-098] GET /api/sales"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SALES-POS-099",
+      "title": "Happy Path: POST /api/sales",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SALES-POS-099] POST /api/sales"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SALES-SCH-100",
+      "title": "Schema Conformance: 201 Response on POST /api/sales",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SALES-SCH-100] POST /api/sales"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SALES-SEC-101",
+      "title": "Security Audit: Undocumented Mutation on POST /api/sales",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/sales) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SALES-ERR-102",
+      "title": "Malformed JSON: POST /api/sales",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/sales; server may return 415, 422, or default."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SALES-POS-103",
+      "title": "Happy Path: POST /api/sales/{id}/cancel",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/sales/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/sales/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/sales/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/sales/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SALES-SCH-104",
+      "title": "Schema Conformance: 200 Response on POST /api/sales/{id}/cancel",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/sales/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/sales/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/sales/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/sales/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SALES-SEC-105",
+      "title": "Security Audit: Undocumented Mutation on POST /api/sales/{id}/cancel",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/sales/{id}/cancel) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on POST /api/sales/{id}/cancel requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on POST /api/sales/{id}/cancel requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SALES-RES-106",
+      "title": "Resource Not Found: POST /api/sales/{id}/cancel",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for POST /api/sales/{id}/cancel.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}/cancel'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}/cancel'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-SALES-ERR-107",
+      "title": "Malformed JSON: POST /api/sales/{id}/cancel",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/sales/{id}/cancel; server may return 415, 422, or default.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/sales/{id}/cancel requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/sales/{id}/cancel requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-POS-108",
+      "title": "Happy Path: GET /api/purchase-orders",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-PURCHASE_ORDERS-POS-108] GET /api/purchase-orders"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-SCH-109",
+      "title": "Schema Conformance: 200 Response on GET /api/purchase-orders",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-PURCHASE_ORDERS-SCH-109] GET /api/purchase-orders"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-POS-110",
+      "title": "Happy Path: POST /api/purchase-orders",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-PURCHASE_ORDERS-POS-110] POST /api/purchase-orders"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-SCH-111",
+      "title": "Schema Conformance: 201 Response on POST /api/purchase-orders",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-PURCHASE_ORDERS-SCH-111] POST /api/purchase-orders"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-SEC-112",
+      "title": "Security Audit: Undocumented Mutation on POST /api/purchase-orders",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/purchase-orders) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-ERR-113",
+      "title": "Malformed JSON: POST /api/purchase-orders",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/purchase-orders; server may return 415, 422, or default."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-POS-114",
+      "title": "Happy Path: POST /api/purchase-orders/{id}/receive",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/receive'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/receive requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/receive' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/receive'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/receive requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/receive' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-SCH-115",
+      "title": "Schema Conformance: 200 Response on POST /api/purchase-orders/{id}/receive",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/receive'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/receive requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/receive' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/receive'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/receive requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/receive' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-SEC-116",
+      "title": "Security Audit: Undocumented Mutation on POST /api/purchase-orders/{id}/receive",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/purchase-orders/{id}/receive) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/receive requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/receive requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-RES-117",
+      "title": "Resource Not Found: POST /api/purchase-orders/{id}/receive",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for POST /api/purchase-orders/{id}/receive.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/receive'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/receive'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-ERR-118",
+      "title": "Malformed JSON: POST /api/purchase-orders/{id}/receive",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/purchase-orders/{id}/receive; server may return 415, 422, or default.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/receive'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/receive requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/receive'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/receive requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-POS-119",
+      "title": "Happy Path: POST /api/purchase-orders/{id}/place",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/place'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/place requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/place' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/place'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/place requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/place' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-SCH-120",
+      "title": "Schema Conformance: 200 Response on POST /api/purchase-orders/{id}/place",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/place'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/place requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/place' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/place'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/place requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/place' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-SEC-121",
+      "title": "Security Audit: Undocumented Mutation on POST /api/purchase-orders/{id}/place",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/purchase-orders/{id}/place) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/place requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/place requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-RES-122",
+      "title": "Resource Not Found: POST /api/purchase-orders/{id}/place",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for POST /api/purchase-orders/{id}/place.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/place'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/place'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-POS-123",
+      "title": "Happy Path: POST /api/purchase-orders/{id}/cancel",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-SCH-124",
+      "title": "Schema Conformance: 200 Response on POST /api/purchase-orders/{id}/cancel",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/cancel requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}/cancel' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-SEC-125",
+      "title": "Security Audit: Undocumented Mutation on POST /api/purchase-orders/{id}/cancel",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/purchase-orders/{id}/cancel) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics.",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/cancel requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/cancel requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-RES-126",
+      "title": "Resource Not Found: POST /api/purchase-orders/{id}/cancel",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for POST /api/purchase-orders/{id}/cancel.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/cancel'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/cancel'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-ERR-127",
+      "title": "Malformed JSON: POST /api/purchase-orders/{id}/cancel",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/purchase-orders/{id}/cancel; server may return 415, 422, or default.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/cancel requires existing resource fixture."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}/cancel'",
+        "Path parameter '{id}' on POST /api/purchase-orders/{id}/cancel requires existing resource fixture."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-POS-128",
+      "title": "Happy Path: GET /api/products",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-PRODUCTS-POS-128] GET /api/products"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-SCH-129",
+      "title": "Schema Conformance: 200 Response on GET /api/products",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-PRODUCTS-SCH-129] GET /api/products"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-POS-130",
+      "title": "Happy Path: POST /api/products",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-PRODUCTS-POS-130] POST /api/products"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-SCH-131",
+      "title": "Schema Conformance: 201 Response on POST /api/products",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-PRODUCTS-SCH-131] POST /api/products"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-SEC-132",
+      "title": "Security Audit: Undocumented Mutation on POST /api/products",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/products) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-ERR-133",
+      "title": "Malformed JSON: POST /api/products",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/products; server may return 415, 422, or default."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-MOVEMENTS-POS-134",
+      "title": "Happy Path: GET /api/movements",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-MOVEMENTS-POS-134] GET /api/movements"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-MOVEMENTS-SCH-135",
+      "title": "Schema Conformance: 200 Response on GET /api/movements",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-MOVEMENTS-SCH-135] GET /api/movements"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-MOVEMENTS-POS-136",
+      "title": "Happy Path: POST /api/movements",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-MOVEMENTS-POS-136] POST /api/movements"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-MOVEMENTS-SCH-137",
+      "title": "Schema Conformance: 201 Response on POST /api/movements",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-MOVEMENTS-SCH-137] POST /api/movements"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-MOVEMENTS-SEC-138",
+      "title": "Security Audit: Undocumented Mutation on POST /api/movements",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/movements) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-MOVEMENTS-ERR-139",
+      "title": "Malformed JSON: POST /api/movements",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/movements; server may return 415, 422, or default."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INVENTORY-POS-140",
+      "title": "Happy Path: POST /api/inventory/stock-out",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-INVENTORY-POS-140] POST /api/inventory/stock-out"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INVENTORY-SCH-141",
+      "title": "Schema Conformance: 201 Response on POST /api/inventory/stock-out",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-INVENTORY-SCH-141] POST /api/inventory/stock-out"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INVENTORY-SEC-142",
+      "title": "Security Audit: Undocumented Mutation on POST /api/inventory/stock-out",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/inventory/stock-out) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INVENTORY-ERR-143",
+      "title": "Malformed JSON: POST /api/inventory/stock-out",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/inventory/stock-out; server may return 415, 422, or default."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INVENTORY-POS-144",
+      "title": "Happy Path: POST /api/inventory/stock-in",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-INVENTORY-POS-144] POST /api/inventory/stock-in"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INVENTORY-SCH-145",
+      "title": "Schema Conformance: 201 Response on POST /api/inventory/stock-in",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-INVENTORY-SCH-145] POST /api/inventory/stock-in"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INVENTORY-SEC-146",
+      "title": "Security Audit: Undocumented Mutation on POST /api/inventory/stock-in",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/inventory/stock-in) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INVENTORY-ERR-147",
+      "title": "Malformed JSON: POST /api/inventory/stock-in",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/inventory/stock-in; server may return 415, 422, or default."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INVENTORY-POS-148",
+      "title": "Happy Path: POST /api/inventory/adjust",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-INVENTORY-POS-148] POST /api/inventory/adjust"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INVENTORY-SCH-149",
+      "title": "Schema Conformance: 201 Response on POST /api/inventory/adjust",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-INVENTORY-SCH-149] POST /api/inventory/adjust"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INVENTORY-SEC-150",
+      "title": "Security Audit: Undocumented Mutation on POST /api/inventory/adjust",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/inventory/adjust) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INVENTORY-ERR-151",
+      "title": "Malformed JSON: POST /api/inventory/adjust",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/inventory/adjust; server may return 415, 422, or default."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-POS-152",
+      "title": "Happy Path: GET /api/expenses",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-EXPENSES-POS-152] GET /api/expenses"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-SCH-153",
+      "title": "Schema Conformance: 200 Response on GET /api/expenses",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-EXPENSES-SCH-153] GET /api/expenses"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-POS-154",
+      "title": "Happy Path: POST /api/expenses",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-EXPENSES-POS-154] POST /api/expenses"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-SCH-155",
+      "title": "Schema Conformance: 201 Response on POST /api/expenses",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-EXPENSES-SCH-155] POST /api/expenses"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-SEC-156",
+      "title": "Security Audit: Undocumented Mutation on POST /api/expenses",
+      "category": "AUTH_SECURITY",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "HIGH",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Security audit probe relies on unverified authentication inference rather than explicit contract specification.",
+        "Step 1 (POST /api/expenses) oracle type SOURCE_CODE_INFERENCE relies on implementation heuristics."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-ERR-157",
+      "title": "Malformed JSON: POST /api/expenses",
+      "category": "ERROR_HANDLING",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 400 Bad Request is not declared in contract for POST /api/expenses; server may return 415, 422, or default."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-POS-158",
+      "title": "Happy Path: GET /api/surplus-listings/summary",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SURPLUS_LISTINGS-POS-158] GET /api/surplus-listings/summary"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-SCH-159",
+      "title": "Schema Conformance: 200 Response on GET /api/surplus-listings/summary",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SURPLUS_LISTINGS-SCH-159] GET /api/surplus-listings/summary"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-POS-160",
+      "title": "Happy Path: GET /api/surplus-listings/suggestions",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SURPLUS_LISTINGS-POS-160] GET /api/surplus-listings/suggestions"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-SCH-161",
+      "title": "Schema Conformance: 200 Response on GET /api/surplus-listings/suggestions",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SURPLUS_LISTINGS-SCH-161] GET /api/surplus-listings/suggestions"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-POS-162",
+      "title": "Happy Path: GET /api/suppliers/{id}/products",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}/products'",
+        "Path parameter '{id}' on GET /api/suppliers/{id}/products requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/suppliers/{id}/products' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}/products'",
+        "Path parameter '{id}' on GET /api/suppliers/{id}/products requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/suppliers/{id}/products' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-SCH-163",
+      "title": "Schema Conformance: 200 Response on GET /api/suppliers/{id}/products",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}/products'",
+        "Path parameter '{id}' on GET /api/suppliers/{id}/products requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/suppliers/{id}/products' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}/products'",
+        "Path parameter '{id}' on GET /api/suppliers/{id}/products requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/suppliers/{id}/products' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-RES-164",
+      "title": "Resource Not Found: GET /api/suppliers/{id}/products",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for GET /api/suppliers/{id}/products.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}/products'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/suppliers/{id}/products'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-POS-165",
+      "title": "Happy Path: GET /api/stock-audits/{id}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}'",
+        "Path parameter '{id}' on GET /api/stock-audits/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}'",
+        "Path parameter '{id}' on GET /api/stock-audits/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-SCH-166",
+      "title": "Schema Conformance: 200 Response on GET /api/stock-audits/{id}",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}'",
+        "Path parameter '{id}' on GET /api/stock-audits/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}'",
+        "Path parameter '{id}' on GET /api/stock-audits/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/stock-audits/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-RES-167",
+      "title": "Resource Not Found: GET /api/stock-audits/{id}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for GET /api/stock-audits/{id}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{id}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-POS-168",
+      "title": "Happy Path: GET /api/stock-audits/summary",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-STOCK_AUDITS-POS-168] GET /api/stock-audits/summary"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-SCH-169",
+      "title": "Schema Conformance: 200 Response on GET /api/stock-audits/summary",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-STOCK_AUDITS-SCH-169] GET /api/stock-audits/summary"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SALES-POS-170",
+      "title": "Happy Path: GET /api/sales/{id}",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}'",
+        "Path parameter '{id}' on GET /api/sales/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/sales/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}'",
+        "Path parameter '{id}' on GET /api/sales/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/sales/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SALES-SCH-171",
+      "title": "Schema Conformance: 200 Response on GET /api/sales/{id}",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}'",
+        "Path parameter '{id}' on GET /api/sales/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/sales/{id}' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}'",
+        "Path parameter '{id}' on GET /api/sales/{id} requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/sales/{id}' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-SALES-RES-172",
+      "title": "Resource Not Found: GET /api/sales/{id}",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for GET /api/sales/{id}.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/sales/{id}'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-SALES-POS-173",
+      "title": "Happy Path: GET /api/sales/trend",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SALES-POS-173] GET /api/sales/trend"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SALES-SCH-174",
+      "title": "Schema Conformance: 200 Response on GET /api/sales/trend",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SALES-SCH-174] GET /api/sales/trend"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SALES-POS-175",
+      "title": "Happy Path: GET /api/sales/summary",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SALES-POS-175] GET /api/sales/summary"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SALES-SCH-176",
+      "title": "Schema Conformance: 200 Response on GET /api/sales/summary",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-SALES-SCH-176] GET /api/sales/summary"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-REPORTS-POS-177",
+      "title": "Happy Path: GET /api/reports/summary",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-REPORTS-POS-177] GET /api/reports/summary"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-REPORTS-SCH-178",
+      "title": "Schema Conformance: 200 Response on GET /api/reports/summary",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-REPORTS-SCH-178] GET /api/reports/summary"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-REPORTS-POS-179",
+      "title": "Happy Path: GET /api/reports/sales",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-REPORTS-POS-179] GET /api/reports/sales"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-REPORTS-SCH-180",
+      "title": "Schema Conformance: 200 Response on GET /api/reports/sales",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-REPORTS-SCH-180] GET /api/reports/sales"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-REPORTS-POS-181",
+      "title": "Happy Path: GET /api/reports/purchases",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-REPORTS-POS-181] GET /api/reports/purchases"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-REPORTS-SCH-182",
+      "title": "Schema Conformance: 200 Response on GET /api/reports/purchases",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-REPORTS-SCH-182] GET /api/reports/purchases"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-REPORTS-POS-183",
+      "title": "Happy Path: GET /api/reports/profit-loss",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-REPORTS-POS-183] GET /api/reports/profit-loss"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-REPORTS-SCH-184",
+      "title": "Schema Conformance: 200 Response on GET /api/reports/profit-loss",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-REPORTS-SCH-184] GET /api/reports/profit-loss"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-REPORTS-POS-185",
+      "title": "Happy Path: GET /api/reports/inventory-loss",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-REPORTS-POS-185] GET /api/reports/inventory-loss"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-REPORTS-SCH-186",
+      "title": "Schema Conformance: 200 Response on GET /api/reports/inventory-loss",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-REPORTS-SCH-186] GET /api/reports/inventory-loss"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-POS-187",
+      "title": "Happy Path: GET /api/products/{id}/movements",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}/movements'",
+        "Path parameter '{id}' on GET /api/products/{id}/movements requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{id}/movements' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}/movements'",
+        "Path parameter '{id}' on GET /api/products/{id}/movements requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{id}/movements' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-SCH-188",
+      "title": "Schema Conformance: 200 Response on GET /api/products/{id}/movements",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}/movements'",
+        "Path parameter '{id}' on GET /api/products/{id}/movements requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{id}/movements' lacks a preceding setup fixture or resource producer."
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}/movements'",
+        "Path parameter '{id}' on GET /api/products/{id}/movements requires existing resource fixture.",
+        "Single-step scenario targeting parameterized path '/api/products/{id}/movements' lacks a preceding setup fixture or resource producer."
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-RES-189",
+      "title": "Resource Not Found: GET /api/products/{id}/movements",
+      "category": "RESOURCE_EXISTENCE",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "HTTP 404 response is not declared in OpenAPI contract for GET /api/products/{id}/movements.",
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}/movements'"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: needs_existing_resource_id for path '/api/products/{id}/movements'"
+      ]
+    },
+    {
+      "scenario_id": "SCN-INTELLIGENCE-POS-190",
+      "title": "Happy Path: GET /api/intelligence",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-INTELLIGENCE-POS-190] GET /api/intelligence"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INTELLIGENCE-SCH-191",
+      "title": "Schema Conformance: 200 Response on GET /api/intelligence",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-INTELLIGENCE-SCH-191] GET /api/intelligence"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INTELLIGENCE-POS-192",
+      "title": "Happy Path: GET /api/intelligence/sales",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-INTELLIGENCE-POS-192] GET /api/intelligence/sales"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-INTELLIGENCE-SCH-193",
+      "title": "Schema Conformance: 200 Response on GET /api/intelligence/sales",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-INTELLIGENCE-SCH-193] GET /api/intelligence/sales"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-HEALTH-POS-194",
+      "title": "Happy Path: GET /api/health",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-HEALTH-POS-194] GET /api/health"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-HEALTH-SCH-195",
+      "title": "Schema Conformance: 200 Response on GET /api/health",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-HEALTH-SCH-195] GET /api/health"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-DASHBOARD-POS-196",
+      "title": "Happy Path: GET /api/dashboard",
+      "category": "CONTRACT_POSITIVE",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-DASHBOARD-POS-196] GET /api/dashboard"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-DASHBOARD-SCH-197",
+      "title": "Schema Conformance: 200 Response on GET /api/dashboard",
+      "category": "RESPONSE_SCHEMA",
+      "origin": "DETERMINISTIC",
+      "priority": "MEDIUM",
+      "risk": "LOW",
+      "status": "COMPILED",
+      "reasons": [],
+      "compiled_test_names": [
+        "[SCN-DASHBOARD-SCH-197] GET /api/dashboard"
+      ],
+      "missing_fixtures": []
+    },
+    {
+      "scenario_id": "SCN-SURPLUS_LISTINGS-CONS-198",
+      "title": "Read-After-Write Consistency: /api/surplus-listings",
+      "category": "CONSISTENCY_CHECK",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Immediate read-after-write consistency is not formally specified in contract and requires human review.",
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ]
+    },
+    {
+      "scenario_id": "SCN-SUPPLIERS-CONS-199",
+      "title": "Read-After-Write Consistency: /api/suppliers",
+      "category": "CONSISTENCY_CHECK",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Immediate read-after-write consistency is not formally specified in contract and requires human review.",
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ]
+    },
+    {
+      "scenario_id": "SCN-STOCK_AUDITS-CONS-200",
+      "title": "Read-After-Write Consistency: /api/stock-audits",
+      "category": "CONSISTENCY_CHECK",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Immediate read-after-write consistency is not formally specified in contract and requires human review.",
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ]
+    },
+    {
+      "scenario_id": "SCN-SALES-CONS-201",
+      "title": "Read-After-Write Consistency: /api/sales",
+      "category": "CONSISTENCY_CHECK",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Immediate read-after-write consistency is not formally specified in contract and requires human review.",
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ]
+    },
+    {
+      "scenario_id": "SCN-PURCHASE_ORDERS-CONS-202",
+      "title": "Read-After-Write Consistency: /api/purchase-orders",
+      "category": "CONSISTENCY_CHECK",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Immediate read-after-write consistency is not formally specified in contract and requires human review.",
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ]
+    },
+    {
+      "scenario_id": "SCN-PRODUCTS-CONS-203",
+      "title": "Read-After-Write Consistency: /api/products",
+      "category": "CONSISTENCY_CHECK",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Immediate read-after-write consistency is not formally specified in contract and requires human review.",
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ]
+    },
+    {
+      "scenario_id": "SCN-MOVEMENTS-CONS-204",
+      "title": "Read-After-Write Consistency: /api/movements",
+      "category": "CONSISTENCY_CHECK",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Immediate read-after-write consistency is not formally specified in contract and requires human review.",
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ]
+    },
+    {
+      "scenario_id": "SCN-EXPENSES-CONS-205",
+      "title": "Read-After-Write Consistency: /api/expenses",
+      "category": "CONSISTENCY_CHECK",
+      "origin": "DETERMINISTIC",
+      "priority": "HIGH",
+      "risk": "MEDIUM",
+      "status": "NEEDS_REVIEW",
+      "reasons": [
+        "Immediate read-after-write consistency is not formally specified in contract and requires human review.",
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ],
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Unresolved dependency: database_isolation_or_transaction_rollback"
+      ]
+    }
+  ]
+}

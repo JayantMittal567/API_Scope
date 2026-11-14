@@ -88,7 +88,9 @@ def test_generated_yaml_roundtrips_through_load_collection_and_executes_in_run_s
         base_dir=tmp_path,
     )
 
-    run_result = run_service.run_collection(pos_suite, environment=test_env)
+    run_result = run_service.run_collection(
+        pos_suite, environment=test_env, allow_mutation=True
+    )
 
     assert run_result.all_passed is True
     assert run_result.total_tests == 3

@@ -14,7 +14,6 @@ from typing import Any, Protocol
 
 import httpx
 import yaml
-from dotenv import load_dotenv
 
 from apiscope.core.exceptions import (
     ConfigurationError,
@@ -103,7 +102,25 @@ class LLMConfig:
         temperature: float | None = None,
     ) -> LLMConfig:
         """Resolve LLMConfig from environment variables and .env file."""
-        load_dotenv()
+        # Auto-load .env in current working directory if present
+        env_file = Path.cwd() / ".env"
+        if env_file.is_file():
+            try:
+                for line in env_file.read_text(encoding="utf-8").splitlines():
+                    stripped = line.strip()
+                    if not stripped or stripped.startswith("#") or "=" not in stripped:
+                        continue
+                    k, v = stripped.split("=", 1)
+                    k = k.strip()
+                    v = v.strip()
+                    if (v.startswith('"') and v.endswith('"')) or (
+                        v.startswith("'") and v.endswith("'")
+                    ):
+                        v = v[1:-1]
+                    if k:
+                        os.environ.setdefault(k, v)
+            except Exception:
+                pass
 
         # Check explicit api_key or env vars in priority order
         key = (

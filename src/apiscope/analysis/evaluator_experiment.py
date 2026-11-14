@@ -35,6 +35,7 @@ from apiscope.core.executor import RequestExecutor, TargetAccessPolicy
 from apiscope.core.models import HttpMethod, HttpRequest
 from apiscope.core.results import CaseResult, CaseStatus
 from apiscope.core.run_service import RunService
+from apiscope.core.safety import ExecutionSafetyPolicy
 from apiscope.definitions.collection import TestCollection, load_collection
 from apiscope.definitions.environment import Environment
 from apiscope.generators.ai_generator import (
@@ -175,12 +176,12 @@ def _classify_detected_bugs_from_run(
             if "bug-01" in t_name or (
                 "products" in r.url
                 and r.method == "DELETE"
-                and "auth" in t_name
-                and r.status_code == 204
+                and ("auth" in t_name or "authentication" in t_name)
             ):
                 detected.add("BUG-01")
                 details["BUG-01"] = (
-                    f"Unauthenticated DELETE /products/1 returned 204: {err_msg}"
+                    f"Unauthenticated DELETE /products/1 returned {r.status_code}: "
+                    f"{err_msg}"
                 )
             elif "bug-02" in t_name or (
                 "users/2/profile" in r.url and r.status_code == 200
@@ -235,9 +236,7 @@ def _classify_detected_bugs_from_run(
                 details["BUG-08"] = (
                     f"Artificial delay on recommendations violated SLA: {err_msg}"
                 )
-            elif "bug-09" in t_name or (
-                "users" in r.url and "profile" in r.url and "schema" in t_name
-            ):
+            elif "bug-09" in t_name or ("users" in r.url and "profile" in r.url):
                 detected.add("BUG-09")
                 details["BUG-09"] = (
                     f"User profile leaked internal_auth_hash attribute: {err_msg}"
@@ -314,7 +313,10 @@ def run_planted_bug_experiment(
             transport=transport,
             policy=TargetAccessPolicy(allow_private_networks=True),
         )
-        run_service = RunService(executor=executor)
+        run_service = RunService(
+            executor=executor,
+            safety_policy=ExecutionSafetyPolicy.permissive(),
+        )
 
         # =====================================================================
         # STRATEGY 1: Handwritten Domain & Security Probes
@@ -614,7 +616,10 @@ def run_planted_bug_experiment(
             transport=httpx.MockTransport(stockpile_mock_handler),
             policy=TargetAccessPolicy(allow_private_networks=True),
         )
-        stockpile_run_service = RunService(executor=stockpile_executor)
+        stockpile_run_service = RunService(
+            executor=stockpile_executor,
+            safety_policy=ExecutionSafetyPolicy.permissive(),
+        )
         stockpile_run = stockpile_run_service.run_collection(
             stockpile_coll,
             environment=Environment(

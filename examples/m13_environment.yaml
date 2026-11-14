@@ -1,0 +1,17 @@
+name: "sample_app_env"
+variables:
+  base_url: "http://127.0.0.1:8000"
+  auth_token: "token-user-1"
+  token: "token-user-1"
+  user_1_token: "token-user-1"
+  user_2_token: "token-user-2"
+  admin_token: "token-admin"
+  api_key: "token-user-1"
+  auth_header: "Bearer token-user-1"
+secrets:
+  - "auth_token"
+  - "token"
+  - "user_1_token"
+  - "user_2_token"
+  - "admin_token"
+  - "api_key"

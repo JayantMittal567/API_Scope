@@ -112,6 +112,7 @@ tests:
       method: "POST"
       url: "{{base_url}}/coupons/redeem"
       headers:
+        Authorization: "Bearer {{auth_token}}"
         Content-Type: "application/json"
       body:
         code: "WELCOME50"
@@ -129,6 +130,7 @@ tests:
       method: "POST"
       url: "{{base_url}}/coupons/redeem"
       headers:
+        Authorization: "Bearer {{auth_token}}"
         Content-Type: "application/json"
       body:
         code: "WELCOME50"

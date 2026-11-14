@@ -179,7 +179,7 @@ def test_correlation_id_end_to_end_from_run_service_to_silent_failure_s1(
         },
     )
 
-    run_result = run_service.run_collection(coll, environment=env)
+    run_result = run_service.run_collection(coll, environment=env, allow_mutation=True)
     assert run_result.total_tests == 1
     assert len(run_result.results) == 1
 

@@ -7,6 +7,7 @@ deterministic dependency skip logic, and per-row dataset parameterization.
 
 from __future__ import annotations
 
+import contextlib
 import re
 import uuid
 from collections.abc import Callable
@@ -32,6 +33,12 @@ from apiscope.core.executor import RequestExecutor, _sanitize_url
 from apiscope.core.extractor import Extractor
 from apiscope.core.logging_config import get_logger, redact_sensitive_text
 from apiscope.core.results import CaseResult, CaseStatus, RunResult
+from apiscope.core.safety import (
+    DryRunReport,
+    ExecutionSafetyPolicy,
+    OperationRisk,
+    PlannedOperation,
+)
 from apiscope.core.variables import VariableResolver
 from apiscope.definitions.environment import Environment
 from apiscope.definitions.models import DefinitionStatus
@@ -86,6 +93,7 @@ class RunService:
         id_generator: Callable[[], str] | None = None,
         correlation_id_generator: Callable[[], str] | None = None,
         max_run_duration_seconds: float = 300.0,
+        safety_policy: ExecutionSafetyPolicy | None = None,
     ) -> None:
         """Initialize RunService with pluggable execution dependencies.
 
@@ -98,6 +106,7 @@ class RunService:
             id_generator: Generator returning unique run ID string.
             correlation_id_generator: Generator returning unique correlation ID string.
             max_run_duration_seconds: Hard ceiling on suite run duration in seconds.
+            safety_policy: Optional execution safety policy (defaults to read-only).
         """
         self._executor = executor or RequestExecutor()
         self._resolver = resolver or VariableResolver()
@@ -109,6 +118,7 @@ class RunService:
             lambda: f"corr-{uuid.uuid4().hex[:12]}"
         )
         self._max_run_duration_seconds = max_run_duration_seconds
+        self.safety_policy = safety_policy or ExecutionSafetyPolicy.read_only()
         self.logger = get_logger("apiscope.services.run_service")
 
     def _get_secret_values(
@@ -221,6 +231,8 @@ class RunService:
         data_file: str | Path | None = None,
         base_dir: Path | None = None,
         include_proposed: bool = False,
+        allow_mutation: bool | None = None,
+        safety_policy: ExecutionSafetyPolicy | None = None,
     ) -> RunResult:
         """Execute a test collection across environments and parameter datasets.
 
@@ -234,6 +246,8 @@ class RunService:
             base_dir: Optional base directory for data_file traversal validation.
             include_proposed: Whether to execute tests with status 'proposed'
                 (default False).
+            allow_mutation: Whether mutating operations are explicitly authorized.
+            safety_policy: Optional override safety policy.
 
         Returns:
             Aggregated RunResult containing structured CaseResult objects.
@@ -280,10 +294,17 @@ class RunService:
                 if any(t_tag.strip().lower() in tag_set for t_tag in t.tags)
             ]
 
-        # 3. Setup execution metrics
+        # 3. Setup execution metrics and safety policy
         started_at = self._clock()
         run_id = self._id_generator()
         env_name = environment.name if environment else None
+
+        effective_safety = safety_policy or self.safety_policy
+        if allow_mutation is not None:
+            effective_safety = effective_safety.clone(
+                allow_mutations=allow_mutation,
+                allow_destructive=allow_mutation,
+            )
 
         # Build execution sequence list
         if data_rows is None:
@@ -490,6 +511,48 @@ class RunService:
                     corr_id = self._correlation_id_generator()
                     http_request.headers["X-Correlation-ID"] = corr_id
 
+                # 4.35. Execution safety policy evaluation
+                permit = effective_safety.evaluate(
+                    test_def=test_def,
+                    request=http_request,
+                    environment=environment or runtime_env,
+                )
+                if not permit.permitted:
+                    for var in test_def.extract:
+                        if var not in runtime_vars:
+                            failed_chain_variables.add(var)
+                    all_case_results.append(
+                        CaseResult(
+                            test_name=test_def.name,
+                            module=test_def.module,
+                            tags=list(test_def.tags),
+                            status=CaseStatus.SKIPPED,
+                            verified=False,
+                            method=http_request.method.value
+                            if hasattr(http_request.method, "value")
+                            else str(http_request.method),
+                            url=self._mask_url(
+                                http_request.url, known_secrets, runtime_vars
+                            ),
+                            status_code=None,
+                            elapsed_ms=None,
+                            request_headers=self._mask_headers(
+                                http_request.headers,
+                                known_secrets,
+                                runtime_vars,
+                            ),
+                            response_headers={},
+                            assertion_results=[],
+                            extracted_variables={},
+                            extraction_errors=[],
+                            error_message=None,
+                            skip_reason=permit.reason,
+                            row_index=row_index,
+                            correlation_id=corr_id,
+                        )
+                    )
+                    continue
+
                 # 4.4. Execute HTTP Request via RequestExecutor
                 try:
                     response = self._executor.execute(http_request)
@@ -653,4 +716,187 @@ class RunService:
             error_tests=error_count,
             skipped_tests=skipped_count,
             results=all_case_results,
+        )
+
+    def dry_run(
+        self,
+        collection: TestCollection,
+        environment: Environment | None = None,
+        module: str | None = None,
+        tags: list[str] | None = None,
+        include_proposed: bool = False,
+        allow_mutation: bool | None = None,
+        safety_policy: ExecutionSafetyPolicy | None = None,
+    ) -> DryRunReport:
+        """Simulate and preview execution without making network calls or DB writes.
+
+        Evaluates governance gates, variable dependencies, secrets masking, risk
+        categories, and safety policy permissions for all target test definitions.
+
+        Args:
+            collection: The TestCollection containing tests to evaluate.
+            environment: Optional Environment providing variable and secret bindings.
+            module: Optional module filter to evaluate only matching tests.
+            tags: Optional tags filter to evaluate tests matching at least one tag.
+            include_proposed: Whether tests with status 'proposed' are permitted.
+            allow_mutation: Whether mutating operations are authorized.
+            safety_policy: Optional override safety policy.
+
+        Returns:
+            DryRunReport detailing planned operations, risk counts, and missing vars.
+        """
+        if len(collection.tests) == 0 and len(collection.test_files) > 0:
+            collection.load_all_tests()
+
+        tests_to_plan = list(collection.tests)
+        if module is not None and module.strip():
+            target_module = module.strip().lower()
+            tests_to_plan = [
+                t for t in tests_to_plan if t.module.strip().lower() == target_module
+            ]
+
+        if tags is not None and len(tags) > 0:
+            tag_set = {t.strip().lower() for t in tags if t.strip()}
+            tests_to_plan = [
+                t
+                for t in tests_to_plan
+                if any(t_tag.strip().lower() in tag_set for t_tag in t.tags)
+            ]
+
+        effective_safety = safety_policy or self.safety_policy
+        if allow_mutation is not None:
+            effective_safety = effective_safety.clone(
+                allow_mutations=allow_mutation,
+                allow_destructive=allow_mutation,
+            )
+
+        runtime_vars: dict[str, Any] = {}
+        if environment is not None:
+            runtime_vars.update(environment.variables)
+
+        known_secrets: set[str] = set()
+        if environment is not None:
+            known_secrets.update(environment.secrets)
+        for k in runtime_vars:
+            if _is_secret_key(k):
+                known_secrets.add(k)
+
+        read_only_count = 0
+        mutating_count = 0
+        destructive_count = 0
+        unknown_count = 0
+        approved_count = 0
+        proposed_count = 0
+        executable_count = 0
+        blocked_count = 0
+        all_missing_vars: set[str] = set()
+        planned_ops: list[PlannedOperation] = []
+
+        for test_def in tests_to_plan:
+            status_val = (
+                test_def.status.value
+                if hasattr(test_def.status, "value")
+                else str(test_def.status)
+            )
+            if test_def.status == DefinitionStatus.APPROVED:
+                approved_count += 1
+            else:
+                proposed_count += 1
+
+            needed_vars = (
+                _find_referenced_variables(test_def.request.url)
+                | _find_referenced_variables(test_def.request.headers)
+                | _find_referenced_variables(test_def.request.params)
+                | _find_referenced_variables(test_def.request.body)
+            )
+            test_missing = sorted([v for v in needed_vars if v not in runtime_vars])
+            all_missing_vars.update(test_missing)
+
+            # Resolve URL using resolver if variables are available
+            resolved_url = test_def.request.url
+            with contextlib.suppress(Exception):
+                resolved_url = self._resolver.resolve_text(
+                    test_def.request.url, runtime_vars
+                )
+
+            masked_url = self._mask_url(resolved_url, known_secrets, runtime_vars)
+            masked_headers = self._mask_headers(
+                test_def.request.headers, known_secrets, runtime_vars
+            )
+
+            method_str = (
+                test_def.request.method.value
+                if hasattr(test_def.request.method, "value")
+                else str(test_def.request.method)
+            ).upper()
+
+            risk = effective_safety.classify_operation(
+                method=method_str,
+                url=resolved_url,
+                tags=test_def.tags,
+            )
+
+            if risk == OperationRisk.READ_ONLY:
+                read_only_count += 1
+            elif risk == OperationRisk.MUTATING:
+                mutating_count += 1
+            elif risk == OperationRisk.DESTRUCTIVE:
+                destructive_count += 1
+            else:
+                unknown_count += 1
+
+            block_reason: str | None = None
+            will_execute = True
+
+            if test_def.status == DefinitionStatus.PROPOSED and not include_proposed:
+                will_execute = False
+                block_reason = (
+                    "Skipped because test status is 'proposed' "
+                    "(approve via 'apiscope approve' or pass --include-proposed)"
+                )
+            else:
+                permit = effective_safety.evaluate(
+                    test_def=test_def,
+                    request=test_def.request,
+                    environment=environment,
+                )
+                if not permit.permitted:
+                    will_execute = False
+                    block_reason = permit.reason
+
+            if will_execute:
+                executable_count += 1
+            else:
+                blocked_count += 1
+
+            planned_ops.append(
+                PlannedOperation(
+                    test_name=test_def.name,
+                    module=test_def.module,
+                    method=method_str,
+                    url=masked_url,
+                    risk=risk,
+                    status=status_val,
+                    will_execute=will_execute,
+                    block_reason=block_reason,
+                    missing_variables=test_missing,
+                    masked_headers=masked_headers,
+                )
+            )
+
+        env_name = environment.name if environment else None
+        return DryRunReport(
+            suite_name=collection.name or "Unnamed Suite",
+            environment_name=env_name,
+            total_operations=len(tests_to_plan),
+            read_only_count=read_only_count,
+            mutating_count=mutating_count,
+            destructive_count=destructive_count,
+            unknown_count=unknown_count,
+            approved_count=approved_count,
+            proposed_count=proposed_count,
+            executable_count=executable_count,
+            blocked_count=blocked_count,
+            operations=planned_ops,
+            missing_variables=sorted(all_missing_vars),
         )

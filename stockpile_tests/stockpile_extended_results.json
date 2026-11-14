@@ -1,0 +1,1221 @@
+{
+  "evaluation_phase": "Phase 2 - Extended Read-Only Verification",
+  "run_id": "237ec84b-7114-4519-884d-a9cf23f649a2",
+  "total_tests": 30,
+  "passed_tests": 30,
+  "failed_tests": 0,
+  "error_tests": 0,
+  "skipped_tests": 0,
+  "total_assertions": 120,
+  "passed_assertions": 120,
+  "failed_assertions": 0,
+  "cases": [
+    {
+      "name": "StockPile read-only: GET /api/health",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 20.330700000158686,
+      "assertions_count": 5,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.status' matched: 'UP'",
+          "expected": "UP",
+          "actual": "UP"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.database' matched: 'CONNECTED'",
+          "expected": "CONNECTED",
+          "actual": "CONNECTED"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.databaseType' matched: 'SQLite'",
+          "expected": "SQLite",
+          "actual": "SQLite"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/dashboard",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 3.4580000001369626,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.liveState.totalProducts' matched: 2",
+          "expected": "integer",
+          "actual": 2
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.periodActivity.period' matched: 'TODAY'",
+          "expected": "TODAY",
+          "actual": "TODAY"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/products",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 2.41820000064763,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].id' matched: 2",
+          "expected": "integer",
+          "actual": 2
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].sku' matched: 'ACC-U-610'",
+          "expected": "string",
+          "actual": "ACC-U-610"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/products/1",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.7544000002089888,
+      "assertions_count": 5,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.id' matched: 1",
+          "expected": 1,
+          "actual": 1
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.sku' matched: 'ELE-WM-764'",
+          "expected": "ELE-WM-764",
+          "actual": "ELE-WM-764"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.category' matched: 'Electrical device'",
+          "expected": "Electrical device",
+          "actual": "Electrical device"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/products/1/movements",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.6722000000299886,
+      "assertions_count": 3,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].productId' matched: 1",
+          "expected": 1,
+          "actual": 1
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/suppliers",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.5574999997625127,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].id' matched: 4",
+          "expected": "integer",
+          "actual": 4
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].name' matched: 'Deepak metal Mart'",
+          "expected": "string",
+          "actual": "Deepak metal Mart"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/suppliers/3",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 3.297000000202388,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.id' matched: 3",
+          "expected": 3,
+          "actual": 3
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.name' matched: 'Amit Kumar Traders'",
+          "expected": "Amit Kumar Traders",
+          "actual": "Amit Kumar Traders"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/suppliers/3/products",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.9498999999996158,
+      "assertions_count": 3,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].supplierId' matched: 3",
+          "expected": 3,
+          "actual": 3
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/stock-audits",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.6589999995630933,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].id' matched: 5",
+          "expected": "integer",
+          "actual": 5
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].status' matched: 'COMPLETED'",
+          "expected": "string",
+          "actual": "COMPLETED"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/stock-audits/summary",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.9425000000410364,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.openAudits' matched: 0",
+          "expected": "integer",
+          "actual": 0
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.pendingDiscrepancies' matched: 0",
+          "expected": "integer",
+          "actual": 0
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/stock-audits/5",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.650799999879382,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.id' matched: 5",
+          "expected": 5,
+          "actual": 5
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.status' matched: 'COMPLETED'",
+          "expected": "COMPLETED",
+          "actual": "COMPLETED"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/purchase-orders",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.731600000312028,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].id' matched: 4",
+          "expected": "integer",
+          "actual": 4
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].supplierId' matched: 4",
+          "expected": "integer",
+          "actual": 4
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/purchase-orders/4",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.8246999998154934,
+      "assertions_count": 5,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.id' matched: 4",
+          "expected": 4,
+          "actual": 4
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.status' matched: 'RECEIVED'",
+          "expected": "RECEIVED",
+          "actual": "RECEIVED"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.supplierId' matched: 4",
+          "expected": 4,
+          "actual": 4
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/sales",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.8858999992517056,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].id' matched: 8",
+          "expected": "integer",
+          "actual": 8
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].status' matched: 'COMPLETED'",
+          "expected": "COMPLETED",
+          "actual": "COMPLETED"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/sales/summary",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.673300000220479,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.totalSalesCount' matched: 8",
+          "expected": "integer",
+          "actual": 8
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.totalSalesPaise' matched: 2051700",
+          "expected": "integer",
+          "actual": 2051700
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/sales/trend",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.3384000003497931,
+      "assertions_count": 3,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].orderCount' matched: 2",
+          "expected": "integer",
+          "actual": 2
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/sales/8",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.6528999994989135,
+      "assertions_count": 5,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.id' matched: 8",
+          "expected": 8,
+          "actual": 8
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.totalPaise' matched: 72200",
+          "expected": 72200,
+          "actual": 72200
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.paymentMethod' matched: 'CASH'",
+          "expected": "CASH",
+          "actual": "CASH"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/surplus-listings",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.7731999996613013,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].id' matched: 1",
+          "expected": "integer",
+          "actual": 1
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].status' matched: 'SOLD'",
+          "expected": "string",
+          "actual": "SOLD"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/surplus-listings/summary",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.5473000003112247,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.totalListings' matched: 1",
+          "expected": "integer",
+          "actual": 1
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.totalUnitsListed' matched: 8",
+          "expected": "integer",
+          "actual": 8
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/surplus-listings/suggestions",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.9486000001052162,
+      "assertions_count": 3,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].productId' matched: 2",
+          "expected": "integer",
+          "actual": 2
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/surplus-listings/1",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.6905000002225279,
+      "assertions_count": 5,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.id' matched: 1",
+          "expected": 1,
+          "actual": 1
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.productId' matched: 2",
+          "expected": 2,
+          "actual": 2
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.status' matched: 'SOLD'",
+          "expected": "SOLD",
+          "actual": "SOLD"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/reports/summary",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 2.412499999991269,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.currency' matched: 'INR'",
+          "expected": "INR",
+          "actual": "INR"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.periodType' matched: 'MONTHLY'",
+          "expected": "MONTHLY",
+          "actual": "MONTHLY"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/reports/profit-loss",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 2.335599999241822,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.currency' matched: 'INR'",
+          "expected": "INR",
+          "actual": "INR"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.periodType' matched: 'MONTHLY'",
+          "expected": "MONTHLY",
+          "actual": "MONTHLY"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/reports/sales",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 3.198800000063784,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.currency' matched: 'INR'",
+          "expected": "INR",
+          "actual": "INR"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.periodType' matched: 'MONTHLY'",
+          "expected": "MONTHLY",
+          "actual": "MONTHLY"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/reports/inventory-loss",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 2.5372000000061234,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.currency' matched: 'INR'",
+          "expected": "INR",
+          "actual": "INR"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.totalLossPaise' matched: 310000",
+          "expected": "integer",
+          "actual": 310000
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/reports/purchases",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.6209000004892005,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.currency' matched: 'INR'",
+          "expected": "INR",
+          "actual": "INR"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.totalOrdersCount' matched: 4",
+          "expected": "integer",
+          "actual": 4
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/expenses",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.3045000005149632,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].id' matched: 2",
+          "expected": "integer",
+          "actual": 2
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].amountPaise' matched: 10000",
+          "expected": "integer",
+          "actual": 10000
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/intelligence",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.5604999998686253,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].productId' matched: 2",
+          "expected": "integer",
+          "actual": 2
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].status' matched: 'HEALTHY'",
+          "expected": "string",
+          "actual": "HEALTHY"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/intelligence/sales",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.6110999995362363,
+      "assertions_count": 3,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$.products' matched: [{'productId': 1, 'productName': 'Wireless mouse', 'sku': 'ELE-WM-764', 'category': 'Electrical device', 'currentQuantity': 9, 'lowStockLevel': 4, 'preferredStockLevel': 10, 'unitsSoldLast30Days': 11, 'unitsSoldPrevious30Days': 0, 'averageDailySalesLast30Days': 0.37, 'lastSoldAt': '2026-11-08 08:45:45', 'daysSinceLastSale': 5, 'salesActivity': 'ACTIVE', 'salesTrend': 'NEW_SALES', 'recommendedRestockQuantity': 0, 'recommendation': 'Stock is healthy (9 units). No restocking needed at this time.'}, {'productId': 2, 'productName': 'Utensils', 'sku': 'ACC-U-610', 'category': 'Accessories', 'currentQuantity': 18, 'lowStockLevel': 10, 'preferredStockLevel': 30, 'unitsSoldLast30Days': 41, 'unitsSoldPrevious30Days': 0, 'averageDailySalesLast30Days': 1.37, 'lastSoldAt': '2026-11-12 13:46:52', 'daysSinceLastSale': 1, 'salesActivity': 'ACTIVE', 'salesTrend': 'NEW_SALES', 'recommendedRestockQuantity': 0, 'recommendation': 'Stock is healthy (18 units). No restocking needed at this time.'}]",
+          "expected": "array",
+          "actual": [
+            {
+              "productId": 1,
+              "productName": "Wireless mouse",
+              "sku": "ELE-WM-764",
+              "category": "Electrical device",
+              "currentQuantity": 9,
+              "lowStockLevel": 4,
+              "preferredStockLevel": 10,
+              "unitsSoldLast30Days": 11,
+              "unitsSoldPrevious30Days": 0,
+              "averageDailySalesLast30Days": 0.37,
+              "lastSoldAt": "2026-11-08 08:45:45",
+              "daysSinceLastSale": 5,
+              "salesActivity": "ACTIVE",
+              "salesTrend": "NEW_SALES",
+              "recommendedRestockQuantity": 0,
+              "recommendation": "Stock is healthy (9 units). No restocking needed at this time."
+            },
+            {
+              "productId": 2,
+              "productName": "Utensils",
+              "sku": "ACC-U-610",
+              "category": "Accessories",
+              "currentQuantity": 18,
+              "lowStockLevel": 10,
+              "preferredStockLevel": 30,
+              "unitsSoldLast30Days": 41,
+              "unitsSoldPrevious30Days": 0,
+              "averageDailySalesLast30Days": 1.37,
+              "lastSoldAt": "2026-11-12 13:46:52",
+              "daysSinceLastSale": 1,
+              "salesActivity": "ACTIVE",
+              "salesTrend": "NEW_SALES",
+              "recommendedRestockQuantity": 0,
+              "recommendation": "Stock is healthy (18 units). No restocking needed at this time."
+            }
+          ]
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile read-only: GET /api/movements",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.5316999997594394,
+      "assertions_count": 4,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200",
+          "expected": 200,
+          "actual": 200
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema.",
+          "expected": "JSON Schema conformance",
+          "actual": "conforming"
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].movementId' matched: 19",
+          "expected": "integer",
+          "actual": 19
+        },
+        {
+          "type": "jsonpath",
+          "passed": true,
+          "message": "JSONPath '$[0].movementType' matched: 'OUT'",
+          "expected": "string",
+          "actual": "OUT"
+        }
+      ],
+      "error": null
+    }
+  ]
+}

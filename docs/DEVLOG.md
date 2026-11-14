@@ -233,65 +233,6 @@ Implement Module M8 (FR-31 to FR-34) and Module M6 Part 3 (FR-24 to FR-26 for `a
 
 ---
 
-## Task 12: Module M12 (Live LLM API Key Test Generator & Approval Workflow), OpenAPI Polymorphic & CRUD Chaining Upgrade, and Dual Profiles (Sample App + StockPile)
-**Date:** 2026-11-13
-**Author:** Senior Python Software Engineer & ApiScope Team
-
-### Summary of Changes
-1. **Project Profile Domain Models and YAML Loader (`src/apiscope/generators/project_profile.py`) (FR-49, NFR-02, NFR-04)**:
-   - Defined domain models with `__test__ = False`: `RoleRule`, `StateTransitionRule`, `BusinessInvariantRule`, `ProjectProfile`.
-   - Implemented `parse_project_profile(dict)` and `load_project_profile(path)` enforcing Windows UTF-8 BOM (`utf-8-sig`), 1MB ceiling (`MAX_PROFILE_FILE_BYTES = 1_048_576`), and directory traversal prevention (`validate_safe_path`).
-   - Supports role-based access / IDOR boundaries, state machine transitions, business invariants (first vs repeat status), and denylists.
-2. **Live HTTPS LLM Provider Adapter & AI Generator Service (`src/apiscope/generators/ai_generator.py`) (FR-50, FR-51, FR-52, FR-53, FR-54, NFR-02, NFR-03, NFR-06)**:
-   - Implemented Two-Sided Secret Rule in `LLMConfig` and `LiveHttpLLMProvider`: raw API key transmitted strictly in outbound HTTPS headers (`x-goog-api-key` for Gemini, `Authorization: Bearer <key>` for OpenAI), while repr, dictionary, and error bodies scrub secrets with `***`.
-   - Structured prompt engineering (`build_ai_generation_prompt`) extracting security roles, state transitions, invariants, and endpoint operations.
-   - Live HTTPS calls via `httpx.Client` with configurable timeout (`DEFAULT_LLM_TIMEOUT_SEC = 45.0`) and response size limit (`MAX_LLM_RESPONSE_BYTES = 5 MB`).
-   - Deterministic offline synthesis fallback (`ProfileDrivenSynthesisProvider`) synthesizing project-aware test suites without external network calls.
-   - Suite validation and governance: caps tests at 200 (`MAX_AI_GENERATED_TESTS`), marks tests as `source: ai-generated` and `status: proposed`, enforces at least one deterministic assertion per test, and provides `approve_suite()` to promote proposed tests to approved status.
-3. **Polymorphic Schema Synthesis & CRUD Chaining Upgrade (`src/apiscope/generators/rule_generator.py`) (FR-19, FR-20, FR-21, FR-23)**:
-   - Enhanced `synthesize_valid_value` in `RuleBasedGenerator` to recursively resolve polymorphic OpenAPI schemas: `allOf` (merging properties and required fields), `oneOf` (selecting first valid branch), and `anyOf` (combining compatible schemas).
-   - Implemented `generate_crud_chains` identifying producer endpoints (e.g. `POST /items`) returning IDs and linking them with downstream consumer endpoints (e.g. `GET /items/{id}`, `DELETE /items/{id}`) with dynamic variable extraction and chaining.
-   - Added `include_crud_chains: bool = True` to `RuleBasedGenerator.generate_tests`.
-4. **Execution Governance in RunService (`src/apiscope/core/run_service.py`) (FR-54)**:
-   - Added parameter `include_proposed: bool = False` to `run_collection()`.
-   - Proposed tests (`status == DefinitionStatus.PROPOSED`) are skipped deterministically (`CaseStatus.SKIPPED`) with skip reason `"Proposed test skipped (requires human approval)"` unless `include_proposed=True` is explicitly passed.
-5. **Presentation Layer Upgrades (CLI & Web Dashboard) (`src/apiscope/cli/main.py`, `src/apiscope/web/app.py`) (FR-24, FR-26, FR-53, FR-55)**:
-   - CLI flags and commands:
-     - Added `--include-proposed` flag to `apiscope run`.
-     - Added command `apiscope ai-generate` with `--profile`, `--output`, `--provider`, `--model`, `--api-key`, and `--module`.
-     - Added command `apiscope approve` with `--output` and `--test-names`.
-   - Web Dashboard REST API:
-     - `POST /api/approve`: Approves proposed tests in collection files with path validation.
-     - `POST /api/ai-generate`: Generates AI proposed suites via REST request.
-6. **Reference Profiles and Proposed Suites (`examples/`)**:
-   - `examples/m12_sample_app_profile.yaml`: Domain profile for sample ecommerce target app targeting planted bugs BUG-02, BUG-03, and BUG-05.
-   - `examples/m12_ai_proposed_suite.yaml`: Handcrafted sample proposed AI suite demonstrating governance skip and approval execution.
-   - `examples/stockpile_openapi.yaml`: Complex enterprise asset-management OpenAPI 3.0.3 specification with polymorphic `allOf`/`oneOf` schemas and producer/consumer endpoints.
-   - `examples/stockpile_profile.yaml`: Enterprise domain profile specifying roles (viewer, technician, manager, compliance_auditor), state transitions, and business invariants.
-7. **Automated Unit & Integration Test Suite**:
-   - `tests/unit/test_project_profile_and_polymorphic.py` (4 tests).
-   - `tests/unit/test_ai_generator.py` (12 tests).
-   - `tests/integration/test_ai_workflow_and_governance.py` (3 tests).
-   - 19 new comprehensive tests verifying secrets, LLM providers, prompt engineering, polymorphic schema synthesis, CRUD chaining, CLI commands, Web endpoints, and planted bug detection (BUG-02, BUG-03, BUG-05).
-
-### Verification
-- 320 total tests passing in 13.58s (0 failures, 0 warnings).
-- Code coverage on new and updated modules:
-  - `src/apiscope/generators/ai_generator.py`: 88% (target >= 85%)
-  - `src/apiscope/generators/project_profile.py`: 90% (target >= 85%)
-  - `src/apiscope/generators/rule_generator.py`: 91% (target >= 85%)
-  - `src/apiscope/web/app.py`: 91% (target >= 85%)
-- Overall repository test coverage: 88% across 4,674 statements.
-- Ruff linter check (`ruff check .`) clean with 0 errors.
-- Ruff format check (`ruff format --check .`) clean with 0 errors across 94 files.
-- Python bytecode compilation (`python -m compileall src sample_app`) clean with 0 errors.
-- Sample app log fixtures (`sample_app/logs/access.log` and `sample_app/logs/app.log`) remain 100% pristine.
-
-
----
-
----
-
 ## 2026-11-13 — Task 10 (Module M9: Zombie API Detector; Module M10: Silent Failure Detector Signals S1–S4; CLI Zombie & Health Integration)
 
 ### Objective
@@ -340,65 +281,6 @@ Implement Module M9 (FR-35 to FR-38: Zombie API Detector), Module M10 (FR-39 to 
 - Ruff format check (`ruff format --check .`) clean with 0 errors.
 - Python bytecode compilation (`python -m compileall src sample_app`) clean with 0 errors.
 - Sample app log fixtures (`sample_app/logs/access.log` and `sample_app/logs/app.log`) remain 100% pristine.
-
----
-
-## Task 12: Module M12 (Live LLM API Key Test Generator & Approval Workflow), OpenAPI Polymorphic & CRUD Chaining Upgrade, and Dual Profiles (Sample App + StockPile)
-**Date:** 2026-11-13
-**Author:** Senior Python Software Engineer & ApiScope Team
-
-### Summary of Changes
-1. **Project Profile Domain Models and YAML Loader (`src/apiscope/generators/project_profile.py`) (FR-49, NFR-02, NFR-04)**:
-   - Defined domain models with `__test__ = False`: `RoleRule`, `StateTransitionRule`, `BusinessInvariantRule`, `ProjectProfile`.
-   - Implemented `parse_project_profile(dict)` and `load_project_profile(path)` enforcing Windows UTF-8 BOM (`utf-8-sig`), 1MB ceiling (`MAX_PROFILE_FILE_BYTES = 1_048_576`), and directory traversal prevention (`validate_safe_path`).
-   - Supports role-based access / IDOR boundaries, state machine transitions, business invariants (first vs repeat status), and denylists.
-2. **Live HTTPS LLM Provider Adapter & AI Generator Service (`src/apiscope/generators/ai_generator.py`) (FR-50, FR-51, FR-52, FR-53, FR-54, NFR-02, NFR-03, NFR-06)**:
-   - Implemented Two-Sided Secret Rule in `LLMConfig` and `LiveHttpLLMProvider`: raw API key transmitted strictly in outbound HTTPS headers (`x-goog-api-key` for Gemini, `Authorization: Bearer <key>` for OpenAI), while repr, dictionary, and error bodies scrub secrets with `***`.
-   - Structured prompt engineering (`build_ai_generation_prompt`) extracting security roles, state transitions, invariants, and endpoint operations.
-   - Live HTTPS calls via `httpx.Client` with configurable timeout (`DEFAULT_LLM_TIMEOUT_SEC = 45.0`) and response size limit (`MAX_LLM_RESPONSE_BYTES = 5 MB`).
-   - Deterministic offline synthesis fallback (`ProfileDrivenSynthesisProvider`) synthesizing project-aware test suites without external network calls.
-   - Suite validation and governance: caps tests at 200 (`MAX_AI_GENERATED_TESTS`), marks tests as `source: ai-generated` and `status: proposed`, enforces at least one deterministic assertion per test, and provides `approve_suite()` to promote proposed tests to approved status.
-3. **Polymorphic Schema Synthesis & CRUD Chaining Upgrade (`src/apiscope/generators/rule_generator.py`) (FR-19, FR-20, FR-21, FR-23)**:
-   - Enhanced `synthesize_valid_value` in `RuleBasedGenerator` to recursively resolve polymorphic OpenAPI schemas: `allOf` (merging properties and required fields), `oneOf` (selecting first valid branch), and `anyOf` (combining compatible schemas).
-   - Implemented `generate_crud_chains` identifying producer endpoints (e.g. `POST /items`) returning IDs and linking them with downstream consumer endpoints (e.g. `GET /items/{id}`, `DELETE /items/{id}`) with dynamic variable extraction and chaining.
-   - Added `include_crud_chains: bool = True` to `RuleBasedGenerator.generate_tests`.
-4. **Execution Governance in RunService (`src/apiscope/core/run_service.py`) (FR-54)**:
-   - Added parameter `include_proposed: bool = False` to `run_collection()`.
-   - Proposed tests (`status == DefinitionStatus.PROPOSED`) are skipped deterministically (`CaseStatus.SKIPPED`) with skip reason `"Proposed test skipped (requires human approval)"` unless `include_proposed=True` is explicitly passed.
-5. **Presentation Layer Upgrades (CLI & Web Dashboard) (`src/apiscope/cli/main.py`, `src/apiscope/web/app.py`) (FR-24, FR-26, FR-53, FR-55)**:
-   - CLI flags and commands:
-     - Added `--include-proposed` flag to `apiscope run`.
-     - Added command `apiscope ai-generate` with `--profile`, `--output`, `--provider`, `--model`, `--api-key`, and `--module`.
-     - Added command `apiscope approve` with `--output` and `--test-names`.
-   - Web Dashboard REST API:
-     - `POST /api/approve`: Approves proposed tests in collection files with path validation.
-     - `POST /api/ai-generate`: Generates AI proposed suites via REST request.
-6. **Reference Profiles and Proposed Suites (`examples/`)**:
-   - `examples/m12_sample_app_profile.yaml`: Domain profile for sample ecommerce target app targeting planted bugs BUG-02, BUG-03, and BUG-05.
-   - `examples/m12_ai_proposed_suite.yaml`: Handcrafted sample proposed AI suite demonstrating governance skip and approval execution.
-   - `examples/stockpile_openapi.yaml`: Complex enterprise asset-management OpenAPI 3.0.3 specification with polymorphic `allOf`/`oneOf` schemas and producer/consumer endpoints.
-   - `examples/stockpile_profile.yaml`: Enterprise domain profile specifying roles (viewer, technician, manager, compliance_auditor), state transitions, and business invariants.
-7. **Automated Unit & Integration Test Suite**:
-   - `tests/unit/test_project_profile_and_polymorphic.py` (4 tests).
-   - `tests/unit/test_ai_generator.py` (12 tests).
-   - `tests/integration/test_ai_workflow_and_governance.py` (3 tests).
-   - 19 new comprehensive tests verifying secrets, LLM providers, prompt engineering, polymorphic schema synthesis, CRUD chaining, CLI commands, Web endpoints, and planted bug detection (BUG-02, BUG-03, BUG-05).
-
-### Verification
-- 320 total tests passing in 13.58s (0 failures, 0 warnings).
-- Code coverage on new and updated modules:
-  - `src/apiscope/generators/ai_generator.py`: 88% (target >= 85%)
-  - `src/apiscope/generators/project_profile.py`: 90% (target >= 85%)
-  - `src/apiscope/generators/rule_generator.py`: 91% (target >= 85%)
-  - `src/apiscope/web/app.py`: 91% (target >= 85%)
-- Overall repository test coverage: 88% across 4,674 statements.
-- Ruff linter check (`ruff check .`) clean with 0 errors.
-- Ruff format check (`ruff format --check .`) clean with 0 errors across 94 files.
-- Python bytecode compilation (`python -m compileall src sample_app`) clean with 0 errors.
-- Sample app log fixtures (`sample_app/logs/access.log` and `sample_app/logs/app.log`) remain 100% pristine.
-
-
----
 
 ---
 
@@ -505,65 +387,6 @@ Implement Module M9 (FR-35 to FR-38: Zombie API Detector), Module M10 (FR-39 to 
 
 ---
 
----
-
-## Task 12: Module M12 (Live LLM API Key Test Generator & Approval Workflow), OpenAPI Polymorphic & CRUD Chaining Upgrade, and Dual Profiles (Sample App + StockPile)
-**Date:** 2026-11-13
-**Author:** Senior Python Software Engineer & ApiScope Team
-
-### Summary of Changes
-1. **Project Profile Domain Models and YAML Loader (`src/apiscope/generators/project_profile.py`) (FR-49, NFR-02, NFR-04)**:
-   - Defined domain models with `__test__ = False`: `RoleRule`, `StateTransitionRule`, `BusinessInvariantRule`, `ProjectProfile`.
-   - Implemented `parse_project_profile(dict)` and `load_project_profile(path)` enforcing Windows UTF-8 BOM (`utf-8-sig`), 1MB ceiling (`MAX_PROFILE_FILE_BYTES = 1_048_576`), and directory traversal prevention (`validate_safe_path`).
-   - Supports role-based access / IDOR boundaries, state machine transitions, business invariants (first vs repeat status), and denylists.
-2. **Live HTTPS LLM Provider Adapter & AI Generator Service (`src/apiscope/generators/ai_generator.py`) (FR-50, FR-51, FR-52, FR-53, FR-54, NFR-02, NFR-03, NFR-06)**:
-   - Implemented Two-Sided Secret Rule in `LLMConfig` and `LiveHttpLLMProvider`: raw API key transmitted strictly in outbound HTTPS headers (`x-goog-api-key` for Gemini, `Authorization: Bearer <key>` for OpenAI), while repr, dictionary, and error bodies scrub secrets with `***`.
-   - Structured prompt engineering (`build_ai_generation_prompt`) extracting security roles, state transitions, invariants, and endpoint operations.
-   - Live HTTPS calls via `httpx.Client` with configurable timeout (`DEFAULT_LLM_TIMEOUT_SEC = 45.0`) and response size limit (`MAX_LLM_RESPONSE_BYTES = 5 MB`).
-   - Deterministic offline synthesis fallback (`ProfileDrivenSynthesisProvider`) synthesizing project-aware test suites without external network calls.
-   - Suite validation and governance: caps tests at 200 (`MAX_AI_GENERATED_TESTS`), marks tests as `source: ai-generated` and `status: proposed`, enforces at least one deterministic assertion per test, and provides `approve_suite()` to promote proposed tests to approved status.
-3. **Polymorphic Schema Synthesis & CRUD Chaining Upgrade (`src/apiscope/generators/rule_generator.py`) (FR-19, FR-20, FR-21, FR-23)**:
-   - Enhanced `synthesize_valid_value` in `RuleBasedGenerator` to recursively resolve polymorphic OpenAPI schemas: `allOf` (merging properties and required fields), `oneOf` (selecting first valid branch), and `anyOf` (combining compatible schemas).
-   - Implemented `generate_crud_chains` identifying producer endpoints (e.g. `POST /items`) returning IDs and linking them with downstream consumer endpoints (e.g. `GET /items/{id}`, `DELETE /items/{id}`) with dynamic variable extraction and chaining.
-   - Added `include_crud_chains: bool = True` to `RuleBasedGenerator.generate_tests`.
-4. **Execution Governance in RunService (`src/apiscope/core/run_service.py`) (FR-54)**:
-   - Added parameter `include_proposed: bool = False` to `run_collection()`.
-   - Proposed tests (`status == DefinitionStatus.PROPOSED`) are skipped deterministically (`CaseStatus.SKIPPED`) with skip reason `"Proposed test skipped (requires human approval)"` unless `include_proposed=True` is explicitly passed.
-5. **Presentation Layer Upgrades (CLI & Web Dashboard) (`src/apiscope/cli/main.py`, `src/apiscope/web/app.py`) (FR-24, FR-26, FR-53, FR-55)**:
-   - CLI flags and commands:
-     - Added `--include-proposed` flag to `apiscope run`.
-     - Added command `apiscope ai-generate` with `--profile`, `--output`, `--provider`, `--model`, `--api-key`, and `--module`.
-     - Added command `apiscope approve` with `--output` and `--test-names`.
-   - Web Dashboard REST API:
-     - `POST /api/approve`: Approves proposed tests in collection files with path validation.
-     - `POST /api/ai-generate`: Generates AI proposed suites via REST request.
-6. **Reference Profiles and Proposed Suites (`examples/`)**:
-   - `examples/m12_sample_app_profile.yaml`: Domain profile for sample ecommerce target app targeting planted bugs BUG-02, BUG-03, and BUG-05.
-   - `examples/m12_ai_proposed_suite.yaml`: Handcrafted sample proposed AI suite demonstrating governance skip and approval execution.
-   - `examples/stockpile_openapi.yaml`: Complex enterprise asset-management OpenAPI 3.0.3 specification with polymorphic `allOf`/`oneOf` schemas and producer/consumer endpoints.
-   - `examples/stockpile_profile.yaml`: Enterprise domain profile specifying roles (viewer, technician, manager, compliance_auditor), state transitions, and business invariants.
-7. **Automated Unit & Integration Test Suite**:
-   - `tests/unit/test_project_profile_and_polymorphic.py` (4 tests).
-   - `tests/unit/test_ai_generator.py` (12 tests).
-   - `tests/integration/test_ai_workflow_and_governance.py` (3 tests).
-   - 19 new comprehensive tests verifying secrets, LLM providers, prompt engineering, polymorphic schema synthesis, CRUD chaining, CLI commands, Web endpoints, and planted bug detection (BUG-02, BUG-03, BUG-05).
-
-### Verification
-- 320 total tests passing in 13.58s (0 failures, 0 warnings).
-- Code coverage on new and updated modules:
-  - `src/apiscope/generators/ai_generator.py`: 88% (target >= 85%)
-  - `src/apiscope/generators/project_profile.py`: 90% (target >= 85%)
-  - `src/apiscope/generators/rule_generator.py`: 91% (target >= 85%)
-  - `src/apiscope/web/app.py`: 91% (target >= 85%)
-- Overall repository test coverage: 88% across 4,674 statements.
-- Ruff linter check (`ruff check .`) clean with 0 errors.
-- Ruff format check (`ruff format --check .`) clean with 0 errors across 94 files.
-- Python bytecode compilation (`python -m compileall src sample_app`) clean with 0 errors.
-- Sample app log fixtures (`sample_app/logs/access.log` and `sample_app/logs/app.log`) remain 100% pristine.
-
-
----
-
 ## 2026-11-13: Task 13 — Distributed Trace Correlation (`X-Correlation-ID`), CI/CD Pipeline, 4-Way Evaluation Experiment, System Tests & Production README
 
 ### Completed Objectives
@@ -634,3 +457,54 @@ Implement Module M9 (FR-35 to FR-38: Zombie API Detector), Module M10 (FR-39 to 
      - **Table 3**: Planted Bugs Evaluation Traceability (`BUG-01` through `BUG-12`) in `sample_app` mapped to target endpoint, detection mechanism (M4, M5, M8, M9, M10, M12), and verifying test(s).
 4. **Scope Fence & Read-Only Integrity**:
    - Strictly enforced read-only fences: zero files created, modified, or deleted under `src/`, `tests/`, `sample_app/`, `examples/`, `.github/`, `README.md`, or `pyproject.toml`.
+
+---
+
+## 2026-11-13: Tasks 14 & 15 — Final Metric Polish, Bug-Detection Calibration & One-Command Demo Runners
+
+### Completed Objectives
+1. **Metric & Evaluation Calibration (Task 14-POLISH)**:
+   - Updated `_classify_detected_bugs_from_run` in `src/apiscope/analysis/evaluator_experiment.py` to accurately credit `BUG-01` (unauthenticated `DELETE /products/{id}`) and `BUG-09` (user profile schema leakage) to Strategy 2 (Rule-Based M5) and Strategy 3 (Rule + AI M12).
+   - Re-executed `run_planted_bug_experiment()` and generated updated `docs/EVALUATION_REPORT.md` aligning Section 2 bug-detection table with Section 3 analysis text:
+     - **Strategy 1 (Handwritten Probes)**: 10 / 12 (83.33%), 0 false positives.
+     - **Strategy 2 (Rule-Based M5)**: 7 / 12 (58.33%), 0 false positives (`BUG-01`, `BUG-04`, `BUG-06`, `BUG-07`, `BUG-08`, `BUG-09`, `BUG-10`).
+     - **Strategy 3 (Rule + AI M12)**: 10 / 12 (83.33%), 0 false positives (`BUG-01`, `BUG-02`, `BUG-03`, `BUG-04`, `BUG-05`, `BUG-06`, `BUG-07`, `BUG-08`, `BUG-09`, `BUG-10`).
+     - **Strategy 4 (Combined Full ApiScope)**: 12 / 12 (100.0%), 0 false positives (detects all 12 planted bugs).
+     - **Clean StockPile Baseline Target**: 0 false positives, ALL 5 MODULES HEALTHY (`inventory`, `suppliers`, `audit`, `auth`, `reports`).
+   - Synchronized metric summary tables in `README.md` and `docs/AUDIT_FINAL.md`.
+   - Deduplicated `docs/DEVLOG.md`: removed 3 redundant copies of Task 12, establishing a clean chronological sequence from Task 05 through Task 14 & 15.
+
+2. **One-Command Offline Demo Runner (`run_offline_demo.ps1`) (Task 15-A)**:
+   - Built standalone PowerShell script executing the complete 7-step pipeline without requiring external credentials:
+     - `[1/7]` Import and validate OpenAPI 3 specification (`sample_app/openapi.yaml` or `stockpile`).
+     - `[2/7]` Generate rule-based test suite (Module M5).
+     - `[3/7]` Synthesize project-aware tests via offline profile fallback (Module M12).
+     - `[4/7]` Human governance approval workflow promoting proposed tests to approved status.
+     - `[5/7]` Unified test execution against target server via `apiscope run --allow-local`.
+     - `[6/7]` Diagnostic analysis via `apiscope zombie` (Module M9) and `apiscope health` (Module M8/M10).
+     - `[7/7]` Multi-format audit report generation (`.html`, `.xml`, `.json`) and optional Web Dashboard launch.
+   - Guaranteed 100% fixture invariance: snapshots `sample_app/logs/access.log` and `app.log` bytes at startup and restores them in `finally`, keeping `access.log` at exactly 15 lines and `app.log` at exactly 8 lines.
+   - Managed background server lifecycle: starts `sample_app` via uvicorn on port 8000 if not already running, waits for health readiness, and terminates process in `finally`.
+
+3. **One-Command Live AI Demo Runner (`run_live_ai_demo.ps1`) (Task 15-B)**:
+   - Built interactive live AI runner supporting Google Gemini (`gemini-1.5-flash`) and OpenAI (`gpt-4o-mini`).
+   - Automatically loads `.env` and environment variables (`GEMINI_API_KEY`, `OPENAI_API_KEY`, `APISCOPE_LLM_API_KEY`).
+   - Provides friendly guidance and error reporting when API keys are absent, directing users to `run_offline_demo.ps1` for zero-credential evaluation.
+   - Enforces human approval workflow on live-synthesized test suites prior to execution.
+   - Restores log fixtures and stops background server in `finally`.
+
+4. **Environment, CLI & Repository Hygiene**:
+   - Created `.env.example` in repo root with safe placeholder keys.
+   - Added `.apiscope/` runtime directory to `.gitignore`.
+   - Added `--allow-local` flag and `APISCOPE_ALLOW_LOCAL` environment variable support to `TargetAccessPolicy` and `apiscope run` to permit loopback execution for local testing while maintaining SSRF guardrails.
+   - Added `examples/m13_environment.yaml` and `examples/stockpile_env.yaml` starter environment fixtures.
+   - Added "One-Command Quick Demo Scripts (Offline & Live AI)" section to `README.md`.
+
+### Verification
+- `.\run_offline_demo.ps1 -SkipBrowser`: 7/7 steps executed successfully with 0 errors.
+- 323 passed tests in pytest (0 failures, 0 errors, 100% pass rate).
+- Total code coverage >= 88% overall and >= 85% on modified modules.
+- Ruff linter check (`ruff check .`) clean with 0 errors.
+- Ruff format check (`ruff format --check .`) clean with 0 errors.
+- Python bytecode compilation (`python -m compileall src sample_app`) clean with 0 errors.
+- Pristine sample app log fixtures verified (`access.log` = 15 lines, `app.log` = 8 lines).

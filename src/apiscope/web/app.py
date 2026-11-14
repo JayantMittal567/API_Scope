@@ -74,6 +74,7 @@ class TriggerRunRequest(BaseModel):
     module: str | None = None
     tags: list[str] | None = None
     data_file: str | None = None
+    allow_mutation: bool = False
 
     __test__ = False
 
@@ -493,6 +494,7 @@ def create_web_app(
                 tags=payload.tags,
                 data_file=payload.data_file,
                 base_dir=cfg.base_dir,
+                allow_mutation=payload.allow_mutation,
             )
         except ApiScopeError as err:
             return JSONResponse(

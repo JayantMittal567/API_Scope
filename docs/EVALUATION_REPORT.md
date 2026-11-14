@@ -1,6 +1,6 @@
 # ApiScope Empirical Evaluation Report
 
-**Experiment Executed At:** 2026-11-13 08:11:57 UTC  
+**Experiment Executed At:** 2026-11-13 09:44:23 UTC  
 **Target Systems:**  
 1. `sample_app` (Ecommerce reference target with 12 planted architectural bugs)  
 2. `StockPile` (Clean enterprise asset & surplus management baseline API)  
@@ -17,10 +17,10 @@ swallowed exceptions, and zombie endpoints.
 | Metric | Strategy 1: Handwritten Probes | Strategy 2: Rule-Based (M5) | Strategy 3: Rule + AI (M5+M12) | Strategy 4: Full ApiScope Combined |
 |---|---|---|---|---|
 | **Total Tests Executed** | 16 | 70 | 74 | 90 |
-| **Duration (ms)** | 172.63 ms | 322.58 ms | 467.37 ms | 550.33 ms |
+| **Duration (ms)** | 189.86 ms | 462.64 ms | 527.32 ms | 763.08 ms |
 | **Spec Endpoint Coverage** | 86.67% (13/15) | 100.0% (15/15) | 100.0% (15/15) | 100.0% (15/15) |
-| **Planted Bugs Detected** | **10 / 12** | **5 / 12** | **8 / 12** | **12 / 12** |
-| **Bug Detection Rate** | **83.33%** | **41.67%** | **66.67%** | **100.0%** |
+| **Planted Bugs Detected** | **10 / 12** | **7 / 12** | **10 / 12** | **12 / 12** |
+| **Bug Detection Rate** | **83.33%** | **58.33%** | **83.33%** | **100.0%** |
 | **False Positives** | **0** | **0** | **0** | **0** |
 
 ---
@@ -29,7 +29,7 @@ swallowed exceptions, and zombie endpoints.
 
 | Bug ID | Vulnerability / Defect Description | S1: Hand | S2: Rule | S3: Rule+AI | S4: Combined |
 |---|---|:---:|:---:|:---:|:---:|
-| `BUG-01` | DELETE /products/{id} without auth returns 204 instead of 401 | [x] | [ ] | [ ] | [x] |
+| `BUG-01` | DELETE /products/{id} without auth returns 204 instead of 401 | [x] | [x] | [x] | [x] |
 | `BUG-02` | IDOR: User 1 accesses User 2 profile (HTTP 200 instead of 403) | [x] | [ ] | [x] | [x] |
 | `BUG-03` | Single-use coupon reused on repeat redemption | [x] | [ ] | [x] | [x] |
 | `BUG-04` | Negative order quantity accepted (boundary failure) | [x] | [x] | [x] | [x] |
@@ -37,7 +37,7 @@ swallowed exceptions, and zombie endpoints.
 | `BUG-06` | Order creation returns 200 OK instead of 201 Created | [x] | [x] | [x] | [x] |
 | `BUG-07` | Missing required price on product creation accepted | [x] | [x] | [x] | [x] |
 | `BUG-08` | Latency drift / artificial delay on /products/recommendations | [x] | [x] | [x] | [x] |
-| `BUG-09` | User profile leaks internal_auth_hash (contract schema leakage) | [x] | [ ] | [ ] | [x] |
+| `BUG-09` | User profile leaks internal_auth_hash (contract schema leakage) | [x] | [x] | [x] | [x] |
 | `BUG-10` | Swallowed billing exception on /orders/{id}/sync-invoice | [x] | [x] | [x] | [x] |
 | `BUG-11` | Undocumented endpoint /debug/internal-metrics in active traffic | [ ] | [ ] | [ ] | [x] |
 | `BUG-12` | Unused /coupons/legacy-archive and deprecated /products/v1-catalog | [ ] | [ ] | [ ] | [x] |
@@ -55,7 +55,7 @@ swallowed exceptions, and zombie endpoints.
 2. **Project-Aware AI Generation (Strategy 3)**:
    - Synthesizes domain-aware test scenarios guided by the declarative `ProjectProfile` YAML.
    - Uncovers IDOR on user profiles (`BUG-02`), coupon reuse (`BUG-03`), and shipped order cancellation (`BUG-05`),
-     elevating automated detection to **66.67%**.
+     elevating automated detection to **83.33%**.
 
 3. **Full ApiScope Combined Pipeline (Strategy 4)**:
    - Combines dynamic test suite execution (M4, M5, M12) with runtime analytical observability:

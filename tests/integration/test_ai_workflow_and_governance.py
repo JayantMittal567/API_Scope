@@ -123,6 +123,7 @@ def test_proposed_ai_tests_are_skipped_by_run_service_until_approved(
         collection=approved_collection,
         environment=env,
         include_proposed=False,
+        allow_mutation=True,
     )
     assert approved_run_result.total_tests == 4
     assert approved_run_result.skipped_tests == 0

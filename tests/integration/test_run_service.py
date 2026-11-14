@@ -14,6 +14,7 @@ from apiscope.core.exceptions import DefinitionError
 from apiscope.core.executor import RequestExecutor, TargetAccessPolicy
 from apiscope.core.results import CaseStatus
 from apiscope.core.run_service import RunService
+from apiscope.core.safety import ExecutionSafetyPolicy
 from apiscope.definitions.collection import TestCollection, load_collection
 from apiscope.definitions.environment import Environment
 from apiscope.definitions.models import (
@@ -65,6 +66,7 @@ def test_three_step_request_chain_passes_and_resolves_types() -> None:
         executor=executor,
         clock=lambda: fixed_time,
         id_generator=lambda: "fixed-run-uuid-001",
+        safety_policy=ExecutionSafetyPolicy.permissive(),
     )
 
     collection = load_collection("examples/m4_chaining_suite.yaml")
@@ -142,7 +144,10 @@ def test_secret_chaining_raw_at_runtime_and_masked_in_results() -> None:
     )
 
     executor = RequestExecutor(transport=httpx.MockTransport(mock_handler))
-    service = RunService(executor=executor)
+    service = RunService(
+        executor=executor,
+        safety_policy=ExecutionSafetyPolicy.permissive(),
+    )
 
     run_result = service.run_collection(collection)
 
@@ -209,7 +214,10 @@ def test_broken_chain_skips_dependent_step_but_runs_independent_step() -> None:
         name="Chain Skip Suite", module="items", tests=[step1, step2, step3]
     )
     executor = RequestExecutor(transport=httpx.MockTransport(mock_handler))
-    service = RunService(executor=executor)
+    service = RunService(
+        executor=executor,
+        safety_policy=ExecutionSafetyPolicy.permissive(),
+    )
 
     run_result = service.run_collection(collection)
 
@@ -265,7 +273,10 @@ def test_extraction_failure_marks_test_failed_and_skips_dependent_step() -> None
         name="Extraction Fail Suite", module="auth", tests=[step1, step2]
     )
     executor = RequestExecutor(transport=httpx.MockTransport(mock_handler))
-    service = RunService(executor=executor)
+    service = RunService(
+        executor=executor,
+        safety_policy=ExecutionSafetyPolicy.permissive(),
+    )
 
     run_result = service.run_collection(collection)
 
@@ -397,7 +408,10 @@ def test_data_driven_execution_with_csv_and_json_isolates_rows() -> None:
 
     collection = TestCollection(name="Order Batch", module="orders", tests=[test_case])
     executor = RequestExecutor(transport=httpx.MockTransport(mock_handler))
-    service = RunService(executor=executor)
+    service = RunService(
+        executor=executor,
+        safety_policy=ExecutionSafetyPolicy.permissive(),
+    )
 
     # 1. Run with examples/m4_orders_data.csv
     seen_items.clear()
@@ -475,7 +489,10 @@ def test_run_service_filters_by_module_and_tags() -> None:
 
     collection = TestCollection(name="Filter Suite", module="all", tests=[t1, t2, t3])
     executor = RequestExecutor(transport=httpx.MockTransport(mock_handler))
-    service = RunService(executor=executor)
+    service = RunService(
+        executor=executor,
+        safety_policy=ExecutionSafetyPolicy.permissive(),
+    )
 
     # Filter by module
     module_run = service.run_collection(collection, module="auth")
@@ -577,7 +594,10 @@ def test_run_service_with_environment_variables_and_secrets() -> None:
 
     collection = TestCollection(name="Env Suite", module="core", tests=[test])
     executor = RequestExecutor(transport=httpx.MockTransport(mock_handler))
-    service = RunService(executor=executor)
+    service = RunService(
+        executor=executor,
+        safety_policy=ExecutionSafetyPolicy.permissive(),
+    )
 
     run_result = service.run_collection(collection, environment=env)
 
@@ -608,7 +628,10 @@ def test_run_service_empty_assertions_fails_unverified() -> None:
 
     collection = TestCollection(name="Unverified Suite", module="core", tests=[test])
     executor = RequestExecutor(transport=httpx.MockTransport(mock_handler))
-    service = RunService(executor=executor)
+    service = RunService(
+        executor=executor,
+        safety_policy=ExecutionSafetyPolicy.permissive(),
+    )
 
     run_result = service.run_collection(collection)
 
@@ -646,7 +669,10 @@ def test_run_service_nested_list_and_templated_dict_keys() -> None:
 
     collection = TestCollection(name="Complex Body Suite", module="core", tests=[test])
     executor = RequestExecutor(transport=httpx.MockTransport(mock_handler))
-    service = RunService(executor=executor)
+    service = RunService(
+        executor=executor,
+        safety_policy=ExecutionSafetyPolicy.permissive(),
+    )
 
     run_result = service.run_collection(
         collection,

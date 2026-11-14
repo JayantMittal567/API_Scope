@@ -59,7 +59,10 @@ def test_post_api_runs_triggers_suite_and_persists_to_sqlite(
     # Trigger run with valid suite path
     resp = client.post(
         "/api/runs",
-        json={"suite_path": "examples/m4_chaining_suite.yaml"},
+        json={
+            "suite_path": "examples/m4_chaining_suite.yaml",
+            "allow_mutation": True,
+        },
     )
     assert resp.status_code == 201
     data = resp.json()

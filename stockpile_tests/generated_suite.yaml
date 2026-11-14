@@ -1,0 +1,4141 @@
+name: OpenAPI definition Generated Suite
+module: stockpile-controller
+tags:
+- rule-generated
+tests:
+- name: GET /api/dashboard - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/dashboard'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/expenses - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/expenses'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/expenses - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/expenses'
+    headers:
+      Content-Type: application/json
+    body:
+      category: test_category
+      amountPaise: 1
+      description: test_description
+      date: test_date
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: DELETE /api/expenses/{id} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/expenses/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 204
+- name: PUT /api/expenses/{id} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/expenses/1'
+    headers:
+      Content-Type: application/json
+    body:
+      category: test_category
+      amountPaise: 1
+      description: test_description
+      date: test_date
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/health - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/health'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/intelligence - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/intelligence'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/intelligence/sales - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/intelligence/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/inventory/adjust - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/adjust'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: test_movementType
+      quantity: 1
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: POST /api/inventory/stock-in - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-in'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: test_movementType
+      quantity: 1
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: POST /api/inventory/stock-out - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-out'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: test_movementType
+      quantity: 1
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: GET /api/movements - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/movements'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/movements - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/movements'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: test_movementType
+      quantity: 1
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: GET /api/products - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/products'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/products - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      quantity: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+      supplierId: 1
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: DELETE /api/products/{id} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/products/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 204
+- name: GET /api/products/{id} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/products/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: PUT /api/products/{id} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/products/{id}/movements - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/products/1/movements'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: DELETE /api/products/{productId}/supplier - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/products/1/supplier'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 204
+- name: PUT /api/products/{productId}/supplier - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/1/supplier'
+    headers:
+      Content-Type: application/json
+    body:
+      supplierId: 1
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/purchase-orders - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/purchase-orders'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/purchase-orders - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders'
+    headers:
+      Content-Type: application/json
+    body:
+      supplierId: 1
+      notes: test_notes
+      items:
+      - productId: 1
+        quantity: 1
+        unitCostPaise: 1
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: GET /api/purchase-orders/{id} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/purchase-orders/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: PUT /api/purchase-orders/{id} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/purchase-orders/1'
+    headers:
+      Content-Type: application/json
+    body:
+      supplierId: 1
+      notes: test_notes
+      items:
+      - productId: 1
+        quantity: 1
+        unitCostPaise: 1
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/purchase-orders/{id}/cancel - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders/1/cancel'
+    headers:
+      Content-Type: application/json
+    body:
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/purchase-orders/{id}/place - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders/1/place'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/purchase-orders/{id}/receive - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders/1/receive'
+    headers:
+      Content-Type: application/json
+    body:
+      items:
+      - purchaseOrderItemId: 1
+        quantity: 1
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/reports/inventory-loss - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/inventory-loss'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/reports/profit-loss - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/profit-loss'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/reports/purchases - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/purchases'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/reports/sales - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/reports/summary - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/sales - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/sales - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales'
+    headers:
+      Content-Type: application/json
+    body:
+      items:
+      - productId: 1
+        quantity: 1
+        unitSellingPricePaise: 1
+      discountPaise: 1
+      discountPercent: 1.0
+      paymentMethod: test_paymentMethod
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: GET /api/sales/summary - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/sales/trend - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales/trend'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/sales/{id} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/sales/{id}/cancel - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales/1/cancel'
+    headers:
+      Content-Type: application/json
+    body:
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/stock-audits - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/stock-audits'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/stock-audits - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits'
+    headers:
+      Content-Type: application/json
+    body:
+      productIds:
+      - 1
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: GET /api/stock-audits/summary - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/stock-audits/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: PUT /api/stock-audits/{auditId}/items/{itemId} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/stock-audits/1/items/1'
+    headers:
+      Content-Type: application/json
+    body:
+      countedQuantity: 1
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/stock-audits/{id} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/stock-audits/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/stock-audits/{id}/cancel - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits/1/cancel'
+    headers:
+      Content-Type: application/json
+    body:
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/stock-audits/{id}/complete - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits/1/complete'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/suppliers - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/suppliers'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/suppliers - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      contactPerson: test_contactPerson
+      phone: test_phone
+      email: test_email
+      address: test_address
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: DELETE /api/suppliers/{id} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/suppliers/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 204
+- name: GET /api/suppliers/{id} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/suppliers/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: PUT /api/suppliers/{id} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/suppliers/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      contactPerson: test_contactPerson
+      phone: test_phone
+      email: test_email
+      address: test_address
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/suppliers/{id}/products - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/suppliers/1/products'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/surplus-listings - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/surplus-listings - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      quantity: 1
+      discountedPricePaise: 1
+      reason: test_reason
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: GET /api/surplus-listings/suggestions - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings/suggestions'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/surplus-listings/summary - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: GET /api/surplus-listings/{id} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: PUT /api/surplus-listings/{id} - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/surplus-listings/1'
+    headers:
+      Content-Type: application/json
+    body:
+      discountedPricePaise: 1
+      quantity: 1
+      reason: test_reason
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/surplus-listings/{id}/cancel - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings/1/cancel'
+    headers:
+      Content-Type: application/json
+    body:
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: POST /api/surplus-listings/{id}/sell - positive
+  module: stockpile-controller
+  tags:
+  - positive
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings/1/sell'
+    headers:
+      Content-Type: application/json
+    body:
+      quantity: 1
+      paymentMethod: test_paymentMethod
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: POST /api/expenses - invalid type for 'category'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/expenses'
+    headers:
+      Content-Type: application/json
+    body:
+      category: 12345
+      amountPaise: 1
+      description: test_description
+      date: test_date
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/expenses - invalid type for 'amountPaise'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/expenses'
+    headers:
+      Content-Type: application/json
+    body:
+      category: test_category
+      amountPaise: INVALID_TYPE_STRING
+      description: test_description
+      date: test_date
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/expenses - invalid type for 'description'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/expenses'
+    headers:
+      Content-Type: application/json
+    body:
+      category: test_category
+      amountPaise: 1
+      description: 12345
+      date: test_date
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/expenses - invalid type for 'date'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/expenses'
+    headers:
+      Content-Type: application/json
+    body:
+      category: test_category
+      amountPaise: 1
+      description: test_description
+      date: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: DELETE /api/expenses/{id} - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/expenses/999999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: PUT /api/expenses/{id} - invalid type for 'category'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/expenses/1'
+    headers:
+      Content-Type: application/json
+    body:
+      category: 12345
+      amountPaise: 1
+      description: test_description
+      date: test_date
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/expenses/{id} - invalid type for 'amountPaise'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/expenses/1'
+    headers:
+      Content-Type: application/json
+    body:
+      category: test_category
+      amountPaise: INVALID_TYPE_STRING
+      description: test_description
+      date: test_date
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/expenses/{id} - invalid type for 'description'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/expenses/1'
+    headers:
+      Content-Type: application/json
+    body:
+      category: test_category
+      amountPaise: 1
+      description: 12345
+      date: test_date
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/expenses/{id} - invalid type for 'date'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/expenses/1'
+    headers:
+      Content-Type: application/json
+    body:
+      category: test_category
+      amountPaise: 1
+      description: test_description
+      date: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/expenses/{id} - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/expenses/999999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: POST /api/inventory/adjust - invalid type for 'productId'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/adjust'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: INVALID_TYPE_STRING
+      movementType: test_movementType
+      quantity: 1
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/inventory/adjust - invalid type for 'movementType'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/adjust'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: 12345
+      quantity: 1
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/inventory/adjust - invalid type for 'quantity'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/adjust'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: test_movementType
+      quantity: INVALID_TYPE_STRING
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/inventory/adjust - invalid type for 'reason'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/adjust'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: test_movementType
+      quantity: 1
+      reason: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/inventory/stock-in - invalid type for 'productId'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-in'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: INVALID_TYPE_STRING
+      movementType: test_movementType
+      quantity: 1
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/inventory/stock-in - invalid type for 'movementType'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-in'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: 12345
+      quantity: 1
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/inventory/stock-in - invalid type for 'quantity'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-in'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: test_movementType
+      quantity: INVALID_TYPE_STRING
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/inventory/stock-in - invalid type for 'reason'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-in'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: test_movementType
+      quantity: 1
+      reason: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/inventory/stock-out - invalid type for 'productId'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-out'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: INVALID_TYPE_STRING
+      movementType: test_movementType
+      quantity: 1
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/inventory/stock-out - invalid type for 'movementType'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-out'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: 12345
+      quantity: 1
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/inventory/stock-out - invalid type for 'quantity'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-out'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: test_movementType
+      quantity: INVALID_TYPE_STRING
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/inventory/stock-out - invalid type for 'reason'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-out'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: test_movementType
+      quantity: 1
+      reason: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/movements - invalid type for 'productId'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/movements'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: INVALID_TYPE_STRING
+      movementType: test_movementType
+      quantity: 1
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/movements - invalid type for 'movementType'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/movements'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: 12345
+      quantity: 1
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/movements - invalid type for 'quantity'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/movements'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: test_movementType
+      quantity: INVALID_TYPE_STRING
+      reason: test_reason
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/movements - invalid type for 'reason'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/movements'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: test_movementType
+      quantity: 1
+      reason: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/products - invalid type for 'name'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body:
+      name: 12345
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      quantity: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+      supplierId: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/products - invalid type for 'sku'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: 12345
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      quantity: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+      supplierId: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/products - invalid type for 'category'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: 12345
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      quantity: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+      supplierId: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/products - invalid type for 'purchasePricePaise'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: INVALID_TYPE_STRING
+      sellingPricePaise: 1
+      quantity: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+      supplierId: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/products - invalid type for 'sellingPricePaise'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: INVALID_TYPE_STRING
+      quantity: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+      supplierId: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/products - invalid type for 'quantity'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      quantity: INVALID_TYPE_STRING
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+      supplierId: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/products - invalid type for 'minStockLevel'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      quantity: 1
+      minStockLevel: INVALID_TYPE_STRING
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+      supplierId: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/products - invalid type for 'targetStockLevel'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      quantity: 1
+      minStockLevel: 1
+      targetStockLevel: INVALID_TYPE_STRING
+      averageDailySales: 1.0
+      leadTimeDays: 1
+      supplierId: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/products - invalid type for 'averageDailySales'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      quantity: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: INVALID_TYPE_STRING
+      leadTimeDays: 1
+      supplierId: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/products - invalid type for 'leadTimeDays'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      quantity: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: INVALID_TYPE_STRING
+      supplierId: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/products - invalid type for 'supplierId'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      quantity: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+      supplierId: INVALID_TYPE_STRING
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: DELETE /api/products/{id} - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/products/999999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: GET /api/products/{id} - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/products/999999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: PUT /api/products/{id} - invalid type for 'name'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: 12345
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/products/{id} - invalid type for 'sku'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: 12345
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/products/{id} - invalid type for 'category'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: 12345
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/products/{id} - invalid type for 'purchasePricePaise'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: INVALID_TYPE_STRING
+      sellingPricePaise: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/products/{id} - invalid type for 'sellingPricePaise'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: INVALID_TYPE_STRING
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/products/{id} - invalid type for 'minStockLevel'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      minStockLevel: INVALID_TYPE_STRING
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/products/{id} - invalid type for 'targetStockLevel'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      minStockLevel: 1
+      targetStockLevel: INVALID_TYPE_STRING
+      averageDailySales: 1.0
+      leadTimeDays: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/products/{id} - invalid type for 'averageDailySales'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: INVALID_TYPE_STRING
+      leadTimeDays: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/products/{id} - invalid type for 'leadTimeDays'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      sku: test_sku
+      category: test_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 1.0
+      leadTimeDays: INVALID_TYPE_STRING
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/products/{id} - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/999999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: GET /api/products/{id}/movements - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/products/999999999/movements'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: DELETE /api/products/{productId}/supplier - resource not found (invalid path
+    param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/products/999999999/supplier'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: PUT /api/products/{productId}/supplier - invalid type for 'supplierId'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/1/supplier'
+    headers:
+      Content-Type: application/json
+    body:
+      supplierId: INVALID_TYPE_STRING
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/products/{productId}/supplier - resource not found (invalid path
+    param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/999999999/supplier'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: POST /api/purchase-orders - invalid type for 'supplierId'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders'
+    headers:
+      Content-Type: application/json
+    body:
+      supplierId: INVALID_TYPE_STRING
+      notes: test_notes
+      items: &id001
+      - productId: 1
+        quantity: 1
+        unitCostPaise: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/purchase-orders - invalid type for 'notes'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders'
+    headers:
+      Content-Type: application/json
+    body:
+      supplierId: 1
+      notes: 12345
+      items: *id001
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/purchase-orders - invalid type for 'items'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders'
+    headers:
+      Content-Type: application/json
+    body:
+      supplierId: 1
+      notes: test_notes
+      items: INVALID_TYPE_STRING
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: GET /api/purchase-orders/{id} - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/purchase-orders/999999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: PUT /api/purchase-orders/{id} - invalid type for 'supplierId'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/purchase-orders/1'
+    headers:
+      Content-Type: application/json
+    body:
+      supplierId: INVALID_TYPE_STRING
+      notes: test_notes
+      items: &id002
+      - productId: 1
+        quantity: 1
+        unitCostPaise: 1
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/purchase-orders/{id} - invalid type for 'notes'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/purchase-orders/1'
+    headers:
+      Content-Type: application/json
+    body:
+      supplierId: 1
+      notes: 12345
+      items: *id002
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/purchase-orders/{id} - invalid type for 'items'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/purchase-orders/1'
+    headers:
+      Content-Type: application/json
+    body:
+      supplierId: 1
+      notes: test_notes
+      items: INVALID_TYPE_STRING
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/purchase-orders/{id} - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/purchase-orders/999999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: POST /api/purchase-orders/{id}/cancel - invalid type for 'reason'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders/1/cancel'
+    headers:
+      Content-Type: application/json
+    body:
+      reason: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/purchase-orders/{id}/cancel - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders/999999999/cancel'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: POST /api/purchase-orders/{id}/place - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders/999999999/place'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: POST /api/purchase-orders/{id}/receive - invalid type for 'items'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders/1/receive'
+    headers:
+      Content-Type: application/json
+    body:
+      items: INVALID_TYPE_STRING
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/purchase-orders/{id}/receive - resource not found (invalid path
+    param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders/999999999/receive'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: POST /api/sales - invalid type for 'items'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales'
+    headers:
+      Content-Type: application/json
+    body:
+      items: INVALID_TYPE_STRING
+      discountPaise: 1
+      discountPercent: 1.0
+      paymentMethod: test_paymentMethod
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/sales - invalid type for 'discountPaise'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales'
+    headers:
+      Content-Type: application/json
+    body:
+      items: &id003
+      - productId: 1
+        quantity: 1
+        unitSellingPricePaise: 1
+      discountPaise: INVALID_TYPE_STRING
+      discountPercent: 1.0
+      paymentMethod: test_paymentMethod
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/sales - invalid type for 'discountPercent'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales'
+    headers:
+      Content-Type: application/json
+    body:
+      items: *id003
+      discountPaise: 1
+      discountPercent: INVALID_TYPE_STRING
+      paymentMethod: test_paymentMethod
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/sales - invalid type for 'paymentMethod'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales'
+    headers:
+      Content-Type: application/json
+    body:
+      items: *id003
+      discountPaise: 1
+      discountPercent: 1.0
+      paymentMethod: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: GET /api/sales/{id} - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales/999999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: POST /api/sales/{id}/cancel - invalid type for 'reason'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales/1/cancel'
+    headers:
+      Content-Type: application/json
+    body:
+      reason: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/sales/{id}/cancel - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales/999999999/cancel'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: POST /api/stock-audits - invalid type for 'productIds'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits'
+    headers:
+      Content-Type: application/json
+    body:
+      productIds: INVALID_TYPE_STRING
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/stock-audits - invalid type for 'notes'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits'
+    headers:
+      Content-Type: application/json
+    body:
+      productIds:
+      - 1
+      notes: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/stock-audits/{auditId}/items/{itemId} - invalid type for 'countedQuantity'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/stock-audits/1/items/1'
+    headers:
+      Content-Type: application/json
+    body:
+      countedQuantity: INVALID_TYPE_STRING
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/stock-audits/{auditId}/items/{itemId} - invalid type for 'notes'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/stock-audits/1/items/1'
+    headers:
+      Content-Type: application/json
+    body:
+      countedQuantity: 1
+      notes: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/stock-audits/{auditId}/items/{itemId} - resource not found (invalid
+    path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/stock-audits/999999999/items/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: GET /api/stock-audits/{id} - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/stock-audits/999999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: POST /api/stock-audits/{id}/cancel - invalid type for 'reason'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits/1/cancel'
+    headers:
+      Content-Type: application/json
+    body:
+      reason: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/stock-audits/{id}/cancel - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits/999999999/cancel'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: POST /api/stock-audits/{id}/complete - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits/999999999/complete'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: POST /api/suppliers - invalid type for 'name'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers'
+    headers:
+      Content-Type: application/json
+    body:
+      name: 12345
+      contactPerson: test_contactPerson
+      phone: test_phone
+      email: test_email
+      address: test_address
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/suppliers - invalid type for 'contactPerson'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      contactPerson: 12345
+      phone: test_phone
+      email: test_email
+      address: test_address
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/suppliers - invalid type for 'phone'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      contactPerson: test_contactPerson
+      phone: 12345
+      email: test_email
+      address: test_address
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/suppliers - invalid type for 'email'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      contactPerson: test_contactPerson
+      phone: test_phone
+      email: 12345
+      address: test_address
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/suppliers - invalid type for 'address'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      contactPerson: test_contactPerson
+      phone: test_phone
+      email: test_email
+      address: 12345
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/suppliers - invalid type for 'notes'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      contactPerson: test_contactPerson
+      phone: test_phone
+      email: test_email
+      address: test_address
+      notes: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: DELETE /api/suppliers/{id} - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/suppliers/999999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: GET /api/suppliers/{id} - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/suppliers/999999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: PUT /api/suppliers/{id} - invalid type for 'name'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/suppliers/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: 12345
+      contactPerson: test_contactPerson
+      phone: test_phone
+      email: test_email
+      address: test_address
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/suppliers/{id} - invalid type for 'contactPerson'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/suppliers/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      contactPerson: 12345
+      phone: test_phone
+      email: test_email
+      address: test_address
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/suppliers/{id} - invalid type for 'phone'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/suppliers/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      contactPerson: test_contactPerson
+      phone: 12345
+      email: test_email
+      address: test_address
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/suppliers/{id} - invalid type for 'email'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/suppliers/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      contactPerson: test_contactPerson
+      phone: test_phone
+      email: 12345
+      address: test_address
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/suppliers/{id} - invalid type for 'address'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/suppliers/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      contactPerson: test_contactPerson
+      phone: test_phone
+      email: test_email
+      address: 12345
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/suppliers/{id} - invalid type for 'notes'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/suppliers/1'
+    headers:
+      Content-Type: application/json
+    body:
+      name: test_name
+      contactPerson: test_contactPerson
+      phone: test_phone
+      email: test_email
+      address: test_address
+      notes: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/suppliers/{id} - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/suppliers/999999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: GET /api/suppliers/{id}/products - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/suppliers/999999999/products'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: POST /api/surplus-listings - invalid type for 'productId'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: INVALID_TYPE_STRING
+      quantity: 1
+      discountedPricePaise: 1
+      reason: test_reason
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/surplus-listings - invalid type for 'quantity'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      quantity: INVALID_TYPE_STRING
+      discountedPricePaise: 1
+      reason: test_reason
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/surplus-listings - invalid type for 'discountedPricePaise'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      quantity: 1
+      discountedPricePaise: INVALID_TYPE_STRING
+      reason: test_reason
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/surplus-listings - invalid type for 'reason'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      quantity: 1
+      discountedPricePaise: 1
+      reason: 12345
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/surplus-listings - invalid type for 'notes'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      quantity: 1
+      discountedPricePaise: 1
+      reason: test_reason
+      notes: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: GET /api/surplus-listings/{id} - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings/999999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: PUT /api/surplus-listings/{id} - invalid type for 'discountedPricePaise'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/surplus-listings/1'
+    headers:
+      Content-Type: application/json
+    body:
+      discountedPricePaise: INVALID_TYPE_STRING
+      quantity: 1
+      reason: test_reason
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/surplus-listings/{id} - invalid type for 'quantity'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/surplus-listings/1'
+    headers:
+      Content-Type: application/json
+    body:
+      discountedPricePaise: 1
+      quantity: INVALID_TYPE_STRING
+      reason: test_reason
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/surplus-listings/{id} - invalid type for 'reason'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/surplus-listings/1'
+    headers:
+      Content-Type: application/json
+    body:
+      discountedPricePaise: 1
+      quantity: 1
+      reason: 12345
+      notes: test_notes
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/surplus-listings/{id} - invalid type for 'notes'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/surplus-listings/1'
+    headers:
+      Content-Type: application/json
+    body:
+      discountedPricePaise: 1
+      quantity: 1
+      reason: test_reason
+      notes: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: PUT /api/surplus-listings/{id} - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/surplus-listings/999999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: POST /api/surplus-listings/{id}/cancel - invalid type for 'reason'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings/1/cancel'
+    headers:
+      Content-Type: application/json
+    body:
+      reason: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/surplus-listings/{id}/cancel - resource not found (invalid path
+    param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings/999999999/cancel'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: POST /api/surplus-listings/{id}/sell - invalid type for 'quantity'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings/1/sell'
+    headers:
+      Content-Type: application/json
+    body:
+      quantity: INVALID_TYPE_STRING
+      paymentMethod: test_paymentMethod
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/surplus-listings/{id}/sell - invalid type for 'paymentMethod'
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings/1/sell'
+    headers:
+      Content-Type: application/json
+    body:
+      quantity: 1
+      paymentMethod: 12345
+    body_type: json
+  assertions:
+  - type: status
+    range:
+    - 400
+    - 422
+- name: POST /api/surplus-listings/{id}/sell - resource not found (invalid path param)
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings/999999999/sell'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: DELETE /api/dashboard - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/dashboard'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/expenses - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/expenses'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: POST /api/expenses/{id} - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/expenses/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/health - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/health'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/intelligence - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/intelligence'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/intelligence/sales - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/intelligence/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/inventory/adjust - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/inventory/adjust'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/inventory/stock-in - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/inventory/stock-in'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/inventory/stock-out - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/inventory/stock-out'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/movements - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/movements'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/products - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/products'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: POST /api/products/{id} - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/products/{id}/movements - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/products/1/movements'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: POST /api/products/{productId}/supplier - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products/1/supplier'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/purchase-orders - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/purchase-orders'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/purchase-orders/{id} - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/purchase-orders/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/purchase-orders/{id}/cancel - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/purchase-orders/1/cancel'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/purchase-orders/{id}/place - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/purchase-orders/1/place'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/purchase-orders/{id}/receive - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/purchase-orders/1/receive'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/reports/inventory-loss - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/reports/inventory-loss'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/reports/profit-loss - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/reports/profit-loss'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/reports/purchases - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/reports/purchases'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/reports/sales - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/reports/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/reports/summary - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/reports/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/sales - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/sales/summary - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/sales/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/sales/trend - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/sales/trend'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/sales/{id} - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/sales/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/sales/{id}/cancel - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/sales/1/cancel'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/stock-audits - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/stock-audits'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/stock-audits/summary - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/stock-audits/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/stock-audits/{auditId}/items/{itemId} - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/stock-audits/1/items/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/stock-audits/{id} - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/stock-audits/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/stock-audits/{id}/cancel - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/stock-audits/1/cancel'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/stock-audits/{id}/complete - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/stock-audits/1/complete'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/suppliers - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/suppliers'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: POST /api/suppliers/{id} - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/suppliers/{id}/products - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/suppliers/1/products'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/surplus-listings - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/surplus-listings'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/surplus-listings/suggestions - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/surplus-listings/suggestions'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/surplus-listings/summary - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/surplus-listings/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/surplus-listings/{id} - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/surplus-listings/1'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/surplus-listings/{id}/cancel - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/surplus-listings/1/cancel'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405
+- name: DELETE /api/surplus-listings/{id}/sell - unsupported method
+  module: stockpile-controller
+  tags:
+  - negative
+  - rule-generated
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/surplus-listings/1/sell'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 405

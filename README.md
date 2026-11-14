@@ -190,10 +190,10 @@ To evaluate ApiScope rigorously against ground truth, an automated 4-way evaluat
 
 | Test Strategy | Test Suite Source | Tests Executed | Bugs Detected | Detection Rate (%) | False Positives | FP Rate (%) | Module Health Impact |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| **Strategy 1: Planted Bug Probes** | `examples/m13_planted_bug_probes.yaml` | 15 | **10 / 12** | **83.3%** | **0** | **0.0%** | orders, products, coupons, auth, users flagged |
-| **Strategy 2: Rule-Based Generation (M5)** | Generated from `sample_app/openapi.yaml` | 27 | **5 / 12** | **41.7%** | **0** | **0.0%** | orders, products, coupons flagged |
-| **Strategy 3: AI-Assisted Generation (M12)** | Synthesized via Project Profile & approved | 25 | **8 / 12** | **66.7%** | **0** | **0.0%** | orders, products, coupons, auth, users flagged |
-| **Strategy 4: Combined Hybrid Pipeline** | Strategy 1 + 2 + 3 + Diagnostics (M8/M9/M10) | 67 | **12 / 12** | **100.0%** | **0** | **0.0%** | **All 12 planted bugs detected** |
+| **Strategy 1: Planted Bug Probes** | `examples/m13_planted_bug_probes.yaml` | 16 | **10 / 12** | **83.3%** | **0** | **0.0%** | orders, products, coupons, auth, users flagged |
+| **Strategy 2: Rule-Based Generation (M5)** | Generated from `sample_app/openapi.yaml` | 70 | **7 / 12** | **58.3%** | **0** | **0.0%** | orders, products, coupons flagged |
+| **Strategy 3: AI-Assisted Generation (M12)** | Synthesized via Project Profile & approved | 74 | **10 / 12** | **83.3%** | **0** | **0.0%** | orders, products, coupons, auth, users flagged |
+| **Strategy 4: Combined Hybrid Pipeline** | Strategy 1 + 2 + 3 + Diagnostics (M8/M9/M10) | 90 | **12 / 12** | **100.0%** | **0** | **0.0%** | **All 12 planted bugs detected** |
 
 ### Specificity & False Positive Control on Clean Target (`StockPile`)
 To verify that ApiScope's detectors do not generate false alarms on well-behaved software, the identical analysis pipeline was run against the clean **StockPile Inventory Management API**:
@@ -251,6 +251,40 @@ pip install -e ".[dev]"
 # 4. Verify installation
 apiscope version
 ```
+
+### One-Command Quick Demo Scripts (Offline & Live AI)
+
+ApiScope includes two turnkey, automated PowerShell runner scripts in the repository root that execute the end-to-end 7-step pipeline (spec ingestion, test generation, human approval, live execution against the reference target, zombie & silent-failure diagnostics, multi-format report export, and optional Web Dashboard launch):
+
+#### Option A: Offline Demo (Zero External Credentials Required)
+Runs the entire pipeline using the deterministic profile-driven synthesis fallback:
+```powershell
+# Run the complete offline pipeline (starts target server, executes all steps, restores fixtures)
+.\run_offline_demo.ps1
+
+# Run and automatically launch the Web Dashboard at the end
+.\run_offline_demo.ps1 -Dashboard
+
+# Run without opening the browser
+.\run_offline_demo.ps1 -SkipBrowser
+```
+
+#### Option B: Live AI Demo (Google Gemini or OpenAI)
+Uses a real LLM provider via outbound HTTPS to synthesize intelligent, project-aware test suites governed by human approval:
+```powershell
+# 1. Provide your API key (via CLI param, env var, or .env file)
+.\run_live_ai_demo.ps1 -Provider gemini -ApiKey "AIzaSy..."
+
+# Or with environment variable:
+$env:GEMINI_API_KEY = "AIzaSy..."
+.\run_live_ai_demo.ps1
+
+# Or with OpenAI:
+$env:OPENAI_API_KEY = "sk-..."
+.\run_live_ai_demo.ps1 -Provider openai -Model gpt-4o-mini
+```
+
+Both scripts automatically manage the background target server lifecycle, snapshot and restore log fixtures (`sample_app/logs/access.log` and `app.log`) in a `finally` block to guarantee 100% byte-for-byte invariance, and output execution artifacts to `.apiscope/`.
 
 ### Running the Test Suite & Verification
 

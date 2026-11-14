@@ -27,12 +27,15 @@ from apiscope.analysis.zombie_service import (
     ZombieService,
     load_access_log,
 )
+from apiscope.compiler.service import TestPlanCompiler
+from apiscope.contract.service import ContractAnalysisService
 from apiscope.core.exceptions import (
     ApiScopeError,
     ConfigurationError,
     DefinitionError,
     PathTraversalError,
 )
+from apiscope.core.executor import RequestExecutor, TargetAccessPolicy
 from apiscope.core.run_service import RunService
 from apiscope.data.connection import DatabaseManager
 from apiscope.data.repositories import RunRepository
@@ -46,6 +49,8 @@ from apiscope.definitions.yaml_loader import load_test_definition
 from apiscope.generators.ai_generator import AiGeneratorService, LLMConfig
 from apiscope.generators.openapi_importer import OpenAPISpec, load_openapi_spec
 from apiscope.generators.service import GeneratorService
+from apiscope.intelligence.service import ProjectIntelligenceService
+from apiscope.planning.service import TestPlanningService
 from apiscope.reports.report_service import ReportService
 from apiscope.web import DashboardConfig, create_web_app
 
@@ -265,10 +270,60 @@ def run(
             help="Execute tests with status 'proposed'",
         ),
     ] = False,
+    allow_local: Annotated[
+        bool,
+        typer.Option(
+            "--allow-local",
+            help=(
+                "[REMOVED] Legacy option removed for security (CWE-272). "
+                "Use --allow-target <origin> instead."
+            ),
+        ),
+    ] = False,
+    allow_target: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--allow-target",
+            help=(
+                "Permit execution against specific target origin (e.g. "
+                "'http://localhost:8080'). Can be specified multiple times."
+            ),
+        ),
+    ] = None,
+    allow_mutation: Annotated[
+        bool,
+        typer.Option(
+            "--allow-mutation",
+            help=(
+                "Authorize mutating and destructive operations (POST, PUT, "
+                "PATCH, DELETE) in designated non-production environments."
+            ),
+        ),
+    ] = False,
+    dry_run: Annotated[
+        bool,
+        typer.Option(
+            "--dry-run",
+            help=(
+                "Preview planned operations, risk classifications, masked "
+                "secrets, and execution authorization without dispatching "
+                "network requests or saving runs."
+            ),
+        ),
+    ] = False,
 ) -> None:
     """Execute API test suites and record execution telemetry."""
     db_manager: DatabaseManager | None = None
     try:
+        if allow_local:
+            typer.echo(
+                "Error: '--allow-local' has been removed for security (CWE-272). "
+                "Specify target origin(s) explicitly via '--allow-target <origin>' "
+                "(e.g., '--allow-target http://localhost:8080').",
+                err=True,
+            )
+            raise typer.Exit(code=EXIT_TOOL_ERROR)
+
         environment: Environment | None = None
         if env_file is not None:
             env_p = Path(env_file)
@@ -294,7 +349,61 @@ def run(
 
         collection = _load_suite(suite_path)
 
-        run_service = RunService()
+        allowed_targets_list: list[str] = []
+        if allow_target:
+            for item in allow_target:
+                for sub in item.split(","):
+                    if sub.strip():
+                        allowed_targets_list.append(sub.strip())
+
+        policy = TargetAccessPolicy(
+            allow_private_networks=False,
+            allowed_targets=allowed_targets_list if allowed_targets_list else None,
+        )
+        executor = RequestExecutor(policy=policy)
+        run_service = RunService(executor=executor)
+
+        if dry_run:
+            dry_report = run_service.dry_run(
+                collection=collection,
+                environment=environment,
+                module=module,
+                tags=tag,
+                include_proposed=include_proposed,
+                allow_mutation=allow_mutation,
+            )
+            typer.echo(f"=== DRY-RUN PLAN: {dry_report.suite_name} ===")
+            if dry_report.environment_name:
+                typer.echo(f"Target Environment: {dry_report.environment_name}")
+            typer.echo(
+                f"Planned Operations: {dry_report.total_operations} | "
+                f"Executable: {dry_report.executable_count} | "
+                f"Blocked: {dry_report.blocked_count}"
+            )
+            typer.echo(
+                f"Risk Breakdown: {dry_report.read_only_count} READ_ONLY, "
+                f"{dry_report.mutating_count} MUTATING, "
+                f"{dry_report.destructive_count} DESTRUCTIVE, "
+                f"{dry_report.unknown_count} UNKNOWN"
+            )
+            typer.echo("-" * 80)
+            for op in dry_report.operations:
+                plan_tag = (
+                    "[PERMITTED]"
+                    if op.will_execute
+                    else f"[BLOCKED: {op.block_reason}]"
+                )
+                typer.echo(
+                    f"{op.method:<6} {op.url:<40} | Risk: {op.risk:<11} | "
+                    f"Status: {op.status:<8} | {plan_tag}"
+                )
+            typer.echo("-" * 80)
+            if dry_report.missing_variables:
+                typer.echo(
+                    f"Missing Variables: {', '.join(dry_report.missing_variables)}"
+                )
+            return
+
         run_result = run_service.run_collection(
             collection=collection,
             environment=environment,
@@ -302,6 +411,7 @@ def run(
             tags=tag,
             data_file=data_file,
             include_proposed=include_proposed,
+            allow_mutation=allow_mutation,
         )
 
         if run_result.total_tests == 0:
@@ -1078,6 +1188,605 @@ def serve(
         import uvicorn
 
         uvicorn.run(web_app, host=host, port=port, log_level="info")
+        raise typer.Exit(code=EXIT_OK)
+
+    except typer.Exit:
+        raise
+    except ApiScopeError as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+    except Exception as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+
+
+@app.command(name="inspect-target")
+def inspect_target(
+    spec: Annotated[
+        Path,
+        typer.Option(
+            "--spec",
+            "-s",
+            help="Path to OpenAPI specification (YAML or JSON)",
+        ),
+    ],
+    repo: Annotated[
+        Path | None,
+        typer.Option(
+            "--repo",
+            "-r",
+            help="Optional path to local source repository root",
+        ),
+    ] = None,
+    output: Annotated[
+        Path | None,
+        typer.Option(
+            "--output",
+            "-o",
+            help="Optional output file path for intelligence report (YAML or JSON)",
+        ),
+    ] = None,
+    ai_enrich: Annotated[
+        bool,
+        typer.Option(
+            "--ai-enrich",
+            help="Enable optional LLM-assisted enrichment hypotheses",
+        ),
+    ] = False,
+    provider: Annotated[
+        str,
+        typer.Option(
+            "--provider",
+            help="LLM provider: gemini or openai",
+        ),
+    ] = "gemini",
+    api_key: Annotated[
+        str | None,
+        typer.Option(
+            "--api-key",
+            help="Optional API key for LLM provider",
+        ),
+    ] = None,
+    model: Annotated[
+        str | None,
+        typer.Option(
+            "--model",
+            "-m",
+            help="Optional LLM model name",
+        ),
+    ] = None,
+) -> None:
+    """Analyze and produce structured Project Intelligence Report for a target API."""
+    try:
+        service = ProjectIntelligenceService()
+        report = service.analyze_target(
+            spec_path=spec,
+            repo_path=repo,
+            enable_ai=ai_enrich,
+            provider_type=provider,
+            api_key=api_key,
+            model_name=model,
+        )
+
+        typer.echo(
+            f"=== Project Intelligence: {report.project.name} "
+            f"(v{report.project.version}) ==="
+        )
+        typer.echo(f"Language / Framework: {report.project.source_language}")
+        typer.echo(f"Discovered Endpoints: {len(report.endpoints)}")
+
+        # Module summary
+        typer.echo("\n--- Modules ---")
+        for m in report.modules:
+            src_info = (
+                f" (Controller: {m.source_controller})" if m.source_controller else ""
+            )
+            typer.echo(
+                f"  * {m.name}: {m.endpoints_count} endpoints "
+                f"[{m.status.value}]{src_info}"
+            )
+
+        # Entities summary
+        if report.entities:
+            typer.echo(f"\n--- Domain Entities ({len(report.entities)}) ---")
+            for ent in report.entities[:10]:
+                props_str = (
+                    f" ({len(ent.properties)} properties)" if ent.properties else ""
+                )
+                typer.echo(f"  * {ent.name} [{ent.status.value}]{props_str}")
+            if len(report.entities) > 10:
+                typer.echo(f"  ... and {len(report.entities) - 10} more entities")
+
+        # Auth & Roles
+        typer.echo("\n--- Authentication & Roles ---")
+        typer.echo(f"Auth Type: {report.auth.auth_type} [{report.auth.status.value}]")
+        if report.auth.roles:
+            typer.echo(f"Roles: {', '.join(report.auth.roles)}")
+
+        # Workflows & Business Rules
+        if report.workflows:
+            typer.echo(f"\n--- Discovered Workflows ({len(report.workflows)}) ---")
+            for wf in report.workflows:
+                typer.echo(f"  * {wf.name} ({len(wf.steps)} steps) [{wf.status.value}]")
+
+        if report.business_rules:
+            typer.echo(f"\n--- Business Rules ({len(report.business_rules)}) ---")
+            for br in report.business_rules[:5]:
+                typer.echo(f"  * [{br.rule_type}] {br.description} [{br.status.value}]")
+            if len(report.business_rules) > 5:
+                typer.echo(f"  ... and {len(report.business_rules) - 5} more rules")
+
+        # Risk Areas
+        if report.risk_areas:
+            typer.echo(f"\n--- Risk Areas ({len(report.risk_areas)}) ---")
+            for r in report.risk_areas:
+                typer.echo(f"  ! [{r.severity}] {r.category}: {r.description}")
+
+        # Missing Information
+        if report.missing_information:
+            typer.echo(
+                f"\n--- Missing Information & Ambiguities "
+                f"({len(report.missing_information)}) ---"
+            )
+            for mi in report.missing_information:
+                typer.echo(f"  ? [{mi.category}] {mi.description}")
+
+        # Output file if requested
+        if output is not None:
+            service.save_report(report, output)
+            typer.echo(f"\nIntelligence report saved to {output}")
+
+        raise typer.Exit(code=EXIT_OK)
+
+    except typer.Exit:
+        raise
+    except ApiScopeError as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+    except Exception as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+
+
+@app.command(name="analyze-contract")
+def analyze_contract(
+    spec: Annotated[
+        Path,
+        typer.Option(
+            "--spec",
+            "-s",
+            help="Path to OpenAPI specification (YAML or JSON)",
+        ),
+    ],
+    repo: Annotated[
+        Path | None,
+        typer.Option(
+            "--repo",
+            "-r",
+            help="Optional path to local source repository for route reconciliation",
+        ),
+    ] = None,
+    intelligence: Annotated[
+        Path | None,
+        typer.Option(
+            "--intelligence",
+            "-i",
+            help="Optional path to Project Intelligence report",
+        ),
+    ] = None,
+    output: Annotated[
+        Path | None,
+        typer.Option(
+            "--output",
+            "-o",
+            help="Optional output file path for contract report (YAML or JSON)",
+        ),
+    ] = None,
+    strict: Annotated[
+        bool,
+        typer.Option(
+            "--strict",
+            help="Return exit code 2 if contract quality has HIGH severity findings",
+        ),
+    ] = False,
+) -> None:
+    """Analyze API contract, audit specification quality, and reconcile with source."""
+    try:
+        service = ContractAnalysisService()
+        report = service.analyze_contract(
+            spec_path=spec,
+            repo_path=repo,
+            intelligence_path=intelligence,
+        )
+
+        typer.echo(
+            f"=== API Contract Quality Audit: {report.title} (v{report.version}) ==="
+        )
+        typer.echo(f"Total Operations: {report.total_operations}")
+        methods_str = ", ".join(
+            f"{m}: {c}" for m, c in sorted(report.operations_by_method.items())
+        )
+        typer.echo(f"Operations by Method: {methods_str}")
+        typer.echo(f"Functional Modules: {report.modules_count}")
+        typer.echo(f"Declared Component Schemas: {report.component_schemas_count}")
+
+        # Readiness
+        r_str = ", ".join(f"{k}: {v}" for k, v in report.readiness_summary.items())
+        typer.echo(
+            f"\nTest Generation Readiness: [{r_str}] => "
+            f"Overall: {report.overall_readiness.value}"
+        )
+
+        # Findings Summary
+        f_str = ", ".join(f"{k}: {v}" for k, v in report.findings_summary.items())
+        typer.echo(f"Contract Quality Findings: [{f_str}]")
+
+        # Top / Critical Findings
+        if report.findings:
+            typer.echo("\n--- Key Quality Findings ---")
+            high_and_med = [
+                f for f in report.findings if f.severity in ("HIGH", "MEDIUM")
+            ]
+            display_findings = (
+                high_and_med[:10] if high_and_med else report.findings[:8]
+            )
+            for f in display_findings:
+                typer.echo(f"  ! [{f.severity}] {f.category}: {f.description}")
+            if len(high_and_med) > 10:
+                typer.echo(f"  ... and {len(high_and_med) - 10} more findings")
+
+        # Source Reconciliation Summary
+        if report.source_reconciliation:
+            sr = report.source_reconciliation
+            typer.echo("\n--- Source Reconciliation ---")
+            typer.echo(
+                f"Primary Source Language: {sr.get('primary_language', 'unknown')}"
+            )
+            typer.echo(
+                f"Target Service Routes: {sr.get('target_service_routes_count', 0)}"
+            )
+            typer.echo(f"Matched Operations: {sr.get('matched_operations_count', 0)}")
+            typer.echo(
+                f"Specification-Only Routes: {sr.get('spec_only_operations_count', 0)}"
+            )
+            typer.echo(f"Source-Only Routes: {sr.get('source_only_routes_count', 0)}")
+            if sr.get("isolated_microservice_routes_count", 0) > 0:
+                typer.echo(
+                    f"Isolated Microservice Routes (Non-target service): "
+                    f"{sr.get('isolated_microservice_routes_count')}"
+                )
+
+        # Schema Reconciliation
+        if report.schema_reconciliation:
+            scr = report.schema_reconciliation
+            if (
+                "inferred_structural_entities" in scr
+                and scr["inferred_structural_entities"]
+            ):
+                typer.echo("\n--- Schema Reconciliation ---")
+                d_count = scr.get("declared_component_schemas_count", 0)
+                typer.echo(f"Declared Component Schemas: {d_count}")
+                typer.echo(
+                    f"Intelligence Inferred Structural Entities: "
+                    f"{len(scr['inferred_structural_entities'])} "
+                    f"({', '.join(scr['inferred_structural_entities'])})"
+                )
+
+        # Output persistence
+        if output is not None:
+            service.save_report(report, output)
+            typer.echo(f"\nContract Quality Report saved to {output}")
+
+        # Exit code determination
+        has_high_findings = report.findings_summary.get("HIGH", 0) > 0
+        if strict and has_high_findings:
+            raise typer.Exit(code=EXIT_WARNINGS_STRICT)
+
+        raise typer.Exit(code=EXIT_OK)
+
+    except typer.Exit:
+        raise
+    except ApiScopeError as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+
+
+@app.command("plan-tests")
+def plan_tests(
+    spec: Annotated[
+        Path | None,
+        typer.Option(
+            "--spec",
+            "-s",
+            help="Path to OpenAPI specification (YAML or JSON)",
+        ),
+    ] = None,
+    contract: Annotated[
+        Path | None,
+        typer.Option(
+            "--contract",
+            "-c",
+            help="Optional path to pre-computed Contract Quality Report (YAML or JSON)",
+        ),
+    ] = None,
+    intelligence: Annotated[
+        Path | None,
+        typer.Option(
+            "--intelligence",
+            "-i",
+            help="Optional path to Project Intelligence report",
+        ),
+    ] = None,
+    repo: Annotated[
+        Path | None,
+        typer.Option(
+            "--repo",
+            "-r",
+            help="Optional path to local source repository",
+        ),
+    ] = None,
+    ai: Annotated[
+        bool,
+        typer.Option(
+            "--ai",
+            help="Enable budget-aware Gemini reasoning for domain workflows",
+        ),
+    ] = False,
+    provider: Annotated[
+        str,
+        typer.Option(
+            "--provider",
+            help="AI provider ('gemini' or 'openai')",
+        ),
+    ] = "gemini",
+    api_key: Annotated[
+        str | None,
+        typer.Option(
+            "--api-key",
+            help="Optional provider API key (defaults to GEMINI_API_KEY from .env)",
+        ),
+    ] = None,
+    model: Annotated[
+        str | None,
+        typer.Option(
+            "--model",
+            help="Optional model name override",
+        ),
+    ] = None,
+    output: Annotated[
+        Path | None,
+        typer.Option(
+            "--output",
+            "-o",
+            help="Optional output path for generated TestPlan (YAML or JSON)",
+        ),
+    ] = None,
+) -> None:
+    """Generate comprehensive, evidence-backed test plan.
+
+    Supports deterministic generation with optional Gemini reasoning.
+    """
+    try:
+        if spec is None and contract is None:
+            typer.echo(
+                "Error: Either --spec or --contract must be specified.", err=True
+            )
+            raise typer.Exit(code=EXIT_TOOL_ERROR)
+
+        service = TestPlanningService()
+        plan = service.plan_tests(
+            spec_path=spec,
+            contract_path=contract,
+            intelligence_path=intelligence,
+            repo_path=repo,
+            enable_ai=ai,
+            provider_type=provider,
+            api_key=api_key,
+            model_name=model,
+        )
+
+        typer.echo(f"=== API Test Plan: {plan.title} (v{plan.version}) ===")
+        typer.echo(f"Total Proposed Scenarios: {len(plan.scenarios)}")
+
+        # Breakdown by origin
+        orig_counts = plan.summary.get("scenarios_by_origin", {})
+        det_count = orig_counts.get("DETERMINISTIC", 0)
+        ai_count = orig_counts.get("AI_PROPOSED", 0)
+        typer.echo(f"  - Deterministic Contract Baseline: {det_count}")
+        typer.echo(f"  - AI-Proposed Domain Scenarios: {ai_count}")
+
+        # Approval breakdown
+        appr_counts = plan.summary.get("approval_summary", {})
+        typer.echo(
+            f"Approval Status: [Approved: {appr_counts.get('approved', 0)}, "
+            f"Proposed/Review-Required: {appr_counts.get('proposed', 0)}]"
+        )
+
+        # Category breakdown
+        cat_counts = plan.summary.get("scenarios_by_category", {})
+        cat_str = ", ".join(f"{k}: {v}" for k, v in sorted(cat_counts.items()))
+        typer.echo(f"\nScenarios by Category:\n  {cat_str}")
+
+        # Priority breakdown
+        prio_counts = plan.summary.get("scenarios_by_priority", {})
+        prio_str = ", ".join(f"{k}: {v}" for k, v in sorted(prio_counts.items()))
+        typer.echo(f"Scenarios by Priority:\n  {prio_str}")
+
+        # Unmet prerequisites
+        if plan.missing_prerequisites:
+            typer.echo(
+                f"\nUnmet Prerequisites & Required Fixtures: "
+                f"{len(plan.missing_prerequisites)}"
+            )
+            for prereq in plan.missing_prerequisites[:6]:
+                typer.echo(f"  * {prereq}")
+            if len(plan.missing_prerequisites) > 6:
+                typer.echo(f"  ... and {len(plan.missing_prerequisites) - 6} more")
+
+        # Untestable operations
+        if plan.untestable_operations:
+            typer.echo(
+                f"\nUntestable Operations (Blocked by contract defects): "
+                f"{len(plan.untestable_operations)}"
+            )
+            for u in plan.untestable_operations[:5]:
+                reasons = ", ".join(u.get("blocking_reasons", []))
+                typer.echo(f"  ! {u['operation']}: {reasons}")
+
+        # AI Usage Reporting
+        if ai or plan.ai_usage.status != "SKIPPED":
+            typer.echo("\n--- AI Reasoning Usage ---")
+            typer.echo(f"Status: {plan.ai_usage.status}")
+            typer.echo(f"Calls Made: {plan.ai_usage.calls_made}")
+            typer.echo(
+                f"Estimated Tokens: {plan.ai_usage.total_tokens} "
+                f"(prompt: {plan.ai_usage.prompt_tokens}, "
+                f"completion: {plan.ai_usage.completion_tokens})"
+            )
+            if plan.ai_usage.details:
+                typer.echo(f"Details: {plan.ai_usage.details}")
+
+        # Top Scenarios Preview
+        if plan.scenarios:
+            typer.echo("\n--- Key Test Scenarios ---")
+            for s in plan.scenarios[:8]:
+                steps_summary = " -> ".join(
+                    f"{st.method} {st.path}" for st in s.steps[:3]
+                )
+                if len(s.steps) > 3:
+                    steps_summary += f" (+{len(s.steps) - 3} steps)"
+                typer.echo(
+                    f"  [{s.priority}] {s.scenario_id}: {s.title} "
+                    f"({s.category}, {s.origin}) => {steps_summary}"
+                )
+            if len(plan.scenarios) > 8:
+                typer.echo(f"  ... and {len(plan.scenarios) - 8} more scenarios")
+
+        # Output persistence
+        if output is not None:
+            service.save_plan(plan, output)
+            typer.echo(f"\nTest Plan saved to {output}")
+
+        raise typer.Exit(code=EXIT_OK)
+
+    except typer.Exit:
+        raise
+    except ApiScopeError as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+
+
+@app.command("compile-plan")
+def compile_plan_cmd(
+    plan: Annotated[
+        Path,
+        typer.Option(
+            "--plan",
+            "-p",
+            help="Path to TestPlan YAML or JSON file",
+        ),
+    ],
+    spec: Annotated[
+        Path | None,
+        typer.Option(
+            "--spec",
+            "-s",
+            help="Path to OpenAPI spec file (if not in contract or plan)",
+        ),
+    ] = None,
+    contract: Annotated[
+        Path | None,
+        typer.Option(
+            "--contract",
+            "-c",
+            help="Path to CanonicalContract YAML/JSON file",
+        ),
+    ] = None,
+    intelligence: Annotated[
+        Path | None,
+        typer.Option(
+            "--intelligence",
+            "-i",
+            help="Path to ProjectIntelligenceReport JSON/YAML file",
+        ),
+    ] = None,
+    output: Annotated[
+        Path | None,
+        typer.Option(
+            "--output",
+            "-o",
+            help="Output path for compiled executable native test suite (YAML)",
+        ),
+    ] = None,
+    report: Annotated[
+        Path | None,
+        typer.Option(
+            "--report",
+            "-r",
+            help="Output path for detailed compilation report (JSON)",
+        ),
+    ] = None,
+    base_url_var: Annotated[
+        str,
+        typer.Option(
+            "--base-url-var",
+            help="Base URL placeholder (defaults to '{{base_url}}')",
+        ),
+    ] = "{{base_url}}",
+    include_proposed: Annotated[
+        bool,
+        typer.Option(
+            "--include-proposed",
+            help="Compile AI-proposed scenarios without human approval",
+        ),
+    ] = False,
+) -> None:
+    """Compile abstract TestPlan scenarios into executable native ApiScope test suites.
+
+    Validates oracles against contracts, analyzes fixtures, gates AI proposals,
+    and assigns strict execution risk tags.
+    """
+    try:
+        compiler = TestPlanCompiler()
+        suite, compilation_report = compiler.compile_plan(
+            plan=plan,
+            spec_path=spec,
+            contract_path=contract,
+            intelligence_path=intelligence,
+            base_url_var=base_url_var,
+            include_proposed=include_proposed,
+        )
+
+        typer.echo(
+            f"=== ApiScope Test Plan Compilation: {compilation_report.title} ==="
+        )
+        typer.echo(f"Total Scenarios Evaluated: {compilation_report.total_scenarios}")
+        typer.echo("\nCompilation Status Breakdown:")
+        typer.echo(f"  [COMPILED]     : {compilation_report.compiled_count}")
+        typer.echo(f"  [NEEDS_REVIEW] : {compilation_report.needs_review_count}")
+        typer.echo(f"  [NEEDS_FIXTURE]: {compilation_report.needs_fixture_count}")
+        typer.echo(f"  [BLOCKED]      : {compilation_report.blocked_count}")
+        typer.echo(
+            f"\nTotal Executable Tests Synthesized: "
+            f"{compilation_report.total_tests_generated}"
+        )
+
+        if compilation_report.unresolved_fixtures:
+            total_unresolved = len(compilation_report.unresolved_fixtures)
+            typer.echo(f"\nUnresolved Fixtures ({total_unresolved} total):")
+            for fix in compilation_report.unresolved_fixtures[:8]:
+                typer.echo(f"  * {fix}")
+            if total_unresolved > 8:
+                typer.echo(f"  ... and {total_unresolved - 8} more")
+
+        if output is not None:
+            compiler.save_compiled_suite(suite, output)
+            typer.echo(f"\nCompiled native suite saved to: {output}")
+
+        if report is not None:
+            compiler.save_compilation_report(compilation_report, report)
+            typer.echo(f"Compilation report saved to: {report}")
+
         raise typer.Exit(code=EXIT_OK)
 
     except typer.Exit:

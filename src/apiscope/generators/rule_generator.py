@@ -39,6 +39,16 @@ _UNSUPPORTED_METHOD_CANDIDATES: list[str] = [
 ]
 
 
+def _risk_tag_for_method(method: str) -> str:
+    """Return explicit risk classification tag for an HTTP method."""
+    norm = (method or "").strip().upper()
+    if norm == "DELETE":
+        return "risk:destructive"
+    if norm in ("POST", "PUT", "PATCH"):
+        return "risk:mutating"
+    return "risk:read_only"
+
+
 def synthesize_valid_value(
     schema: dict[str, Any] | None, field_name: str = "value"
 ) -> Any:
@@ -293,7 +303,12 @@ class RuleBasedGenerator:
                     name=step1_name,
                     module=p.module,
                     request=producer_base.request,
-                    tags=["positive", "chain", "rule-generated"],
+                    tags=[
+                        "positive",
+                        "chain",
+                        "rule-generated",
+                        _risk_tag_for_method(p.method),
+                    ],
                     extract={f"chain_{param_name}": f"$.{id_field}"},
                     assertions=[{"type": "status", "equals": p.success_status}],
                     source=DefinitionSource.RULE_GENERATED,
@@ -321,7 +336,12 @@ class RuleBasedGenerator:
                     name=step2_name,
                     module=c.module,
                     request=consumer_req,
-                    tags=["positive", "chain", "rule-generated"],
+                    tags=[
+                        "positive",
+                        "chain",
+                        "rule-generated",
+                        _risk_tag_for_method(c.method),
+                    ],
                     extract={},
                     assertions=[{"type": "status", "equals": c.success_status}],
                     source=DefinitionSource.RULE_GENERATED,
@@ -440,7 +460,11 @@ class RuleBasedGenerator:
             name=f"{endpoint.method} {endpoint.path} - positive",
             module=endpoint.module,
             request=req_def,
-            tags=["positive", "rule-generated"],
+            tags=[
+                "positive",
+                "rule-generated",
+                _risk_tag_for_method(endpoint.method),
+            ],
             assertions=assertions,
             source=DefinitionSource.RULE_GENERATED,
             status=DefinitionStatus.APPROVED,
@@ -486,7 +510,11 @@ class RuleBasedGenerator:
                                 ),
                                 module=endpoint.module,
                                 request=req_def,
-                                tags=["negative", "rule-generated"],
+                                tags=[
+                                    "negative",
+                                    "rule-generated",
+                                    _risk_tag_for_method(endpoint.method),
+                                ],
                                 assertions=[{"type": "status", "range": [400, 422]}],
                                 source=DefinitionSource.RULE_GENERATED,
                                 status=DefinitionStatus.APPROVED,
@@ -534,7 +562,11 @@ class RuleBasedGenerator:
                             ),
                             module=endpoint.module,
                             request=req_def,
-                            tags=["negative", "rule-generated"],
+                            tags=[
+                                "negative",
+                                "rule-generated",
+                                _risk_tag_for_method(endpoint.method),
+                            ],
                             assertions=[{"type": "status", "range": [400, 422]}],
                             source=DefinitionSource.RULE_GENERATED,
                             status=DefinitionStatus.APPROVED,
@@ -573,7 +605,11 @@ class RuleBasedGenerator:
                     ),
                     module=endpoint.module,
                     request=req_def,
-                    tags=["negative", "rule-generated"],
+                    tags=[
+                        "negative",
+                        "rule-generated",
+                        _risk_tag_for_method(endpoint.method),
+                    ],
                     assertions=[{"type": "status", "equals": 404}],
                     source=DefinitionSource.RULE_GENERATED,
                     status=DefinitionStatus.APPROVED,
@@ -609,7 +645,12 @@ class RuleBasedGenerator:
                     name=f"{endpoint.method} {endpoint.path} - missing authentication",
                     module=endpoint.module,
                     request=req_def,
-                    tags=["negative", "auth", "rule-generated"],
+                    tags=[
+                        "negative",
+                        "auth",
+                        "rule-generated",
+                        _risk_tag_for_method(endpoint.method),
+                    ],
                     assertions=[{"type": "status", "range": [401, 403]}],
                     source=DefinitionSource.RULE_GENERATED,
                     status=DefinitionStatus.APPROVED,
@@ -658,7 +699,11 @@ class RuleBasedGenerator:
                     name=f"{unsupported_method} {ep.path} - unsupported method",
                     module=ep.module,
                     request=req_def,
-                    tags=["negative", "rule-generated"],
+                    tags=[
+                        "negative",
+                        "rule-generated",
+                        _risk_tag_for_method(unsupported_method),
+                    ],
                     assertions=[{"type": "status", "equals": 405}],
                     source=DefinitionSource.RULE_GENERATED,
                     status=DefinitionStatus.APPROVED,
@@ -1018,7 +1063,11 @@ class RuleBasedGenerator:
             name=test_name,
             module=endpoint.module,
             request=req_def,
-            tags=["boundary", "rule-generated"],
+            tags=[
+                "boundary",
+                "rule-generated",
+                _risk_tag_for_method(endpoint.method),
+            ],
             assertions=[assertion_spec],
             source=DefinitionSource.RULE_GENERATED,
             status=DefinitionStatus.APPROVED,

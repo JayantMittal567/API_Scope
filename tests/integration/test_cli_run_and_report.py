@@ -385,6 +385,7 @@ tests:
             str(out_report),
             "--format",
             "json",
+            "--allow-mutation",
         ],
     )
 

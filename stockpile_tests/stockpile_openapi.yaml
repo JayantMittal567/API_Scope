@@ -1,0 +1,3175 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /api/surplus-listings/{id}:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getSurplusListingById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SurplusListingDetails"
+    put:
+      tags:
+      - stockpile-controller
+      operationId: updateSurplusListing
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSurplusListingRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SurplusListingDetails"
+  /api/suppliers/{id}:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getSupplierById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Supplier"
+    put:
+      tags:
+      - stockpile-controller
+      operationId: updateSupplier
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSupplierRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Supplier"
+    delete:
+      tags:
+      - stockpile-controller
+      operationId: deleteSupplier
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+  /api/stock-audits/{auditId}/items/{itemId}:
+    put:
+      tags:
+      - stockpile-controller
+      operationId: enterCount
+      parameters:
+      - name: auditId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: itemId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnterCountRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StockAuditItemDetails"
+  /api/purchase-orders/{id}:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getPurchaseOrderById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PurchaseOrderDetails"
+    put:
+      tags:
+      - stockpile-controller
+      operationId: updatePurchaseOrder
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePurchaseOrderRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PurchaseOrderDetails"
+  /api/products/{productId}/supplier:
+    put:
+      tags:
+      - stockpile-controller
+      operationId: assignSupplier
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssignSupplierRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Product"
+    delete:
+      tags:
+      - stockpile-controller
+      operationId: removeSupplier
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+  /api/products/{id}:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getProductById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Product"
+    put:
+      tags:
+      - stockpile-controller
+      operationId: updateProduct
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProductRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Product"
+    delete:
+      tags:
+      - stockpile-controller
+      operationId: deleteProduct
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+  /api/expenses/{id}:
+    put:
+      tags:
+      - stockpile-controller
+      operationId: updateExpense
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateExpenseRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ExpenseRecord"
+    delete:
+      tags:
+      - stockpile-controller
+      operationId: deleteExpense
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+  /api/surplus-listings:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getSurplusListings
+      parameters:
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: productId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SurplusListingDetails"
+    post:
+      tags:
+      - stockpile-controller
+      operationId: createSurplusListing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSurplusListingRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SurplusListingDetails"
+  /api/surplus-listings/{id}/sell:
+    post:
+      tags:
+      - stockpile-controller
+      operationId: recordSurplusSale
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecordSurplusSaleRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SaleDetails"
+  /api/surplus-listings/{id}/cancel:
+    post:
+      tags:
+      - stockpile-controller
+      operationId: cancelSurplusListing
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelSurplusListingRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SurplusListingDetails"
+  /api/suppliers:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getSuppliers
+      parameters:
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Supplier"
+    post:
+      tags:
+      - stockpile-controller
+      operationId: createSupplier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSupplierRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Supplier"
+  /api/stock-audits:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getStockAudits
+      parameters:
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StockAuditSummary"
+    post:
+      tags:
+      - stockpile-controller
+      operationId: createStockAudit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateStockAuditRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StockAuditDetails"
+  /api/stock-audits/{id}/complete:
+    post:
+      tags:
+      - stockpile-controller
+      operationId: completeStockAudit
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StockAuditCompletionSummary"
+  /api/stock-audits/{id}/cancel:
+    post:
+      tags:
+      - stockpile-controller
+      operationId: cancelStockAudit
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelStockAuditRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StockAuditDetails"
+  /api/sales:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getSales
+      parameters:
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SaleSummary"
+    post:
+      tags:
+      - stockpile-controller
+      operationId: createSale
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSaleRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SaleDetails"
+  /api/sales/{id}/cancel:
+    post:
+      tags:
+      - stockpile-controller
+      operationId: cancelSale
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelSaleRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SaleDetails"
+  /api/purchase-orders:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getPurchaseOrders
+      parameters:
+      - name: supplierId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PurchaseOrderSummary"
+    post:
+      tags:
+      - stockpile-controller
+      operationId: createPurchaseOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePurchaseOrderRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PurchaseOrderDetails"
+  /api/purchase-orders/{id}/receive:
+    post:
+      tags:
+      - stockpile-controller
+      operationId: receivePurchaseOrder
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReceivePurchaseOrderRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PurchaseOrderDetails"
+  /api/purchase-orders/{id}/place:
+    post:
+      tags:
+      - stockpile-controller
+      operationId: placePurchaseOrder
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PurchaseOrderDetails"
+  /api/purchase-orders/{id}/cancel:
+    post:
+      tags:
+      - stockpile-controller
+      operationId: cancelPurchaseOrder
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelPurchaseOrderRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PurchaseOrderDetails"
+  /api/products:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getProducts
+      parameters:
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+    post:
+      tags:
+      - stockpile-controller
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProductRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Product"
+  /api/movements:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getMovements
+      parameters:
+      - name: productId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: movementType
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RecentMovement"
+    post:
+      tags:
+      - stockpile-controller
+      operationId: recordMovement
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMovementRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RecentMovement"
+  /api/inventory/stock-out:
+    post:
+      tags:
+      - stockpile-controller
+      operationId: stockOut
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMovementRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RecentMovement"
+  /api/inventory/stock-in:
+    post:
+      tags:
+      - stockpile-controller
+      operationId: stockIn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMovementRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RecentMovement"
+  /api/inventory/adjust:
+    post:
+      tags:
+      - stockpile-controller
+      operationId: adjustStock
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMovementRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RecentMovement"
+  /api/expenses:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getExpenses
+      parameters:
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExpenseRecord"
+    post:
+      tags:
+      - stockpile-controller
+      operationId: createExpense
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateExpenseRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ExpenseRecord"
+  /api/surplus-listings/summary:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getSurplusSummary
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SurplusSummary"
+  /api/surplus-listings/suggestions:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getSurplusSuggestions
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SurplusSuggestion"
+  /api/suppliers/{id}/products:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getSupplierProducts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SupplierProduct"
+  /api/stock-audits/{id}:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getStockAuditById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StockAuditDetails"
+  /api/stock-audits/summary:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getStockAuditSummary
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StockAuditMetricsSummary"
+  /api/sales/{id}:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getSaleById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SaleDetails"
+  /api/sales/trend:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getDailySalesTrend
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DailySalesTrend"
+  /api/sales/summary:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getSalesMetricsSummary
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SalesMetricsSummary"
+  /api/reports/summary:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getFinancialSummaryReport
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: date
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: month
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: year
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FinancialSummaryReport"
+  /api/reports/sales:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getSalesReport
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: date
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: month
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: year
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SalesReport"
+  /api/reports/purchases:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getPurchasesReport
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: date
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: month
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: year
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PurchasesReport"
+  /api/reports/profit-loss:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getProfitLossReport
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: date
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: month
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: year
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProfitLossReport"
+  /api/reports/inventory-loss:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getInventoryLossReport
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: date
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: month
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: year
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/InventoryLossReport"
+  /api/products/{id}/movements:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getProductMovements
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RecentMovement"
+  /api/intelligence:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getInventoryIntelligence
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductIntelligence"
+  /api/intelligence/sales:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getSalesIntelligence
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SalesIntelligenceResponse"
+  /api/health:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getHealth
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /api/dashboard:
+    get:
+      tags:
+      - stockpile-controller
+      operationId: getDashboard
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DashboardResponse"
+components:
+  schemas:
+    UpdateSurplusListingRequest:
+      type: object
+      properties:
+        discountedPricePaise:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          format: int32
+        reason:
+          type: string
+        notes:
+          type: string
+    SurplusListingDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        sku:
+          type: string
+        category:
+          type: string
+        quantityListed:
+          type: integer
+          format: int32
+        quantitySold:
+          type: integer
+          format: int32
+        quantityRemaining:
+          type: integer
+          format: int32
+        regularUnitPricePaise:
+          type: integer
+          format: int64
+        discountedUnitPricePaise:
+          type: integer
+          format: int64
+        discountPercentage:
+          type: number
+          format: double
+        unitCostPaiseSnapshot:
+          type: integer
+          format: int64
+        recoveredRevenuePaise:
+          type: integer
+          format: int64
+        grossProfitPaise:
+          type: integer
+          format: int64
+        status:
+          type: string
+        reason:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        cancelledAt:
+          type: string
+        sales:
+          type: array
+          items:
+            $ref: "#/components/schemas/SurplusSaleTransaction"
+        discountedSellingPricePaise:
+          type: integer
+          format: int64
+        totalRealizedRevenuePaise:
+          type: integer
+          format: int64
+        originalSellingPricePaise:
+          type: integer
+          format: int64
+        totalRealizedGrossProfitPaise:
+          type: integer
+          format: int64
+        originalPurchasePricePaise:
+          type: integer
+          format: int64
+        totalPotentialRevenuePaise:
+          type: integer
+          format: int64
+    SurplusSaleTransaction:
+      type: object
+      properties:
+        saleId:
+          type: integer
+          format: int64
+        saleItemId:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          format: int32
+        unitSellingPricePaise:
+          type: integer
+          format: int64
+        unitPurchasePricePaise:
+          type: integer
+          format: int64
+        lineTotalPaise:
+          type: integer
+          format: int64
+        lineCostPaise:
+          type: integer
+          format: int64
+        paymentMethod:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+        grossProfitPaise:
+          type: integer
+          format: int64
+    UpdateSupplierRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        contactPerson:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        notes:
+          type: string
+    Supplier:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        contactPerson:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    EnterCountRequest:
+      type: object
+      properties:
+        countedQuantity:
+          type: integer
+          format: int32
+        notes:
+          type: string
+    StockAuditItemDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        itemId:
+          type: integer
+          format: int64
+        auditId:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        productNameSnapshot:
+          type: string
+        skuSnapshot:
+          type: string
+        systemQuantity:
+          type: integer
+          format: int32
+        countedQuantity:
+          type: integer
+          format: int32
+        variance:
+          type: integer
+          format: int32
+        countStatus:
+          type: string
+        itemNotes:
+          type: string
+    CreatePurchaseOrderItemRequest:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          format: int32
+        unitCostPaise:
+          type: integer
+          format: int64
+    UpdatePurchaseOrderRequest:
+      type: object
+      properties:
+        supplierId:
+          type: integer
+          format: int64
+        notes:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreatePurchaseOrderItemRequest"
+    PurchaseOrderDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        orderId:
+          type: integer
+          format: int64
+        supplierId:
+          type: integer
+          format: int64
+        supplierName:
+          type: string
+        status:
+          type: string
+        totalAmountPaise:
+          type: integer
+          format: int64
+        notes:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        placedAt:
+          type: string
+        receivedAt:
+          type: string
+        cancelledAt:
+          type: string
+        cancellationReason:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PurchaseOrderItemDetails"
+    PurchaseOrderItemDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        purchaseOrderId:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        productNameSnapshot:
+          type: string
+        skuSnapshot:
+          type: string
+        quantityOrdered:
+          type: integer
+          format: int32
+        quantityReceived:
+          type: integer
+          format: int32
+        remainingQuantity:
+          type: integer
+          format: int32
+        unitCostPaise:
+          type: integer
+          format: int64
+        lineTotalPaise:
+          type: integer
+          format: int64
+    AssignSupplierRequest:
+      type: object
+      properties:
+        supplierId:
+          type: integer
+          format: int64
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        sku:
+          type: string
+        category:
+          type: string
+        purchasePricePaise:
+          type: integer
+          format: int64
+        sellingPricePaise:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          format: int32
+        minStockLevel:
+          type: integer
+          format: int32
+        targetStockLevel:
+          type: integer
+          format: int32
+        averageDailySales:
+          type: number
+          format: double
+        leadTimeDays:
+          type: integer
+          format: int32
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        supplierId:
+          type: integer
+          format: int64
+        supplierName:
+          type: string
+    UpdateProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        sku:
+          type: string
+        category:
+          type: string
+        purchasePricePaise:
+          type: integer
+          format: int64
+        sellingPricePaise:
+          type: integer
+          format: int64
+        minStockLevel:
+          type: integer
+          format: int32
+        targetStockLevel:
+          type: integer
+          format: int32
+        averageDailySales:
+          type: number
+          format: double
+        leadTimeDays:
+          type: integer
+          format: int32
+    CreateExpenseRequest:
+      type: object
+      properties:
+        category:
+          type: string
+        amountPaise:
+          type: integer
+          format: int64
+        description:
+          type: string
+        date:
+          type: string
+    ExpenseRecord:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        category:
+          type: string
+        amountPaise:
+          type: integer
+          format: int64
+        description:
+          type: string
+        createdAt:
+          type: string
+    CreateSurplusListingRequest:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          format: int32
+        discountedPricePaise:
+          type: integer
+          format: int64
+        reason:
+          type: string
+        notes:
+          type: string
+    RecordSurplusSaleRequest:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          format: int32
+        paymentMethod:
+          type: string
+    SaleDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        saleId:
+          type: integer
+          format: int64
+        subtotalPaise:
+          type: integer
+          format: int64
+        discountPaise:
+          type: integer
+          format: int64
+        discountPercentBasisPoints:
+          type: integer
+          format: int32
+        discountPercent:
+          type: number
+          format: double
+        totalPaise:
+          type: integer
+          format: int64
+        totalCostPaise:
+          type: integer
+          format: int64
+        grossProfitPaise:
+          type: integer
+          format: int64
+        paymentMethod:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+        cancelledAt:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/SaleItemDetails"
+        hasBelowCostItem:
+          type: boolean
+    SaleItemDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        saleId:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        productNameSnapshot:
+          type: string
+        skuSnapshot:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        unitSellingPricePaise:
+          type: integer
+          format: int64
+        unitPurchasePricePaise:
+          type: integer
+          format: int64
+        lineTotalPaise:
+          type: integer
+          format: int64
+        lineCostPaise:
+          type: integer
+          format: int64
+        surplusListingId:
+          type: integer
+          format: int64
+        belowCost:
+          type: boolean
+    CancelSurplusListingRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+    CreateSupplierRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        contactPerson:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        notes:
+          type: string
+    CreateStockAuditRequest:
+      type: object
+      properties:
+        productIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        notes:
+          type: string
+    StockAuditDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        auditId:
+          type: integer
+          format: int64
+        status:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+        completedAt:
+          type: string
+        cancelledAt:
+          type: string
+        cancellationReason:
+          type: string
+        totalProducts:
+          type: integer
+          format: int32
+        countedProducts:
+          type: integer
+          format: int32
+        discrepancyCount:
+          type: integer
+          format: int32
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/StockAuditItemDetails"
+    StockAuditCompletionSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        auditId:
+          type: integer
+          format: int64
+        status:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+        completedAt:
+          type: string
+        totalProducts:
+          type: integer
+          format: int32
+        countedProducts:
+          type: integer
+          format: int32
+        discrepancyCount:
+          type: integer
+          format: int32
+        adjustedProducts:
+          type: integer
+          format: int32
+        unchangedProducts:
+          type: integer
+          format: int32
+        message:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/StockAuditItemDetails"
+    CancelStockAuditRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+    CreateSaleRequest:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/SaleItemRequest"
+        discountPaise:
+          type: integer
+          format: int64
+        discountPercent:
+          type: number
+        paymentMethod:
+          type: string
+    SaleItemRequest:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          format: int32
+        unitSellingPricePaise:
+          type: integer
+          format: int64
+    CancelSaleRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+    CreatePurchaseOrderRequest:
+      type: object
+      properties:
+        supplierId:
+          type: integer
+          format: int64
+        notes:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreatePurchaseOrderItemRequest"
+    ReceivePurchaseOrderItemRequest:
+      type: object
+      properties:
+        purchaseOrderItemId:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          format: int32
+    ReceivePurchaseOrderRequest:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReceivePurchaseOrderItemRequest"
+    CancelPurchaseOrderRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+    CreateProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        sku:
+          type: string
+        category:
+          type: string
+        purchasePricePaise:
+          type: integer
+          format: int64
+        sellingPricePaise:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          format: int32
+        minStockLevel:
+          type: integer
+          format: int32
+        targetStockLevel:
+          type: integer
+          format: int32
+        averageDailySales:
+          type: number
+          format: double
+        leadTimeDays:
+          type: integer
+          format: int32
+        supplierId:
+          type: integer
+          format: int64
+    CreateMovementRequest:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        movementType:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        reason:
+          type: string
+    RecentMovement:
+      type: object
+      properties:
+        movementId:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        movementType:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        previousQuantity:
+          type: integer
+          format: int32
+        newQuantity:
+          type: integer
+          format: int32
+        reason:
+          type: string
+        createdAt:
+          type: string
+    SurplusSummary:
+      type: object
+      properties:
+        totalListings:
+          type: integer
+          format: int32
+        activeListings:
+          type: integer
+          format: int32
+        partiallySoldListings:
+          type: integer
+          format: int32
+        fullySoldListings:
+          type: integer
+          format: int32
+        cancelledListings:
+          type: integer
+          format: int32
+        totalUnitsListed:
+          type: integer
+          format: int32
+        totalUnitsSold:
+          type: integer
+          format: int32
+        totalUnitsRemaining:
+          type: integer
+          format: int32
+        totalSurplusSalesRevenuePaise:
+          type: integer
+          format: int64
+        totalSurplusCostPaise:
+          type: integer
+          format: int64
+        totalSurplusGrossProfitPaise:
+          type: integer
+          format: int64
+        totalSurplusRevenuePaise:
+          type: integer
+          format: int64
+        activeListingsCount:
+          type: integer
+          format: int32
+    SurplusSuggestion:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        sku:
+          type: string
+        category:
+          type: string
+        currentQuantity:
+          type: integer
+          format: int32
+        reservedQuantity:
+          type: integer
+          format: int32
+        availableQuantity:
+          type: integer
+          format: int32
+        preferredStockLevel:
+          type: integer
+          format: int32
+        suggestedSurplusQuantity:
+          type: integer
+          format: int32
+        sellingPricePaise:
+          type: integer
+          format: int64
+        purchasePricePaise:
+          type: integer
+          format: int64
+        unitsSoldLast30Days:
+          type: integer
+          format: int32
+        lastSoldAt:
+          type: string
+        salesActivity:
+          type: string
+        recommendationReason:
+          type: string
+    SupplierProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        sku:
+          type: string
+        category:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        currentQuantity:
+          type: integer
+          format: int32
+        purchasePricePaise:
+          type: integer
+          format: int64
+        sellingPricePaise:
+          type: integer
+          format: int64
+        minStockLevel:
+          type: integer
+          format: int32
+        targetStockLevel:
+          type: integer
+          format: int32
+        supplierId:
+          type: integer
+          format: int64
+        supplierName:
+          type: string
+    StockAuditSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        auditId:
+          type: integer
+          format: int64
+        status:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+        completedAt:
+          type: string
+        cancelledAt:
+          type: string
+        cancellationReason:
+          type: string
+        totalProducts:
+          type: integer
+          format: int32
+        productsCounted:
+          type: integer
+          format: int32
+        productsWithDiscrepancies:
+          type: integer
+          format: int32
+    StockAuditMetricsSummary:
+      type: object
+      properties:
+        openAudits:
+          type: integer
+          format: int32
+        pendingDiscrepancies:
+          type: integer
+          format: int32
+        inventoryLossTodayPaise:
+          type: integer
+          format: int64
+        completedAuditsThisMonth:
+          type: integer
+          format: int32
+    SaleSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        saleId:
+          type: integer
+          format: int64
+        subtotalPaise:
+          type: integer
+          format: int64
+        discountPaise:
+          type: integer
+          format: int64
+        discountPercentBasisPoints:
+          type: integer
+          format: int32
+        discountPercent:
+          type: number
+          format: double
+        totalPaise:
+          type: integer
+          format: int64
+        totalCostPaise:
+          type: integer
+          format: int64
+        grossProfitPaise:
+          type: integer
+          format: int64
+        paymentMethod:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+        cancelledAt:
+          type: string
+        itemCount:
+          type: integer
+          format: int32
+        totalQuantity:
+          type: integer
+          format: int32
+    DailySalesTrend:
+      type: object
+      properties:
+        saleDate:
+          type: string
+        totalPaise:
+          type: integer
+          format: int64
+        orderCount:
+          type: integer
+          format: int32
+    SalesMetricsSummary:
+      type: object
+      properties:
+        salesTodayPaise:
+          type: integer
+          format: int64
+        salesTodayCount:
+          type: integer
+          format: int32
+        salesMonthPaise:
+          type: integer
+          format: int64
+        salesMonthCount:
+          type: integer
+          format: int32
+        totalSalesPaise:
+          type: integer
+          format: int64
+        totalCostPaise:
+          type: integer
+          format: int64
+        totalProfitPaise:
+          type: integer
+          format: int64
+        totalSalesCount:
+          type: integer
+          format: int32
+    FinancialMetricBreakdown:
+      type: object
+      properties:
+        period:
+          type: string
+        grossSalesPaise:
+          type: integer
+          format: int64
+        discountsPaise:
+          type: integer
+          format: int64
+        netRevenuePaise:
+          type: integer
+          format: int64
+        cogsPaise:
+          type: integer
+          format: int64
+        grossProfitPaise:
+          type: integer
+          format: int64
+        inventoryLossPaise:
+          type: integer
+          format: int64
+        operatingExpensesPaise:
+          type: integer
+          format: int64
+        operatingResultPaise:
+          type: integer
+          format: int64
+        salesCount:
+          type: integer
+          format: int32
+        unitsSold:
+          type: integer
+          format: int32
+    FinancialSummaryReport:
+      type: object
+      properties:
+        metadata:
+          $ref: "#/components/schemas/ReportMetadata"
+        periodType:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        generatedAt:
+          type: string
+        currency:
+          type: string
+        grossSalesPaise:
+          type: integer
+          format: int64
+        discountsPaise:
+          type: integer
+          format: int64
+        netRevenuePaise:
+          type: integer
+          format: int64
+        cogsPaise:
+          type: integer
+          format: int64
+        grossProfitPaise:
+          type: integer
+          format: int64
+        inventoryLossPaise:
+          type: integer
+          format: int64
+        operatingExpensesPaise:
+          type: integer
+          format: int64
+        operatingResultPaise:
+          type: integer
+          format: int64
+        totalPurchasesPaise:
+          type: integer
+          format: int64
+        purchaseOrdersCount:
+          type: integer
+          format: int32
+        completedSalesCount:
+          type: integer
+          format: int32
+        unitsSold:
+          type: integer
+          format: int32
+        breakdown:
+          type: array
+          items:
+            $ref: "#/components/schemas/FinancialMetricBreakdown"
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/SaleSummary"
+    ReportMetadata:
+      type: object
+      properties:
+        periodType:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        generatedAt:
+          type: string
+        currency:
+          type: string
+    PaymentMethodSummary:
+      type: object
+      properties:
+        paymentMethod:
+          type: string
+        orderCount:
+          type: integer
+          format: int32
+        totalPaise:
+          type: integer
+          format: int64
+    SalesReport:
+      type: object
+      properties:
+        metadata:
+          $ref: "#/components/schemas/ReportMetadata"
+        periodType:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        generatedAt:
+          type: string
+        currency:
+          type: string
+        completedSalesCount:
+          type: integer
+          format: int32
+        unitsSold:
+          type: integer
+          format: int32
+        grossSalesPaise:
+          type: integer
+          format: int64
+        discountsPaise:
+          type: integer
+          format: int64
+        netRevenuePaise:
+          type: integer
+          format: int64
+        cogsPaise:
+          type: integer
+          format: int64
+        grossProfitPaise:
+          type: integer
+          format: int64
+        averageOrderValuePaise:
+          type: integer
+          format: int64
+        paymentMethods:
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentMethodSummary"
+        topSellingProducts:
+          type: array
+          items:
+            $ref: "#/components/schemas/TopSellingProduct"
+        trend:
+          type: array
+          items:
+            $ref: "#/components/schemas/FinancialMetricBreakdown"
+        sales:
+          type: array
+          items:
+            $ref: "#/components/schemas/SaleSummary"
+    TopSellingProduct:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        sku:
+          type: string
+        category:
+          type: string
+        unitsSold:
+          type: integer
+          format: int32
+        totalRevenuePaise:
+          type: integer
+          format: int64
+        totalCostPaise:
+          type: integer
+          format: int64
+        grossProfitPaise:
+          type: integer
+          format: int64
+    PurchaseOrderSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        orderId:
+          type: integer
+          format: int64
+        supplierId:
+          type: integer
+          format: int64
+        supplierName:
+          type: string
+        status:
+          type: string
+        totalAmountPaise:
+          type: integer
+          format: int64
+        notes:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        placedAt:
+          type: string
+        receivedAt:
+          type: string
+        cancelledAt:
+          type: string
+        itemCount:
+          type: integer
+          format: int32
+        totalQuantityOrdered:
+          type: integer
+          format: int32
+        totalQuantityReceived:
+          type: integer
+          format: int32
+    PurchasesReport:
+      type: object
+      properties:
+        metadata:
+          $ref: "#/components/schemas/ReportMetadata"
+        periodType:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        generatedAt:
+          type: string
+        currency:
+          type: string
+        totalOrdersCount:
+          type: integer
+          format: int32
+        totalSpendPaise:
+          type: integer
+          format: int64
+        totalUnitsOrdered:
+          type: integer
+          format: int32
+        totalUnitsReceived:
+          type: integer
+          format: int32
+        countByStatus:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+        spendByStatus:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64
+        supplierBreakdown:
+          type: array
+          items:
+            $ref: "#/components/schemas/SupplierSpendSummary"
+        orders:
+          type: array
+          items:
+            $ref: "#/components/schemas/PurchaseOrderSummary"
+    SupplierSpendSummary:
+      type: object
+      properties:
+        supplierId:
+          type: integer
+          format: int64
+        supplierName:
+          type: string
+        orderCount:
+          type: integer
+          format: int32
+        totalSpendPaise:
+          type: integer
+          format: int64
+    ProfitLossReport:
+      type: object
+      properties:
+        metadata:
+          $ref: "#/components/schemas/ReportMetadata"
+        periodType:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        generatedAt:
+          type: string
+        currency:
+          type: string
+        grossSalesPaise:
+          type: integer
+          format: int64
+        discountsPaise:
+          type: integer
+          format: int64
+        netRevenuePaise:
+          type: integer
+          format: int64
+        cogsPaise:
+          type: integer
+          format: int64
+        grossProfitPaise:
+          type: integer
+          format: int64
+        grossMarginPercentage:
+          type: number
+          format: double
+        inventoryLossPaise:
+          type: integer
+          format: int64
+        operatingExpensesPaise:
+          type: integer
+          format: int64
+        totalOperatingExpensesPaise:
+          type: integer
+          format: int64
+        operatingResultPaise:
+          type: integer
+          format: int64
+        netMarginPercentage:
+          type: number
+          format: double
+        breakdown:
+          type: array
+          items:
+            $ref: "#/components/schemas/FinancialMetricBreakdown"
+    InventoryLossIncident:
+      type: object
+      properties:
+        movementId:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        sku:
+          type: string
+        unitsLost:
+          type: integer
+          format: int32
+        unitCostPaise:
+          type: integer
+          format: int64
+        totalLossPaise:
+          type: integer
+          format: int64
+        reason:
+          type: string
+        createdAt:
+          type: string
+    InventoryLossReport:
+      type: object
+      properties:
+        metadata:
+          $ref: "#/components/schemas/ReportMetadata"
+        periodType:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        generatedAt:
+          type: string
+        currency:
+          type: string
+        totalLossPaise:
+          type: integer
+          format: int64
+        totalUnitsLost:
+          type: integer
+          format: int32
+        incidentCount:
+          type: integer
+          format: int32
+        breakdown:
+          type: array
+          items:
+            $ref: "#/components/schemas/FinancialMetricBreakdown"
+        incidents:
+          type: array
+          items:
+            $ref: "#/components/schemas/InventoryLossIncident"
+    ProductIntelligence:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        sku:
+          type: string
+        category:
+          type: string
+        currentQuantity:
+          type: integer
+          format: int32
+        minStockLevel:
+          type: integer
+          format: int32
+        targetStockLevel:
+          type: integer
+          format: int32
+        averageDailySales:
+          type: number
+          format: double
+        leadTimeDays:
+          type: integer
+          format: int32
+        reorderPoint:
+          type: number
+          format: double
+        reorderQuantity:
+          type: integer
+          format: int32
+        surplusQuantity:
+          type: integer
+          format: int32
+        status:
+          type: string
+        recommendation:
+          type: string
+    ProductSalesIntelligence:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        sku:
+          type: string
+        category:
+          type: string
+        currentQuantity:
+          type: integer
+          format: int32
+        lowStockLevel:
+          type: integer
+          format: int32
+        preferredStockLevel:
+          type: integer
+          format: int32
+        unitsSoldLast30Days:
+          type: integer
+          format: int32
+        unitsSoldPrevious30Days:
+          type: integer
+          format: int32
+        averageDailySalesLast30Days:
+          type: number
+          format: double
+        lastSoldAt:
+          type: string
+        daysSinceLastSale:
+          type: integer
+          format: int32
+        salesActivity:
+          type: string
+        salesTrend:
+          type: string
+        recommendedRestockQuantity:
+          type: integer
+          format: int32
+        recommendation:
+          type: string
+    SalesIntelligenceResponse:
+      type: object
+      properties:
+        summary:
+          $ref: "#/components/schemas/SalesIntelligenceSummary"
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductSalesIntelligence"
+    SalesIntelligenceSummary:
+      type: object
+      properties:
+        totalProducts:
+          type: integer
+          format: int32
+        fastSellingProducts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductSalesIntelligence"
+        slowMovingProducts:
+          type: integer
+          format: int32
+        potentialDeadStockProducts:
+          type: integer
+          format: int32
+        noSalesHistoryProducts:
+          type: integer
+          format: int32
+        outOfStockProducts:
+          type: integer
+          format: int32
+        productsNeedingRestock:
+          type: integer
+          format: int32
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+        database:
+          type: string
+        databaseType:
+          type: string
+        totalProducts:
+          type: integer
+          format: int32
+        totalMovements:
+          type: integer
+          format: int32
+        timestamp:
+          type: string
+    CategoryBreakdown:
+      type: object
+      properties:
+        category:
+          type: string
+        productCount:
+          type: integer
+          format: int32
+        totalQuantity:
+          type: integer
+          format: int32
+    DashboardResponse:
+      type: object
+      properties:
+        totalProducts:
+          type: integer
+          format: int32
+        totalQuantity:
+          type: integer
+          format: int32
+        inventoryValuePaise:
+          type: integer
+          format: int64
+        lowStockCount:
+          type: integer
+          format: int32
+        outOfStockCount:
+          type: integer
+          format: int32
+        summary:
+          $ref: "#/components/schemas/DashboardSummary"
+        categoryBreakdown:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryBreakdown"
+        recentMovements:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecentMovement"
+        liveState:
+          $ref: "#/components/schemas/LiveBusinessState"
+        periodActivity:
+          $ref: "#/components/schemas/PeriodActivity"
+    DashboardSummary:
+      type: object
+      properties:
+        totalProducts:
+          type: integer
+          format: int32
+        totalQuantity:
+          type: integer
+          format: int32
+        inventoryValuePaise:
+          type: integer
+          format: int64
+        lowStockCount:
+          type: integer
+          format: int32
+        outOfStockCount:
+          type: integer
+          format: int32
+        activeSurplusListings:
+          type: integer
+          format: int32
+        pendingPurchaseOrders:
+          type: integer
+          format: int32
+        openStockAudits:
+          type: integer
+          format: int32
+    LiveBusinessState:
+      type: object
+      properties:
+        totalProducts:
+          type: integer
+          format: int32
+        totalQuantity:
+          type: integer
+          format: int32
+        inventoryValuePaise:
+          type: integer
+          format: int64
+        lowStockCount:
+          type: integer
+          format: int32
+        outOfStockCount:
+          type: integer
+          format: int32
+        activeSurplusListings:
+          type: integer
+          format: int32
+        pendingPurchaseOrders:
+          type: integer
+          format: int32
+        openStockAudits:
+          type: integer
+          format: int32
+    PeriodActivity:
+      type: object
+      properties:
+        period:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        salesPaise:
+          type: integer
+          format: int64
+        grossProfitPaise:
+          type: integer
+          format: int64
+        unitsSold:
+          type: integer
+          format: int32
+        expensesPaise:
+          type: integer
+          format: int64
+        inventoryLossPaise:
+          type: integer
+          format: int64
+        discrepanciesCount:
+          type: integer
+          format: int32
+        completedSalesCount:
+          type: integer
+          format: int32

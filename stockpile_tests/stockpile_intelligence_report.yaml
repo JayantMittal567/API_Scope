@@ -1,0 +1,4770 @@
+schema_version: 1.0.0
+generated_at: '2026-11-14T10:40:27.832945+00:00'
+project:
+  name: OpenAPI definition
+  version: v0
+  description: ''
+  servers:
+  - http://localhost:8080
+  source_language: java/spring-boot
+  evidence:
+  - source_type: OPENAPI
+    source_ref: info
+    snippet: 'title: ''OpenAPI definition'', version: ''v0'''
+    confidence: 1.0
+    explanation: Extracted directly from OpenAPI info block
+  - source_type: SOURCE_CODE
+    source_ref: repo:StockPile
+    snippet: Scanned 181 files, detected java/spring-boot
+    confidence: 1.0
+    explanation: Static source code repository scan
+endpoints:
+- path: /api/dashboard
+  method: GET
+  operation_id: getDashboard
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: dashboard
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: period
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: from
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: to
+    location: query
+    required: false
+    schema:
+      type: string
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/DashboardResponse'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/dashboard.get
+    snippet: 'GET /api/dashboard (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''dashboard'' from path structure ''/api/dashboard''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/expenses
+  method: GET
+  operation_id: getExpenses
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: expenses
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: category
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: from
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: to
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: limit
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: offset
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: page
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: size
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/expenses.get
+    snippet: 'GET /api/expenses (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''expenses'' from path structure ''/api/expenses''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/expenses
+  method: POST
+  operation_id: createExpense
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: expenses
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: '#/components/schemas/CreateExpenseRequest'
+  response_schema_refs:
+    '201': '#/components/schemas/ExpenseRecord'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/expenses.post
+    snippet: 'POST /api/expenses (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''expenses'' from path structure ''/api/expenses''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/expenses/{id}
+  method: DELETE
+  operation_id: deleteExpense
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: expenses
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/expenses/{id}.delete
+    snippet: 'DELETE /api/expenses/{id} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''expenses'' from path structure ''/api/expenses/{id}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/expenses/{id}
+  method: PUT
+  operation_id: updateExpense
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: expenses
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: '#/components/schemas/CreateExpenseRequest'
+  response_schema_refs:
+    '200': '#/components/schemas/ExpenseRecord'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/expenses/{id}.put
+    snippet: 'PUT /api/expenses/{id} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''expenses'' from path structure ''/api/expenses/{id}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/health
+  method: GET
+  operation_id: getHealth
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: health
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/HealthStatus'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/health.get
+    snippet: 'GET /api/health (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''health'' from path structure ''/api/health'' (generic
+      or absent tags: [''stockpile-controller''])'
+- path: /api/intelligence
+  method: GET
+  operation_id: getInventoryIntelligence
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: intelligence
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/intelligence.get
+    snippet: 'GET /api/intelligence (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''intelligence'' from path structure ''/api/intelligence''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/intelligence/sales
+  method: GET
+  operation_id: getSalesIntelligence
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: intelligence
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/SalesIntelligenceResponse'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/intelligence/sales.get
+    snippet: 'GET /api/intelligence/sales (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''intelligence'' from path structure ''/api/intelligence/sales''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/inventory/adjust
+  method: POST
+  operation_id: adjustStock
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: inventory
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: '#/components/schemas/CreateMovementRequest'
+  response_schema_refs:
+    '201': '#/components/schemas/RecentMovement'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/inventory/adjust.post
+    snippet: 'POST /api/inventory/adjust (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''inventory'' from path structure ''/api/inventory/adjust''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/inventory/stock-in
+  method: POST
+  operation_id: stockIn
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: inventory
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: '#/components/schemas/CreateMovementRequest'
+  response_schema_refs:
+    '201': '#/components/schemas/RecentMovement'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/inventory/stock-in.post
+    snippet: 'POST /api/inventory/stock-in (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''inventory'' from path structure ''/api/inventory/stock-in''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/inventory/stock-out
+  method: POST
+  operation_id: stockOut
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: inventory
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: '#/components/schemas/CreateMovementRequest'
+  response_schema_refs:
+    '201': '#/components/schemas/RecentMovement'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/inventory/stock-out.post
+    snippet: 'POST /api/inventory/stock-out (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''inventory'' from path structure ''/api/inventory/stock-out''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/movements
+  method: GET
+  operation_id: getMovements
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: movements
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: productId
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int64
+  - name: movementType
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: from
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: to
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: limit
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: offset
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: page
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: size
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/movements.get
+    snippet: 'GET /api/movements (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''movements'' from path structure ''/api/movements''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/movements
+  method: POST
+  operation_id: recordMovement
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: movements
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: '#/components/schemas/CreateMovementRequest'
+  response_schema_refs:
+    '201': '#/components/schemas/RecentMovement'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/movements.post
+    snippet: 'POST /api/movements (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''movements'' from path structure ''/api/movements''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/products
+  method: GET
+  operation_id: getProducts
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: products
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: search
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: category
+    location: query
+    required: false
+    schema:
+      type: string
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/products.get
+    snippet: 'GET /api/products (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''products'' from path structure ''/api/products''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/products
+  method: POST
+  operation_id: createProduct
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: products
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: '#/components/schemas/CreateProductRequest'
+  response_schema_refs:
+    '201': '#/components/schemas/Product'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/products.post
+    snippet: 'POST /api/products (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''products'' from path structure ''/api/products''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/products/{id}
+  method: DELETE
+  operation_id: deleteProduct
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: products
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/products/{id}.delete
+    snippet: 'DELETE /api/products/{id} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''products'' from path structure ''/api/products/{id}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/products/{id}
+  method: GET
+  operation_id: getProductById
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: products
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/Product'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/products/{id}.get
+    snippet: 'GET /api/products/{id} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''products'' from path structure ''/api/products/{id}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/products/{id}
+  method: PUT
+  operation_id: updateProduct
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: products
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: '#/components/schemas/UpdateProductRequest'
+  response_schema_refs:
+    '200': '#/components/schemas/Product'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/products/{id}.put
+    snippet: 'PUT /api/products/{id} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''products'' from path structure ''/api/products/{id}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/products/{id}/movements
+  method: GET
+  operation_id: getProductMovements
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: products
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/products/{id}/movements.get
+    snippet: 'GET /api/products/{id}/movements (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''products'' from path structure ''/api/products/{id}/movements''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/products/{productId}/supplier
+  method: DELETE
+  operation_id: removeSupplier
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: products
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: productId
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/products/{productId}/supplier.delete
+    snippet: 'DELETE /api/products/{productId}/supplier (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''products'' from path structure ''/api/products/{productId}/supplier''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/products/{productId}/supplier
+  method: PUT
+  operation_id: assignSupplier
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: products
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: productId
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: '#/components/schemas/AssignSupplierRequest'
+  response_schema_refs:
+    '200': '#/components/schemas/Product'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/products/{productId}/supplier.put
+    snippet: 'PUT /api/products/{productId}/supplier (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''products'' from path structure ''/api/products/{productId}/supplier''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/purchase-orders
+  method: GET
+  operation_id: getPurchaseOrders
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: purchase_orders
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: supplierId
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int64
+  - name: status
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: from
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: to
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: limit
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: offset
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: page
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: size
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/purchase-orders.get
+    snippet: 'GET /api/purchase-orders (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''purchase_orders'' from path structure ''/api/purchase-orders''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/purchase-orders
+  method: POST
+  operation_id: createPurchaseOrder
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: purchase_orders
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: '#/components/schemas/CreatePurchaseOrderRequest'
+  response_schema_refs:
+    '201': '#/components/schemas/PurchaseOrderDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/purchase-orders.post
+    snippet: 'POST /api/purchase-orders (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''purchase_orders'' from path structure ''/api/purchase-orders''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/purchase-orders/{id}
+  method: GET
+  operation_id: getPurchaseOrderById
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: purchase_orders
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/PurchaseOrderDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/purchase-orders/{id}.get
+    snippet: 'GET /api/purchase-orders/{id} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''purchase_orders'' from path structure ''/api/purchase-orders/{id}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/purchase-orders/{id}
+  method: PUT
+  operation_id: updatePurchaseOrder
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: purchase_orders
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: '#/components/schemas/UpdatePurchaseOrderRequest'
+  response_schema_refs:
+    '200': '#/components/schemas/PurchaseOrderDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/purchase-orders/{id}.put
+    snippet: 'PUT /api/purchase-orders/{id} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''purchase_orders'' from path structure ''/api/purchase-orders/{id}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/purchase-orders/{id}/cancel
+  method: POST
+  operation_id: cancelPurchaseOrder
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: purchase_orders
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: '#/components/schemas/CancelPurchaseOrderRequest'
+  response_schema_refs:
+    '200': '#/components/schemas/PurchaseOrderDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/purchase-orders/{id}/cancel.post
+    snippet: 'POST /api/purchase-orders/{id}/cancel (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''purchase_orders'' from path structure ''/api/purchase-orders/{id}/cancel''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/purchase-orders/{id}/place
+  method: POST
+  operation_id: placePurchaseOrder
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: purchase_orders
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/PurchaseOrderDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/purchase-orders/{id}/place.post
+    snippet: 'POST /api/purchase-orders/{id}/place (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''purchase_orders'' from path structure ''/api/purchase-orders/{id}/place''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/purchase-orders/{id}/receive
+  method: POST
+  operation_id: receivePurchaseOrder
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: purchase_orders
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: '#/components/schemas/ReceivePurchaseOrderRequest'
+  response_schema_refs:
+    '200': '#/components/schemas/PurchaseOrderDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/purchase-orders/{id}/receive.post
+    snippet: 'POST /api/purchase-orders/{id}/receive (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''purchase_orders'' from path structure ''/api/purchase-orders/{id}/receive''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/reports/inventory-loss
+  method: GET
+  operation_id: getInventoryLossReport
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: reports
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: period
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: from
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: to
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: date
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: month
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: year
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/InventoryLossReport'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/reports/inventory-loss.get
+    snippet: 'GET /api/reports/inventory-loss (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''reports'' from path structure ''/api/reports/inventory-loss''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/reports/profit-loss
+  method: GET
+  operation_id: getProfitLossReport
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: reports
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: period
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: from
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: to
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: date
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: month
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: year
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/ProfitLossReport'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/reports/profit-loss.get
+    snippet: 'GET /api/reports/profit-loss (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''reports'' from path structure ''/api/reports/profit-loss''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/reports/purchases
+  method: GET
+  operation_id: getPurchasesReport
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: reports
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: period
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: from
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: to
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: date
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: month
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: year
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/PurchasesReport'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/reports/purchases.get
+    snippet: 'GET /api/reports/purchases (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''reports'' from path structure ''/api/reports/purchases''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/reports/sales
+  method: GET
+  operation_id: getSalesReport
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: reports
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: period
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: from
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: to
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: date
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: month
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: year
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/SalesReport'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/reports/sales.get
+    snippet: 'GET /api/reports/sales (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''reports'' from path structure ''/api/reports/sales''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/reports/summary
+  method: GET
+  operation_id: getFinancialSummaryReport
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: reports
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: period
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: from
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: to
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: date
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: month
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: year
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/FinancialSummaryReport'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/reports/summary.get
+    snippet: 'GET /api/reports/summary (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''reports'' from path structure ''/api/reports/summary''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/sales
+  method: GET
+  operation_id: getSales
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: sales
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: status
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: from
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: to
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: limit
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: offset
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: page
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: size
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/sales.get
+    snippet: 'GET /api/sales (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''sales'' from path structure ''/api/sales'' (generic
+      or absent tags: [''stockpile-controller''])'
+- path: /api/sales
+  method: POST
+  operation_id: createSale
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: sales
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: '#/components/schemas/CreateSaleRequest'
+  response_schema_refs:
+    '201': '#/components/schemas/SaleDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/sales.post
+    snippet: 'POST /api/sales (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''sales'' from path structure ''/api/sales'' (generic
+      or absent tags: [''stockpile-controller''])'
+- path: /api/sales/summary
+  method: GET
+  operation_id: getSalesMetricsSummary
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: sales
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/SalesMetricsSummary'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/sales/summary.get
+    snippet: 'GET /api/sales/summary (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''sales'' from path structure ''/api/sales/summary''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/sales/trend
+  method: GET
+  operation_id: getDailySalesTrend
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: sales
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/sales/trend.get
+    snippet: 'GET /api/sales/trend (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''sales'' from path structure ''/api/sales/trend''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/sales/{id}
+  method: GET
+  operation_id: getSaleById
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: sales
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/SaleDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/sales/{id}.get
+    snippet: 'GET /api/sales/{id} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''sales'' from path structure ''/api/sales/{id}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/sales/{id}/cancel
+  method: POST
+  operation_id: cancelSale
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: sales
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: '#/components/schemas/CancelSaleRequest'
+  response_schema_refs:
+    '200': '#/components/schemas/SaleDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/sales/{id}/cancel.post
+    snippet: 'POST /api/sales/{id}/cancel (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''sales'' from path structure ''/api/sales/{id}/cancel''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/stock-audits
+  method: GET
+  operation_id: getStockAudits
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: stock_audits
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: status
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: from
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: to
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: limit
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: offset
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: page
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: size
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/stock-audits.get
+    snippet: 'GET /api/stock-audits (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''stock_audits'' from path structure ''/api/stock-audits''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/stock-audits
+  method: POST
+  operation_id: createStockAudit
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: stock_audits
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: '#/components/schemas/CreateStockAuditRequest'
+  response_schema_refs:
+    '201': '#/components/schemas/StockAuditDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/stock-audits.post
+    snippet: 'POST /api/stock-audits (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''stock_audits'' from path structure ''/api/stock-audits''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/stock-audits/summary
+  method: GET
+  operation_id: getStockAuditSummary
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: stock_audits
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/StockAuditMetricsSummary'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/stock-audits/summary.get
+    snippet: 'GET /api/stock-audits/summary (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''stock_audits'' from path structure ''/api/stock-audits/summary''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/stock-audits/{auditId}/items/{itemId}
+  method: PUT
+  operation_id: enterCount
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: stock_audits
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: auditId
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  - name: itemId
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: '#/components/schemas/EnterCountRequest'
+  response_schema_refs:
+    '200': '#/components/schemas/StockAuditItemDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/stock-audits/{auditId}/items/{itemId}.put
+    snippet: 'PUT /api/stock-audits/{auditId}/items/{itemId} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''stock_audits'' from path structure ''/api/stock-audits/{auditId}/items/{itemId}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/stock-audits/{id}
+  method: GET
+  operation_id: getStockAuditById
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: stock_audits
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/StockAuditDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/stock-audits/{id}.get
+    snippet: 'GET /api/stock-audits/{id} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''stock_audits'' from path structure ''/api/stock-audits/{id}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/stock-audits/{id}/cancel
+  method: POST
+  operation_id: cancelStockAudit
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: stock_audits
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: '#/components/schemas/CancelStockAuditRequest'
+  response_schema_refs:
+    '200': '#/components/schemas/StockAuditDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/stock-audits/{id}/cancel.post
+    snippet: 'POST /api/stock-audits/{id}/cancel (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''stock_audits'' from path structure ''/api/stock-audits/{id}/cancel''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/stock-audits/{id}/complete
+  method: POST
+  operation_id: completeStockAudit
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: stock_audits
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/StockAuditCompletionSummary'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/stock-audits/{id}/complete.post
+    snippet: 'POST /api/stock-audits/{id}/complete (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''stock_audits'' from path structure ''/api/stock-audits/{id}/complete''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/suppliers
+  method: GET
+  operation_id: getSuppliers
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: suppliers
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: search
+    location: query
+    required: false
+    schema:
+      type: string
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/suppliers.get
+    snippet: 'GET /api/suppliers (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''suppliers'' from path structure ''/api/suppliers''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/suppliers
+  method: POST
+  operation_id: createSupplier
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: suppliers
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: '#/components/schemas/CreateSupplierRequest'
+  response_schema_refs:
+    '201': '#/components/schemas/Supplier'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/suppliers.post
+    snippet: 'POST /api/suppliers (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''suppliers'' from path structure ''/api/suppliers''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/suppliers/{id}
+  method: DELETE
+  operation_id: deleteSupplier
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: suppliers
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/suppliers/{id}.delete
+    snippet: 'DELETE /api/suppliers/{id} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''suppliers'' from path structure ''/api/suppliers/{id}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/suppliers/{id}
+  method: GET
+  operation_id: getSupplierById
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: suppliers
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/Supplier'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/suppliers/{id}.get
+    snippet: 'GET /api/suppliers/{id} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''suppliers'' from path structure ''/api/suppliers/{id}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/suppliers/{id}
+  method: PUT
+  operation_id: updateSupplier
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: suppliers
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: '#/components/schemas/UpdateSupplierRequest'
+  response_schema_refs:
+    '200': '#/components/schemas/Supplier'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/suppliers/{id}.put
+    snippet: 'PUT /api/suppliers/{id} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''suppliers'' from path structure ''/api/suppliers/{id}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/suppliers/{id}/products
+  method: GET
+  operation_id: getSupplierProducts
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: suppliers
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/suppliers/{id}/products.get
+    snippet: 'GET /api/suppliers/{id}/products (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''suppliers'' from path structure ''/api/suppliers/{id}/products''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/surplus-listings
+  method: GET
+  operation_id: getSurplusListings
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: surplus_listings
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: status
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: productId
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int64
+  - name: category
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: search
+    location: query
+    required: false
+    schema:
+      type: string
+  - name: limit
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: offset
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: page
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  - name: size
+    location: query
+    required: false
+    schema:
+      type: integer
+      format: int32
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/surplus-listings.get
+    snippet: 'GET /api/surplus-listings (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''surplus_listings'' from path structure ''/api/surplus-listings''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/surplus-listings
+  method: POST
+  operation_id: createSurplusListing
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: surplus_listings
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: '#/components/schemas/CreateSurplusListingRequest'
+  response_schema_refs:
+    '201': '#/components/schemas/SurplusListingDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/surplus-listings.post
+    snippet: 'POST /api/surplus-listings (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''surplus_listings'' from path structure ''/api/surplus-listings''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/surplus-listings/suggestions
+  method: GET
+  operation_id: getSurplusSuggestions
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: surplus_listings
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: null
+  response_schema_refs: {}
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/surplus-listings/suggestions.get
+    snippet: 'GET /api/surplus-listings/suggestions (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''surplus_listings'' from path structure ''/api/surplus-listings/suggestions''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/surplus-listings/summary
+  method: GET
+  operation_id: getSurplusSummary
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: surplus_listings
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters: []
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/SurplusSummary'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/surplus-listings/summary.get
+    snippet: 'GET /api/surplus-listings/summary (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''surplus_listings'' from path structure ''/api/surplus-listings/summary''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/surplus-listings/{id}
+  method: GET
+  operation_id: getSurplusListingById
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: surplus_listings
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: null
+  response_schema_refs:
+    '200': '#/components/schemas/SurplusListingDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/surplus-listings/{id}.get
+    snippet: 'GET /api/surplus-listings/{id} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''surplus_listings'' from path structure ''/api/surplus-listings/{id}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/surplus-listings/{id}
+  method: PUT
+  operation_id: updateSurplusListing
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: surplus_listings
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: '#/components/schemas/UpdateSurplusListingRequest'
+  response_schema_refs:
+    '200': '#/components/schemas/SurplusListingDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/surplus-listings/{id}.put
+    snippet: 'PUT /api/surplus-listings/{id} (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''surplus_listings'' from path structure ''/api/surplus-listings/{id}''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/surplus-listings/{id}/cancel
+  method: POST
+  operation_id: cancelSurplusListing
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: surplus_listings
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: '#/components/schemas/CancelSurplusListingRequest'
+  response_schema_refs:
+    '200': '#/components/schemas/SurplusListingDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/surplus-listings/{id}/cancel.post
+    snippet: 'POST /api/surplus-listings/{id}/cancel (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''surplus_listings'' from path structure ''/api/surplus-listings/{id}/cancel''
+      (generic or absent tags: [''stockpile-controller''])'
+- path: /api/surplus-listings/{id}/sell
+  method: POST
+  operation_id: recordSurplusSale
+  summary: ''
+  declared_tags:
+  - stockpile-controller
+  inferred_module: surplus_listings
+  module_status: INFERRED
+  requires_auth: false
+  auth_schemes: []
+  parameters:
+  - name: id
+    location: path
+    required: true
+    schema:
+      type: integer
+      format: int64
+  request_schema_ref: '#/components/schemas/RecordSurplusSaleRequest'
+  response_schema_refs:
+    '201': '#/components/schemas/SaleDetails'
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/surplus-listings/{id}/sell.post
+    snippet: 'POST /api/surplus-listings/{id}/sell (tags: [''stockpile-controller''])'
+    confidence: 0.85
+    explanation: 'Inferred module ''surplus_listings'' from path structure ''/api/surplus-listings/{id}/sell''
+      (generic or absent tags: [''stockpile-controller''])'
+modules:
+- name: dashboard
+  endpoints_count: 1
+  endpoints:
+  - GET /api/dashboard
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.dashboard
+    snippet: Module 'dashboard' has 1 endpoints
+    confidence: 0.85
+    explanation: Grouped 1 operations into 'dashboard' via INFERRED heuristic
+- name: expenses
+  endpoints_count: 4
+  endpoints:
+  - DELETE /api/expenses/{id}
+  - GET /api/expenses
+  - POST /api/expenses
+  - PUT /api/expenses/{id}
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.expenses
+    snippet: Module 'expenses' has 4 endpoints
+    confidence: 0.85
+    explanation: Grouped 4 operations into 'expenses' via INFERRED heuristic
+- name: health
+  endpoints_count: 1
+  endpoints:
+  - GET /api/health
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.health
+    snippet: Module 'health' has 1 endpoints
+    confidence: 0.85
+    explanation: Grouped 1 operations into 'health' via INFERRED heuristic
+- name: intelligence
+  endpoints_count: 2
+  endpoints:
+  - GET /api/intelligence
+  - GET /api/intelligence/sales
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.intelligence
+    snippet: Module 'intelligence' has 2 endpoints
+    confidence: 0.85
+    explanation: Grouped 2 operations into 'intelligence' via INFERRED heuristic
+- name: inventory
+  endpoints_count: 3
+  endpoints:
+  - POST /api/inventory/adjust
+  - POST /api/inventory/stock-in
+  - POST /api/inventory/stock-out
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.inventory
+    snippet: Module 'inventory' has 3 endpoints
+    confidence: 0.85
+    explanation: Grouped 3 operations into 'inventory' via INFERRED heuristic
+- name: movements
+  endpoints_count: 2
+  endpoints:
+  - GET /api/movements
+  - POST /api/movements
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.movements
+    snippet: Module 'movements' has 2 endpoints
+    confidence: 0.85
+    explanation: Grouped 2 operations into 'movements' via INFERRED heuristic
+- name: products
+  endpoints_count: 8
+  endpoints:
+  - DELETE /api/products/{id}
+  - DELETE /api/products/{productId}/supplier
+  - GET /api/products
+  - GET /api/products/{id}
+  - GET /api/products/{id}/movements
+  - POST /api/products
+  - PUT /api/products/{id}
+  - PUT /api/products/{productId}/supplier
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.products
+    snippet: Module 'products' has 8 endpoints
+    confidence: 0.85
+    explanation: Grouped 8 operations into 'products' via INFERRED heuristic
+- name: purchase_orders
+  endpoints_count: 7
+  endpoints:
+  - GET /api/purchase-orders
+  - GET /api/purchase-orders/{id}
+  - POST /api/purchase-orders
+  - POST /api/purchase-orders/{id}/cancel
+  - POST /api/purchase-orders/{id}/place
+  - POST /api/purchase-orders/{id}/receive
+  - PUT /api/purchase-orders/{id}
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.purchase_orders
+    snippet: Module 'purchase_orders' has 7 endpoints
+    confidence: 0.85
+    explanation: Grouped 7 operations into 'purchase_orders' via INFERRED heuristic
+- name: reports
+  endpoints_count: 5
+  endpoints:
+  - GET /api/reports/inventory-loss
+  - GET /api/reports/profit-loss
+  - GET /api/reports/purchases
+  - GET /api/reports/sales
+  - GET /api/reports/summary
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.reports
+    snippet: Module 'reports' has 5 endpoints
+    confidence: 0.85
+    explanation: Grouped 5 operations into 'reports' via INFERRED heuristic
+- name: sales
+  endpoints_count: 6
+  endpoints:
+  - GET /api/sales
+  - GET /api/sales/summary
+  - GET /api/sales/trend
+  - GET /api/sales/{id}
+  - POST /api/sales
+  - POST /api/sales/{id}/cancel
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.sales
+    snippet: Module 'sales' has 6 endpoints
+    confidence: 0.85
+    explanation: Grouped 6 operations into 'sales' via INFERRED heuristic
+- name: stock_audits
+  endpoints_count: 7
+  endpoints:
+  - GET /api/stock-audits
+  - GET /api/stock-audits/summary
+  - GET /api/stock-audits/{id}
+  - POST /api/stock-audits
+  - POST /api/stock-audits/{id}/cancel
+  - POST /api/stock-audits/{id}/complete
+  - PUT /api/stock-audits/{auditId}/items/{itemId}
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.stock_audits
+    snippet: Module 'stock_audits' has 7 endpoints
+    confidence: 0.85
+    explanation: Grouped 7 operations into 'stock_audits' via INFERRED heuristic
+- name: suppliers
+  endpoints_count: 6
+  endpoints:
+  - DELETE /api/suppliers/{id}
+  - GET /api/suppliers
+  - GET /api/suppliers/{id}
+  - GET /api/suppliers/{id}/products
+  - POST /api/suppliers
+  - PUT /api/suppliers/{id}
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.suppliers
+    snippet: Module 'suppliers' has 6 endpoints
+    confidence: 0.85
+    explanation: Grouped 6 operations into 'suppliers' via INFERRED heuristic
+- name: surplus_listings
+  endpoints_count: 8
+  endpoints:
+  - GET /api/surplus-listings
+  - GET /api/surplus-listings/suggestions
+  - GET /api/surplus-listings/summary
+  - GET /api/surplus-listings/{id}
+  - POST /api/surplus-listings
+  - POST /api/surplus-listings/{id}/cancel
+  - POST /api/surplus-listings/{id}/sell
+  - PUT /api/surplus-listings/{id}
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.surplus_listings
+    snippet: Module 'surplus_listings' has 8 endpoints
+    confidence: 0.85
+    explanation: Grouped 8 operations into 'surplus_listings' via INFERRED heuristic
+entities:
+- name: UpdateSurplusListingRequest
+  schema_name: UpdateSurplusListingRequest
+  properties:
+  - discountedPricePaise
+  - quantity
+  - reason
+  - notes
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/UpdateSurplusListingRequest'
+    snippet: 'Schema ''UpdateSurplusListingRequest'' properties: [''discountedPricePaise'',
+      ''quantity'', ''reason'', ''notes'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: SurplusListingDetails
+  schema_name: SurplusListingDetails
+  properties:
+  - id
+  - productId
+  - productName
+  - sku
+  - category
+  - quantityListed
+  - quantitySold
+  - quantityRemaining
+  - regularUnitPricePaise
+  - discountedUnitPricePaise
+  - discountPercentage
+  - unitCostPaiseSnapshot
+  - recoveredRevenuePaise
+  - grossProfitPaise
+  - status
+  - reason
+  - notes
+  - createdAt
+  - updatedAt
+  - cancelledAt
+  - sales
+  - discountedSellingPricePaise
+  - totalRealizedRevenuePaise
+  - originalSellingPricePaise
+  - totalRealizedGrossProfitPaise
+  - originalPurchasePricePaise
+  - totalPotentialRevenuePaise
+  primary_key: id
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SurplusListingDetails'
+    snippet: 'Schema ''SurplusListingDetails'' properties: [''id'', ''productId'',
+      ''productName'', ''sku'', ''category'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: SurplusSaleTransaction
+  schema_name: SurplusSaleTransaction
+  properties:
+  - saleId
+  - saleItemId
+  - quantity
+  - unitSellingPricePaise
+  - unitPurchasePricePaise
+  - lineTotalPaise
+  - lineCostPaise
+  - paymentMethod
+  - status
+  - createdAt
+  - grossProfitPaise
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SurplusSaleTransaction'
+    snippet: 'Schema ''SurplusSaleTransaction'' properties: [''saleId'', ''saleItemId'',
+      ''quantity'', ''unitSellingPricePaise'', ''unitPurchasePricePaise'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: UpdateSupplierRequest
+  schema_name: UpdateSupplierRequest
+  properties:
+  - name
+  - contactPerson
+  - phone
+  - email
+  - address
+  - notes
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/UpdateSupplierRequest'
+    snippet: 'Schema ''UpdateSupplierRequest'' properties: [''name'', ''contactPerson'',
+      ''phone'', ''email'', ''address'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: Supplier
+  schema_name: Supplier
+  properties:
+  - id
+  - name
+  - contactPerson
+  - phone
+  - email
+  - address
+  - notes
+  - createdAt
+  - updatedAt
+  primary_key: id
+  managing_endpoints:
+  - DELETE /api/products/{productId}/supplier
+  - PUT /api/products/{productId}/supplier
+  - GET /api/suppliers
+  - POST /api/suppliers
+  - DELETE /api/suppliers/{id}
+  - GET /api/suppliers/{id}
+  - PUT /api/suppliers/{id}
+  - GET /api/suppliers/{id}/products
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/Supplier'
+    snippet: 'Schema ''Supplier'' properties: [''id'', ''name'', ''contactPerson'',
+      ''phone'', ''email'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: EnterCountRequest
+  schema_name: EnterCountRequest
+  properties:
+  - countedQuantity
+  - notes
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/EnterCountRequest'
+    snippet: 'Schema ''EnterCountRequest'' properties: [''countedQuantity'', ''notes'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: StockAuditItemDetails
+  schema_name: StockAuditItemDetails
+  properties:
+  - id
+  - itemId
+  - auditId
+  - productId
+  - productNameSnapshot
+  - skuSnapshot
+  - systemQuantity
+  - countedQuantity
+  - variance
+  - countStatus
+  - itemNotes
+  primary_key: id
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/StockAuditItemDetails'
+    snippet: 'Schema ''StockAuditItemDetails'' properties: [''id'', ''itemId'', ''auditId'',
+      ''productId'', ''productNameSnapshot'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: CreatePurchaseOrderItemRequest
+  schema_name: CreatePurchaseOrderItemRequest
+  properties:
+  - productId
+  - quantity
+  - unitCostPaise
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CreatePurchaseOrderItemRequest'
+    snippet: 'Schema ''CreatePurchaseOrderItemRequest'' properties: [''productId'',
+      ''quantity'', ''unitCostPaise'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: UpdatePurchaseOrderRequest
+  schema_name: UpdatePurchaseOrderRequest
+  properties:
+  - supplierId
+  - notes
+  - items
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/UpdatePurchaseOrderRequest'
+    snippet: 'Schema ''UpdatePurchaseOrderRequest'' properties: [''supplierId'', ''notes'',
+      ''items'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: PurchaseOrderDetails
+  schema_name: PurchaseOrderDetails
+  properties:
+  - id
+  - orderId
+  - supplierId
+  - supplierName
+  - status
+  - totalAmountPaise
+  - notes
+  - createdAt
+  - updatedAt
+  - placedAt
+  - receivedAt
+  - cancelledAt
+  - cancellationReason
+  - items
+  primary_key: id
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/PurchaseOrderDetails'
+    snippet: 'Schema ''PurchaseOrderDetails'' properties: [''id'', ''orderId'', ''supplierId'',
+      ''supplierName'', ''status'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: PurchaseOrderItemDetails
+  schema_name: PurchaseOrderItemDetails
+  properties:
+  - id
+  - purchaseOrderId
+  - productId
+  - productNameSnapshot
+  - skuSnapshot
+  - quantityOrdered
+  - quantityReceived
+  - remainingQuantity
+  - unitCostPaise
+  - lineTotalPaise
+  primary_key: id
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/PurchaseOrderItemDetails'
+    snippet: 'Schema ''PurchaseOrderItemDetails'' properties: [''id'', ''purchaseOrderId'',
+      ''productId'', ''productNameSnapshot'', ''skuSnapshot'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: AssignSupplierRequest
+  schema_name: AssignSupplierRequest
+  properties:
+  - supplierId
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/AssignSupplierRequest'
+    snippet: 'Schema ''AssignSupplierRequest'' properties: [''supplierId'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: Product
+  schema_name: Product
+  properties:
+  - id
+  - name
+  - sku
+  - category
+  - purchasePricePaise
+  - sellingPricePaise
+  - quantity
+  - minStockLevel
+  - targetStockLevel
+  - averageDailySales
+  - leadTimeDays
+  - createdAt
+  - updatedAt
+  - supplierId
+  - supplierName
+  primary_key: id
+  managing_endpoints:
+  - GET /api/products
+  - POST /api/products
+  - DELETE /api/products/{id}
+  - GET /api/products/{id}
+  - PUT /api/products/{id}
+  - GET /api/products/{id}/movements
+  - DELETE /api/products/{productId}/supplier
+  - PUT /api/products/{productId}/supplier
+  - GET /api/suppliers/{id}/products
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/Product'
+    snippet: 'Schema ''Product'' properties: [''id'', ''name'', ''sku'', ''category'',
+      ''purchasePricePaise'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: UpdateProductRequest
+  schema_name: UpdateProductRequest
+  properties:
+  - name
+  - sku
+  - category
+  - purchasePricePaise
+  - sellingPricePaise
+  - minStockLevel
+  - targetStockLevel
+  - averageDailySales
+  - leadTimeDays
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/UpdateProductRequest'
+    snippet: 'Schema ''UpdateProductRequest'' properties: [''name'', ''sku'', ''category'',
+      ''purchasePricePaise'', ''sellingPricePaise'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: CreateExpenseRequest
+  schema_name: CreateExpenseRequest
+  properties:
+  - category
+  - amountPaise
+  - description
+  - date
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CreateExpenseRequest'
+    snippet: 'Schema ''CreateExpenseRequest'' properties: [''category'', ''amountPaise'',
+      ''description'', ''date'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: ExpenseRecord
+  schema_name: ExpenseRecord
+  properties:
+  - id
+  - category
+  - amountPaise
+  - description
+  - createdAt
+  primary_key: id
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/ExpenseRecord'
+    snippet: 'Schema ''ExpenseRecord'' properties: [''id'', ''category'', ''amountPaise'',
+      ''description'', ''createdAt'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: CreateSurplusListingRequest
+  schema_name: CreateSurplusListingRequest
+  properties:
+  - productId
+  - quantity
+  - discountedPricePaise
+  - reason
+  - notes
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CreateSurplusListingRequest'
+    snippet: 'Schema ''CreateSurplusListingRequest'' properties: [''productId'', ''quantity'',
+      ''discountedPricePaise'', ''reason'', ''notes'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: RecordSurplusSaleRequest
+  schema_name: RecordSurplusSaleRequest
+  properties:
+  - quantity
+  - paymentMethod
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/RecordSurplusSaleRequest'
+    snippet: 'Schema ''RecordSurplusSaleRequest'' properties: [''quantity'', ''paymentMethod'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: SaleDetails
+  schema_name: SaleDetails
+  properties:
+  - id
+  - saleId
+  - subtotalPaise
+  - discountPaise
+  - discountPercentBasisPoints
+  - discountPercent
+  - totalPaise
+  - totalCostPaise
+  - grossProfitPaise
+  - paymentMethod
+  - status
+  - createdAt
+  - cancelledAt
+  - items
+  - hasBelowCostItem
+  primary_key: id
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SaleDetails'
+    snippet: 'Schema ''SaleDetails'' properties: [''id'', ''saleId'', ''subtotalPaise'',
+      ''discountPaise'', ''discountPercentBasisPoints'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: SaleItemDetails
+  schema_name: SaleItemDetails
+  properties:
+  - id
+  - saleId
+  - productId
+  - productNameSnapshot
+  - skuSnapshot
+  - quantity
+  - unitSellingPricePaise
+  - unitPurchasePricePaise
+  - lineTotalPaise
+  - lineCostPaise
+  - surplusListingId
+  - belowCost
+  primary_key: id
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SaleItemDetails'
+    snippet: 'Schema ''SaleItemDetails'' properties: [''id'', ''saleId'', ''productId'',
+      ''productNameSnapshot'', ''skuSnapshot'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: CancelSurplusListingRequest
+  schema_name: CancelSurplusListingRequest
+  properties:
+  - reason
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CancelSurplusListingRequest'
+    snippet: 'Schema ''CancelSurplusListingRequest'' properties: [''reason'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: CreateSupplierRequest
+  schema_name: CreateSupplierRequest
+  properties:
+  - name
+  - contactPerson
+  - phone
+  - email
+  - address
+  - notes
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CreateSupplierRequest'
+    snippet: 'Schema ''CreateSupplierRequest'' properties: [''name'', ''contactPerson'',
+      ''phone'', ''email'', ''address'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: CreateStockAuditRequest
+  schema_name: CreateStockAuditRequest
+  properties:
+  - productIds
+  - notes
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CreateStockAuditRequest'
+    snippet: 'Schema ''CreateStockAuditRequest'' properties: [''productIds'', ''notes'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: StockAuditDetails
+  schema_name: StockAuditDetails
+  properties:
+  - id
+  - auditId
+  - status
+  - notes
+  - createdAt
+  - completedAt
+  - cancelledAt
+  - cancellationReason
+  - totalProducts
+  - countedProducts
+  - discrepancyCount
+  - items
+  primary_key: id
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/StockAuditDetails'
+    snippet: 'Schema ''StockAuditDetails'' properties: [''id'', ''auditId'', ''status'',
+      ''notes'', ''createdAt'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: StockAuditCompletionSummary
+  schema_name: StockAuditCompletionSummary
+  properties:
+  - id
+  - auditId
+  - status
+  - notes
+  - createdAt
+  - completedAt
+  - totalProducts
+  - countedProducts
+  - discrepancyCount
+  - adjustedProducts
+  - unchangedProducts
+  - message
+  - items
+  primary_key: id
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/StockAuditCompletionSummary'
+    snippet: 'Schema ''StockAuditCompletionSummary'' properties: [''id'', ''auditId'',
+      ''status'', ''notes'', ''createdAt'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: CancelStockAuditRequest
+  schema_name: CancelStockAuditRequest
+  properties:
+  - reason
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CancelStockAuditRequest'
+    snippet: 'Schema ''CancelStockAuditRequest'' properties: [''reason'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: CreateSaleRequest
+  schema_name: CreateSaleRequest
+  properties:
+  - items
+  - discountPaise
+  - discountPercent
+  - paymentMethod
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CreateSaleRequest'
+    snippet: 'Schema ''CreateSaleRequest'' properties: [''items'', ''discountPaise'',
+      ''discountPercent'', ''paymentMethod'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: SaleItemRequest
+  schema_name: SaleItemRequest
+  properties:
+  - productId
+  - quantity
+  - unitSellingPricePaise
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SaleItemRequest'
+    snippet: 'Schema ''SaleItemRequest'' properties: [''productId'', ''quantity'',
+      ''unitSellingPricePaise'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: CancelSaleRequest
+  schema_name: CancelSaleRequest
+  properties:
+  - reason
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CancelSaleRequest'
+    snippet: 'Schema ''CancelSaleRequest'' properties: [''reason'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: CreatePurchaseOrderRequest
+  schema_name: CreatePurchaseOrderRequest
+  properties:
+  - supplierId
+  - notes
+  - items
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CreatePurchaseOrderRequest'
+    snippet: 'Schema ''CreatePurchaseOrderRequest'' properties: [''supplierId'', ''notes'',
+      ''items'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: ReceivePurchaseOrderItemRequest
+  schema_name: ReceivePurchaseOrderItemRequest
+  properties:
+  - purchaseOrderItemId
+  - quantity
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/ReceivePurchaseOrderItemRequest'
+    snippet: 'Schema ''ReceivePurchaseOrderItemRequest'' properties: [''purchaseOrderItemId'',
+      ''quantity'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: ReceivePurchaseOrderRequest
+  schema_name: ReceivePurchaseOrderRequest
+  properties:
+  - items
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/ReceivePurchaseOrderRequest'
+    snippet: 'Schema ''ReceivePurchaseOrderRequest'' properties: [''items'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: CancelPurchaseOrderRequest
+  schema_name: CancelPurchaseOrderRequest
+  properties:
+  - reason
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CancelPurchaseOrderRequest'
+    snippet: 'Schema ''CancelPurchaseOrderRequest'' properties: [''reason'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: CreateProductRequest
+  schema_name: CreateProductRequest
+  properties:
+  - name
+  - sku
+  - category
+  - purchasePricePaise
+  - sellingPricePaise
+  - quantity
+  - minStockLevel
+  - targetStockLevel
+  - averageDailySales
+  - leadTimeDays
+  - supplierId
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CreateProductRequest'
+    snippet: 'Schema ''CreateProductRequest'' properties: [''name'', ''sku'', ''category'',
+      ''purchasePricePaise'', ''sellingPricePaise'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: CreateMovementRequest
+  schema_name: CreateMovementRequest
+  properties:
+  - productId
+  - movementType
+  - quantity
+  - reason
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CreateMovementRequest'
+    snippet: 'Schema ''CreateMovementRequest'' properties: [''productId'', ''movementType'',
+      ''quantity'', ''reason'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: RecentMovement
+  schema_name: RecentMovement
+  properties:
+  - movementId
+  - productId
+  - productName
+  - movementType
+  - quantity
+  - previousQuantity
+  - newQuantity
+  - reason
+  - createdAt
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/RecentMovement'
+    snippet: 'Schema ''RecentMovement'' properties: [''movementId'', ''productId'',
+      ''productName'', ''movementType'', ''quantity'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: SurplusSummary
+  schema_name: SurplusSummary
+  properties:
+  - totalListings
+  - activeListings
+  - partiallySoldListings
+  - fullySoldListings
+  - cancelledListings
+  - totalUnitsListed
+  - totalUnitsSold
+  - totalUnitsRemaining
+  - totalSurplusSalesRevenuePaise
+  - totalSurplusCostPaise
+  - totalSurplusGrossProfitPaise
+  - totalSurplusRevenuePaise
+  - activeListingsCount
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SurplusSummary'
+    snippet: 'Schema ''SurplusSummary'' properties: [''totalListings'', ''activeListings'',
+      ''partiallySoldListings'', ''fullySoldListings'', ''cancelledListings'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: SurplusSuggestion
+  schema_name: SurplusSuggestion
+  properties:
+  - productId
+  - productName
+  - sku
+  - category
+  - currentQuantity
+  - reservedQuantity
+  - availableQuantity
+  - preferredStockLevel
+  - suggestedSurplusQuantity
+  - sellingPricePaise
+  - purchasePricePaise
+  - unitsSoldLast30Days
+  - lastSoldAt
+  - salesActivity
+  - recommendationReason
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SurplusSuggestion'
+    snippet: 'Schema ''SurplusSuggestion'' properties: [''productId'', ''productName'',
+      ''sku'', ''category'', ''currentQuantity'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: SupplierProduct
+  schema_name: SupplierProduct
+  properties:
+  - id
+  - productId
+  - name
+  - sku
+  - category
+  - quantity
+  - currentQuantity
+  - purchasePricePaise
+  - sellingPricePaise
+  - minStockLevel
+  - targetStockLevel
+  - supplierId
+  - supplierName
+  primary_key: id
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SupplierProduct'
+    snippet: 'Schema ''SupplierProduct'' properties: [''id'', ''productId'', ''name'',
+      ''sku'', ''category'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: StockAuditSummary
+  schema_name: StockAuditSummary
+  properties:
+  - id
+  - auditId
+  - status
+  - notes
+  - createdAt
+  - completedAt
+  - cancelledAt
+  - cancellationReason
+  - totalProducts
+  - productsCounted
+  - productsWithDiscrepancies
+  primary_key: id
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/StockAuditSummary'
+    snippet: 'Schema ''StockAuditSummary'' properties: [''id'', ''auditId'', ''status'',
+      ''notes'', ''createdAt'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: StockAuditMetricsSummary
+  schema_name: StockAuditMetricsSummary
+  properties:
+  - openAudits
+  - pendingDiscrepancies
+  - inventoryLossTodayPaise
+  - completedAuditsThisMonth
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/StockAuditMetricsSummary'
+    snippet: 'Schema ''StockAuditMetricsSummary'' properties: [''openAudits'', ''pendingDiscrepancies'',
+      ''inventoryLossTodayPaise'', ''completedAuditsThisMonth'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: SaleSummary
+  schema_name: SaleSummary
+  properties:
+  - id
+  - saleId
+  - subtotalPaise
+  - discountPaise
+  - discountPercentBasisPoints
+  - discountPercent
+  - totalPaise
+  - totalCostPaise
+  - grossProfitPaise
+  - paymentMethod
+  - status
+  - createdAt
+  - cancelledAt
+  - itemCount
+  - totalQuantity
+  primary_key: id
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SaleSummary'
+    snippet: 'Schema ''SaleSummary'' properties: [''id'', ''saleId'', ''subtotalPaise'',
+      ''discountPaise'', ''discountPercentBasisPoints'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: DailySalesTrend
+  schema_name: DailySalesTrend
+  properties:
+  - saleDate
+  - totalPaise
+  - orderCount
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/DailySalesTrend'
+    snippet: 'Schema ''DailySalesTrend'' properties: [''saleDate'', ''totalPaise'',
+      ''orderCount'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: SalesMetricsSummary
+  schema_name: SalesMetricsSummary
+  properties:
+  - salesTodayPaise
+  - salesTodayCount
+  - salesMonthPaise
+  - salesMonthCount
+  - totalSalesPaise
+  - totalCostPaise
+  - totalProfitPaise
+  - totalSalesCount
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SalesMetricsSummary'
+    snippet: 'Schema ''SalesMetricsSummary'' properties: [''salesTodayPaise'', ''salesTodayCount'',
+      ''salesMonthPaise'', ''salesMonthCount'', ''totalSalesPaise'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: FinancialMetricBreakdown
+  schema_name: FinancialMetricBreakdown
+  properties:
+  - period
+  - grossSalesPaise
+  - discountsPaise
+  - netRevenuePaise
+  - cogsPaise
+  - grossProfitPaise
+  - inventoryLossPaise
+  - operatingExpensesPaise
+  - operatingResultPaise
+  - salesCount
+  - unitsSold
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/FinancialMetricBreakdown'
+    snippet: 'Schema ''FinancialMetricBreakdown'' properties: [''period'', ''grossSalesPaise'',
+      ''discountsPaise'', ''netRevenuePaise'', ''cogsPaise'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: FinancialSummaryReport
+  schema_name: FinancialSummaryReport
+  properties:
+  - metadata
+  - periodType
+  - from
+  - to
+  - generatedAt
+  - currency
+  - grossSalesPaise
+  - discountsPaise
+  - netRevenuePaise
+  - cogsPaise
+  - grossProfitPaise
+  - inventoryLossPaise
+  - operatingExpensesPaise
+  - operatingResultPaise
+  - totalPurchasesPaise
+  - purchaseOrdersCount
+  - completedSalesCount
+  - unitsSold
+  - breakdown
+  - transactions
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/FinancialSummaryReport'
+    snippet: 'Schema ''FinancialSummaryReport'' properties: [''metadata'', ''periodType'',
+      ''from'', ''to'', ''generatedAt'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: ReportMetadata
+  schema_name: ReportMetadata
+  properties:
+  - periodType
+  - from
+  - to
+  - generatedAt
+  - currency
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/ReportMetadata'
+    snippet: 'Schema ''ReportMetadata'' properties: [''periodType'', ''from'', ''to'',
+      ''generatedAt'', ''currency'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: PaymentMethodSummary
+  schema_name: PaymentMethodSummary
+  properties:
+  - paymentMethod
+  - orderCount
+  - totalPaise
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/PaymentMethodSummary'
+    snippet: 'Schema ''PaymentMethodSummary'' properties: [''paymentMethod'', ''orderCount'',
+      ''totalPaise'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: SalesReport
+  schema_name: SalesReport
+  properties:
+  - metadata
+  - periodType
+  - from
+  - to
+  - generatedAt
+  - currency
+  - completedSalesCount
+  - unitsSold
+  - grossSalesPaise
+  - discountsPaise
+  - netRevenuePaise
+  - cogsPaise
+  - grossProfitPaise
+  - averageOrderValuePaise
+  - paymentMethods
+  - topSellingProducts
+  - trend
+  - sales
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SalesReport'
+    snippet: 'Schema ''SalesReport'' properties: [''metadata'', ''periodType'', ''from'',
+      ''to'', ''generatedAt'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: TopSellingProduct
+  schema_name: TopSellingProduct
+  properties:
+  - productId
+  - productName
+  - sku
+  - category
+  - unitsSold
+  - totalRevenuePaise
+  - totalCostPaise
+  - grossProfitPaise
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/TopSellingProduct'
+    snippet: 'Schema ''TopSellingProduct'' properties: [''productId'', ''productName'',
+      ''sku'', ''category'', ''unitsSold'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: PurchaseOrderSummary
+  schema_name: PurchaseOrderSummary
+  properties:
+  - id
+  - orderId
+  - supplierId
+  - supplierName
+  - status
+  - totalAmountPaise
+  - notes
+  - createdAt
+  - updatedAt
+  - placedAt
+  - receivedAt
+  - cancelledAt
+  - itemCount
+  - totalQuantityOrdered
+  - totalQuantityReceived
+  primary_key: id
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/PurchaseOrderSummary'
+    snippet: 'Schema ''PurchaseOrderSummary'' properties: [''id'', ''orderId'', ''supplierId'',
+      ''supplierName'', ''status'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: PurchasesReport
+  schema_name: PurchasesReport
+  properties:
+  - metadata
+  - periodType
+  - from
+  - to
+  - generatedAt
+  - currency
+  - totalOrdersCount
+  - totalSpendPaise
+  - totalUnitsOrdered
+  - totalUnitsReceived
+  - countByStatus
+  - spendByStatus
+  - supplierBreakdown
+  - orders
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/PurchasesReport'
+    snippet: 'Schema ''PurchasesReport'' properties: [''metadata'', ''periodType'',
+      ''from'', ''to'', ''generatedAt'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: SupplierSpendSummary
+  schema_name: SupplierSpendSummary
+  properties:
+  - supplierId
+  - supplierName
+  - orderCount
+  - totalSpendPaise
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SupplierSpendSummary'
+    snippet: 'Schema ''SupplierSpendSummary'' properties: [''supplierId'', ''supplierName'',
+      ''orderCount'', ''totalSpendPaise'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: ProfitLossReport
+  schema_name: ProfitLossReport
+  properties:
+  - metadata
+  - periodType
+  - from
+  - to
+  - generatedAt
+  - currency
+  - grossSalesPaise
+  - discountsPaise
+  - netRevenuePaise
+  - cogsPaise
+  - grossProfitPaise
+  - grossMarginPercentage
+  - inventoryLossPaise
+  - operatingExpensesPaise
+  - totalOperatingExpensesPaise
+  - operatingResultPaise
+  - netMarginPercentage
+  - breakdown
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/ProfitLossReport'
+    snippet: 'Schema ''ProfitLossReport'' properties: [''metadata'', ''periodType'',
+      ''from'', ''to'', ''generatedAt'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: InventoryLossIncident
+  schema_name: InventoryLossIncident
+  properties:
+  - movementId
+  - productId
+  - productName
+  - sku
+  - unitsLost
+  - unitCostPaise
+  - totalLossPaise
+  - reason
+  - createdAt
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/InventoryLossIncident'
+    snippet: 'Schema ''InventoryLossIncident'' properties: [''movementId'', ''productId'',
+      ''productName'', ''sku'', ''unitsLost'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: InventoryLossReport
+  schema_name: InventoryLossReport
+  properties:
+  - metadata
+  - periodType
+  - from
+  - to
+  - generatedAt
+  - currency
+  - totalLossPaise
+  - totalUnitsLost
+  - incidentCount
+  - breakdown
+  - incidents
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/InventoryLossReport'
+    snippet: 'Schema ''InventoryLossReport'' properties: [''metadata'', ''periodType'',
+      ''from'', ''to'', ''generatedAt'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: ProductIntelligence
+  schema_name: ProductIntelligence
+  properties:
+  - productId
+  - productName
+  - sku
+  - category
+  - currentQuantity
+  - minStockLevel
+  - targetStockLevel
+  - averageDailySales
+  - leadTimeDays
+  - reorderPoint
+  - reorderQuantity
+  - surplusQuantity
+  - status
+  - recommendation
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/ProductIntelligence'
+    snippet: 'Schema ''ProductIntelligence'' properties: [''productId'', ''productName'',
+      ''sku'', ''category'', ''currentQuantity'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: ProductSalesIntelligence
+  schema_name: ProductSalesIntelligence
+  properties:
+  - productId
+  - productName
+  - sku
+  - category
+  - currentQuantity
+  - lowStockLevel
+  - preferredStockLevel
+  - unitsSoldLast30Days
+  - unitsSoldPrevious30Days
+  - averageDailySalesLast30Days
+  - lastSoldAt
+  - daysSinceLastSale
+  - salesActivity
+  - salesTrend
+  - recommendedRestockQuantity
+  - recommendation
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/ProductSalesIntelligence'
+    snippet: 'Schema ''ProductSalesIntelligence'' properties: [''productId'', ''productName'',
+      ''sku'', ''category'', ''currentQuantity'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: SalesIntelligenceResponse
+  schema_name: SalesIntelligenceResponse
+  properties:
+  - summary
+  - products
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SalesIntelligenceResponse'
+    snippet: 'Schema ''SalesIntelligenceResponse'' properties: [''summary'', ''products'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: SalesIntelligenceSummary
+  schema_name: SalesIntelligenceSummary
+  properties:
+  - totalProducts
+  - fastSellingProducts
+  - slowMovingProducts
+  - potentialDeadStockProducts
+  - noSalesHistoryProducts
+  - outOfStockProducts
+  - productsNeedingRestock
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SalesIntelligenceSummary'
+    snippet: 'Schema ''SalesIntelligenceSummary'' properties: [''totalProducts'',
+      ''fastSellingProducts'', ''slowMovingProducts'', ''potentialDeadStockProducts'',
+      ''noSalesHistoryProducts'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: HealthStatus
+  schema_name: HealthStatus
+  properties:
+  - status
+  - database
+  - databaseType
+  - totalProducts
+  - totalMovements
+  - timestamp
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/HealthStatus'
+    snippet: 'Schema ''HealthStatus'' properties: [''status'', ''database'', ''databaseType'',
+      ''totalProducts'', ''totalMovements'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: CategoryBreakdown
+  schema_name: CategoryBreakdown
+  properties:
+  - category
+  - productCount
+  - totalQuantity
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CategoryBreakdown'
+    snippet: 'Schema ''CategoryBreakdown'' properties: [''category'', ''productCount'',
+      ''totalQuantity'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: DashboardResponse
+  schema_name: DashboardResponse
+  properties:
+  - totalProducts
+  - totalQuantity
+  - inventoryValuePaise
+  - lowStockCount
+  - outOfStockCount
+  - summary
+  - categoryBreakdown
+  - recentMovements
+  - liveState
+  - periodActivity
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/DashboardResponse'
+    snippet: 'Schema ''DashboardResponse'' properties: [''totalProducts'', ''totalQuantity'',
+      ''inventoryValuePaise'', ''lowStockCount'', ''outOfStockCount'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: DashboardSummary
+  schema_name: DashboardSummary
+  properties:
+  - totalProducts
+  - totalQuantity
+  - inventoryValuePaise
+  - lowStockCount
+  - outOfStockCount
+  - activeSurplusListings
+  - pendingPurchaseOrders
+  - openStockAudits
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/DashboardSummary'
+    snippet: 'Schema ''DashboardSummary'' properties: [''totalProducts'', ''totalQuantity'',
+      ''inventoryValuePaise'', ''lowStockCount'', ''outOfStockCount'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: LiveBusinessState
+  schema_name: LiveBusinessState
+  properties:
+  - totalProducts
+  - totalQuantity
+  - inventoryValuePaise
+  - lowStockCount
+  - outOfStockCount
+  - activeSurplusListings
+  - pendingPurchaseOrders
+  - openStockAudits
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/LiveBusinessState'
+    snippet: 'Schema ''LiveBusinessState'' properties: [''totalProducts'', ''totalQuantity'',
+      ''inventoryValuePaise'', ''lowStockCount'', ''outOfStockCount'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: PeriodActivity
+  schema_name: PeriodActivity
+  properties:
+  - period
+  - from
+  - to
+  - salesPaise
+  - grossProfitPaise
+  - unitsSold
+  - expensesPaise
+  - inventoryLossPaise
+  - discrepanciesCount
+  - completedSalesCount
+  primary_key: null
+  managing_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/PeriodActivity'
+    snippet: 'Schema ''PeriodActivity'' properties: [''period'', ''from'', ''to'',
+      ''salesPaise'', ''grossProfitPaise'']'
+    confidence: 1.0
+    explanation: Discovered in components/schemas declaration
+- name: Dashboard
+  schema_name: null
+  properties: []
+  primary_key: id
+  managing_endpoints:
+  - GET /api/dashboard
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/dashboard
+    snippet: Path '/api/dashboard' -> 'Dashboard'
+    confidence: 0.8
+    explanation: Inferred from URL path structure without explicit schema
+- name: Expense
+  schema_name: null
+  properties: []
+  primary_key: id
+  managing_endpoints:
+  - GET /api/expenses
+  - POST /api/expenses
+  - DELETE /api/expenses/{id}
+  - PUT /api/expenses/{id}
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/expenses
+    snippet: Path '/api/expenses' -> 'Expense'
+    confidence: 0.8
+    explanation: Inferred from URL path structure without explicit schema
+- name: Health
+  schema_name: null
+  properties: []
+  primary_key: id
+  managing_endpoints:
+  - GET /api/health
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/health
+    snippet: Path '/api/health' -> 'Health'
+    confidence: 0.8
+    explanation: Inferred from URL path structure without explicit schema
+- name: Intelligence
+  schema_name: null
+  properties: []
+  primary_key: id
+  managing_endpoints:
+  - GET /api/intelligence
+  - GET /api/intelligence/sales
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/intelligence
+    snippet: Path '/api/intelligence' -> 'Intelligence'
+    confidence: 0.8
+    explanation: Inferred from URL path structure without explicit schema
+- name: Inventory
+  schema_name: null
+  properties: []
+  primary_key: id
+  managing_endpoints:
+  - POST /api/inventory/adjust
+  - POST /api/inventory/stock-in
+  - POST /api/inventory/stock-out
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/inventory/adjust
+    snippet: Path '/api/inventory/adjust' -> 'Inventory'
+    confidence: 0.8
+    explanation: Inferred from URL path structure without explicit schema
+- name: Movement
+  schema_name: null
+  properties: []
+  primary_key: id
+  managing_endpoints:
+  - GET /api/movements
+  - POST /api/movements
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/movements
+    snippet: Path '/api/movements' -> 'Movement'
+    confidence: 0.8
+    explanation: Inferred from URL path structure without explicit schema
+- name: PurchaseOrder
+  schema_name: null
+  properties: []
+  primary_key: id
+  managing_endpoints:
+  - GET /api/purchase-orders
+  - POST /api/purchase-orders
+  - GET /api/purchase-orders/{id}
+  - PUT /api/purchase-orders/{id}
+  - POST /api/purchase-orders/{id}/cancel
+  - POST /api/purchase-orders/{id}/place
+  - POST /api/purchase-orders/{id}/receive
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/purchase-orders
+    snippet: Path '/api/purchase-orders' -> 'PurchaseOrder'
+    confidence: 0.8
+    explanation: Inferred from URL path structure without explicit schema
+- name: Report
+  schema_name: null
+  properties: []
+  primary_key: id
+  managing_endpoints:
+  - GET /api/reports/inventory-loss
+  - GET /api/reports/profit-loss
+  - GET /api/reports/purchases
+  - GET /api/reports/sales
+  - GET /api/reports/summary
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/reports/inventory-loss
+    snippet: Path '/api/reports/inventory-loss' -> 'Report'
+    confidence: 0.8
+    explanation: Inferred from URL path structure without explicit schema
+- name: Sale
+  schema_name: null
+  properties: []
+  primary_key: id
+  managing_endpoints:
+  - GET /api/sales
+  - POST /api/sales
+  - GET /api/sales/summary
+  - GET /api/sales/trend
+  - GET /api/sales/{id}
+  - POST /api/sales/{id}/cancel
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/sales
+    snippet: Path '/api/sales' -> 'Sale'
+    confidence: 0.8
+    explanation: Inferred from URL path structure without explicit schema
+- name: StockAudit
+  schema_name: null
+  properties: []
+  primary_key: id
+  managing_endpoints:
+  - GET /api/stock-audits
+  - POST /api/stock-audits
+  - GET /api/stock-audits/summary
+  - PUT /api/stock-audits/{auditId}/items/{itemId}
+  - GET /api/stock-audits/{id}
+  - POST /api/stock-audits/{id}/cancel
+  - POST /api/stock-audits/{id}/complete
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/stock-audits
+    snippet: Path '/api/stock-audits' -> 'StockAudit'
+    confidence: 0.8
+    explanation: Inferred from URL path structure without explicit schema
+- name: SurplusListing
+  schema_name: null
+  properties: []
+  primary_key: id
+  managing_endpoints:
+  - GET /api/surplus-listings
+  - POST /api/surplus-listings
+  - GET /api/surplus-listings/suggestions
+  - GET /api/surplus-listings/summary
+  - GET /api/surplus-listings/{id}
+  - PUT /api/surplus-listings/{id}
+  - POST /api/surplus-listings/{id}/cancel
+  - POST /api/surplus-listings/{id}/sell
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/surplus-listings
+    snippet: Path '/api/surplus-listings' -> 'SurplusListing'
+    confidence: 0.8
+    explanation: Inferred from URL path structure without explicit schema
+relationships:
+- source_entity: SurplusListingDetails
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SurplusListingDetails/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: SurplusSaleTransaction
+  target_entity: Sale
+  relationship_type: foreign_key_reference
+  foreign_key_field: saleId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SurplusSaleTransaction/properties/saleId'
+    snippet: Field 'saleId' matches candidate key of 'Sale'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: StockAuditItemDetails
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/StockAuditItemDetails/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: CreatePurchaseOrderItemRequest
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CreatePurchaseOrderItemRequest/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: UpdatePurchaseOrderRequest
+  target_entity: Supplier
+  relationship_type: foreign_key_reference
+  foreign_key_field: supplierId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/UpdatePurchaseOrderRequest/properties/supplierId'
+    snippet: Field 'supplierId' matches candidate key of 'Supplier'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: PurchaseOrderDetails
+  target_entity: Supplier
+  relationship_type: foreign_key_reference
+  foreign_key_field: supplierId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/PurchaseOrderDetails/properties/supplierId'
+    snippet: Field 'supplierId' matches candidate key of 'Supplier'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: PurchaseOrderItemDetails
+  target_entity: PurchaseOrder
+  relationship_type: foreign_key_reference
+  foreign_key_field: purchaseOrderId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/PurchaseOrderItemDetails/properties/purchaseOrderId'
+    snippet: Field 'purchaseOrderId' matches candidate key of 'PurchaseOrder'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: PurchaseOrderItemDetails
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/PurchaseOrderItemDetails/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: AssignSupplierRequest
+  target_entity: Supplier
+  relationship_type: foreign_key_reference
+  foreign_key_field: supplierId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/AssignSupplierRequest/properties/supplierId'
+    snippet: Field 'supplierId' matches candidate key of 'Supplier'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: Product
+  target_entity: Supplier
+  relationship_type: foreign_key_reference
+  foreign_key_field: supplierId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/Product/properties/supplierId'
+    snippet: Field 'supplierId' matches candidate key of 'Supplier'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: CreateSurplusListingRequest
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CreateSurplusListingRequest/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: SaleDetails
+  target_entity: Sale
+  relationship_type: foreign_key_reference
+  foreign_key_field: saleId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SaleDetails/properties/saleId'
+    snippet: Field 'saleId' matches candidate key of 'Sale'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: SaleItemDetails
+  target_entity: Sale
+  relationship_type: foreign_key_reference
+  foreign_key_field: saleId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SaleItemDetails/properties/saleId'
+    snippet: Field 'saleId' matches candidate key of 'Sale'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: SaleItemDetails
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SaleItemDetails/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: SaleItemDetails
+  target_entity: SurplusListing
+  relationship_type: foreign_key_reference
+  foreign_key_field: surplusListingId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SaleItemDetails/properties/surplusListingId'
+    snippet: Field 'surplusListingId' matches candidate key of 'SurplusListing'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: SaleItemRequest
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SaleItemRequest/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: CreatePurchaseOrderRequest
+  target_entity: Supplier
+  relationship_type: foreign_key_reference
+  foreign_key_field: supplierId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CreatePurchaseOrderRequest/properties/supplierId'
+    snippet: Field 'supplierId' matches candidate key of 'Supplier'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: CreateProductRequest
+  target_entity: Supplier
+  relationship_type: foreign_key_reference
+  foreign_key_field: supplierId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CreateProductRequest/properties/supplierId'
+    snippet: Field 'supplierId' matches candidate key of 'Supplier'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: CreateMovementRequest
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/CreateMovementRequest/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: RecentMovement
+  target_entity: Movement
+  relationship_type: foreign_key_reference
+  foreign_key_field: movementId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/RecentMovement/properties/movementId'
+    snippet: Field 'movementId' matches candidate key of 'Movement'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: RecentMovement
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/RecentMovement/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: SurplusSuggestion
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SurplusSuggestion/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: SupplierProduct
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SupplierProduct/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: SupplierProduct
+  target_entity: Supplier
+  relationship_type: foreign_key_reference
+  foreign_key_field: supplierId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SupplierProduct/properties/supplierId'
+    snippet: Field 'supplierId' matches candidate key of 'Supplier'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: SaleSummary
+  target_entity: Sale
+  relationship_type: foreign_key_reference
+  foreign_key_field: saleId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SaleSummary/properties/saleId'
+    snippet: Field 'saleId' matches candidate key of 'Sale'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: FinancialSummaryReport
+  target_entity: ReportMetadata
+  relationship_type: references_schema
+  foreign_key_field: metadata
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/FinancialSummaryReport/properties/metadata'
+    snippet: Property 'metadata' -> '#/components/schemas/ReportMetadata'
+    confidence: 1.0
+    explanation: Direct $ref schema pointer
+- source_entity: SalesReport
+  target_entity: ReportMetadata
+  relationship_type: references_schema
+  foreign_key_field: metadata
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SalesReport/properties/metadata'
+    snippet: Property 'metadata' -> '#/components/schemas/ReportMetadata'
+    confidence: 1.0
+    explanation: Direct $ref schema pointer
+- source_entity: TopSellingProduct
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/TopSellingProduct/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: PurchaseOrderSummary
+  target_entity: Supplier
+  relationship_type: foreign_key_reference
+  foreign_key_field: supplierId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/PurchaseOrderSummary/properties/supplierId'
+    snippet: Field 'supplierId' matches candidate key of 'Supplier'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: PurchasesReport
+  target_entity: ReportMetadata
+  relationship_type: references_schema
+  foreign_key_field: metadata
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/PurchasesReport/properties/metadata'
+    snippet: Property 'metadata' -> '#/components/schemas/ReportMetadata'
+    confidence: 1.0
+    explanation: Direct $ref schema pointer
+- source_entity: SupplierSpendSummary
+  target_entity: Supplier
+  relationship_type: foreign_key_reference
+  foreign_key_field: supplierId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SupplierSpendSummary/properties/supplierId'
+    snippet: Field 'supplierId' matches candidate key of 'Supplier'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: ProfitLossReport
+  target_entity: ReportMetadata
+  relationship_type: references_schema
+  foreign_key_field: metadata
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/ProfitLossReport/properties/metadata'
+    snippet: Property 'metadata' -> '#/components/schemas/ReportMetadata'
+    confidence: 1.0
+    explanation: Direct $ref schema pointer
+- source_entity: InventoryLossIncident
+  target_entity: Movement
+  relationship_type: foreign_key_reference
+  foreign_key_field: movementId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/InventoryLossIncident/properties/movementId'
+    snippet: Field 'movementId' matches candidate key of 'Movement'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: InventoryLossIncident
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/InventoryLossIncident/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: InventoryLossReport
+  target_entity: ReportMetadata
+  relationship_type: references_schema
+  foreign_key_field: metadata
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/InventoryLossReport/properties/metadata'
+    snippet: Property 'metadata' -> '#/components/schemas/ReportMetadata'
+    confidence: 1.0
+    explanation: Direct $ref schema pointer
+- source_entity: ProductIntelligence
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/ProductIntelligence/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: ProductSalesIntelligence
+  target_entity: Product
+  relationship_type: foreign_key_reference
+  foreign_key_field: productId
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/ProductSalesIntelligence/properties/productId'
+    snippet: Field 'productId' matches candidate key of 'Product'
+    confidence: 0.85
+    explanation: Foreign key naming match
+- source_entity: SalesIntelligenceResponse
+  target_entity: SalesIntelligenceSummary
+  relationship_type: references_schema
+  foreign_key_field: summary
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/SalesIntelligenceResponse/properties/summary'
+    snippet: Property 'summary' -> '#/components/schemas/SalesIntelligenceSummary'
+    confidence: 1.0
+    explanation: Direct $ref schema pointer
+- source_entity: DashboardResponse
+  target_entity: DashboardSummary
+  relationship_type: references_schema
+  foreign_key_field: summary
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/DashboardResponse/properties/summary'
+    snippet: Property 'summary' -> '#/components/schemas/DashboardSummary'
+    confidence: 1.0
+    explanation: Direct $ref schema pointer
+- source_entity: DashboardResponse
+  target_entity: LiveBusinessState
+  relationship_type: references_schema
+  foreign_key_field: liveState
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/DashboardResponse/properties/liveState'
+    snippet: Property 'liveState' -> '#/components/schemas/LiveBusinessState'
+    confidence: 1.0
+    explanation: Direct $ref schema pointer
+- source_entity: DashboardResponse
+  target_entity: PeriodActivity
+  relationship_type: references_schema
+  foreign_key_field: periodActivity
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: '#/components/schemas/DashboardResponse/properties/periodActivity'
+    snippet: Property 'periodActivity' -> '#/components/schemas/PeriodActivity'
+    confidence: 1.0
+    explanation: Direct $ref schema pointer
+- source_entity: Product
+  target_entity: Movement
+  relationship_type: nested_sub_resource
+  foreign_key_field: null
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/products/{id}/movements
+    snippet: 'Path nesting: /api/products/{id}/movements'
+    confidence: 0.85
+    explanation: URL path nesting indicates sub-resource association
+- source_entity: Product
+  target_entity: Supplier
+  relationship_type: nested_sub_resource
+  foreign_key_field: null
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/products/{productId}/supplier
+    snippet: 'Path nesting: /api/products/{productId}/supplier'
+    confidence: 0.85
+    explanation: URL path nesting indicates sub-resource association
+- source_entity: Product
+  target_entity: Supplier
+  relationship_type: nested_sub_resource
+  foreign_key_field: null
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/products/{productId}/supplier
+    snippet: 'Path nesting: /api/products/{productId}/supplier'
+    confidence: 0.85
+    explanation: URL path nesting indicates sub-resource association
+- source_entity: Purchase-Order
+  target_entity: Cancel
+  relationship_type: nested_sub_resource
+  foreign_key_field: null
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/purchase-orders/{id}/cancel
+    snippet: 'Path nesting: /api/purchase-orders/{id}/cancel'
+    confidence: 0.85
+    explanation: URL path nesting indicates sub-resource association
+- source_entity: Purchase-Order
+  target_entity: Place
+  relationship_type: nested_sub_resource
+  foreign_key_field: null
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/purchase-orders/{id}/place
+    snippet: 'Path nesting: /api/purchase-orders/{id}/place'
+    confidence: 0.85
+    explanation: URL path nesting indicates sub-resource association
+- source_entity: Purchase-Order
+  target_entity: Receive
+  relationship_type: nested_sub_resource
+  foreign_key_field: null
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/purchase-orders/{id}/receive
+    snippet: 'Path nesting: /api/purchase-orders/{id}/receive'
+    confidence: 0.85
+    explanation: URL path nesting indicates sub-resource association
+- source_entity: Sale
+  target_entity: Cancel
+  relationship_type: nested_sub_resource
+  foreign_key_field: null
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/sales/{id}/cancel
+    snippet: 'Path nesting: /api/sales/{id}/cancel'
+    confidence: 0.85
+    explanation: URL path nesting indicates sub-resource association
+- source_entity: Stock-Audit
+  target_entity: Cancel
+  relationship_type: nested_sub_resource
+  foreign_key_field: null
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/stock-audits/{id}/cancel
+    snippet: 'Path nesting: /api/stock-audits/{id}/cancel'
+    confidence: 0.85
+    explanation: URL path nesting indicates sub-resource association
+- source_entity: Stock-Audit
+  target_entity: Complete
+  relationship_type: nested_sub_resource
+  foreign_key_field: null
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/stock-audits/{id}/complete
+    snippet: 'Path nesting: /api/stock-audits/{id}/complete'
+    confidence: 0.85
+    explanation: URL path nesting indicates sub-resource association
+- source_entity: Supplier
+  target_entity: Product
+  relationship_type: nested_sub_resource
+  foreign_key_field: null
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/suppliers/{id}/products
+    snippet: 'Path nesting: /api/suppliers/{id}/products'
+    confidence: 0.85
+    explanation: URL path nesting indicates sub-resource association
+- source_entity: Surplus-Listing
+  target_entity: Cancel
+  relationship_type: nested_sub_resource
+  foreign_key_field: null
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/surplus-listings/{id}/cancel
+    snippet: 'Path nesting: /api/surplus-listings/{id}/cancel'
+    confidence: 0.85
+    explanation: URL path nesting indicates sub-resource association
+- source_entity: Surplus-Listing
+  target_entity: Sell
+  relationship_type: nested_sub_resource
+  foreign_key_field: null
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/surplus-listings/{id}/sell
+    snippet: 'Path nesting: /api/surplus-listings/{id}/sell'
+    confidence: 0.85
+    explanation: URL path nesting indicates sub-resource association
+auth:
+  auth_type: none
+  roles:
+  - Admin
+  - Anonymous
+  - Customer
+  - Manager
+  - User
+  role_rules:
+  - role_name: Anonymous
+    token_variable: '{anonymous_token}'
+    allowed_endpoints: []
+    forbidden_endpoints: []
+  status: CONFIRMED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: components.securitySchemes
+    snippet: 'Declared schemes: []'
+    confidence: 0.7
+    explanation: Security schemes declared in OpenAPI specification
+  - source_type: SOURCE_CODE
+    source_ref: repo:StockPile
+    snippet: 'Discovered roles: [''Admin'', ''Customer'', ''Manager'', ''User'']'
+    confidence: 1.0
+    explanation: Roles discovered from source code security annotations
+workflows:
+- workflow_id: workflow_products_crud
+  name: Products Lifecycle Workflow
+  description: 'Sequential lifecycle chain for products: create, retrieve, update,
+    and delete'
+  steps:
+  - step: 1
+    action: create
+    method: POST
+    path: /api/products
+    extract: id
+  - step: 2
+    action: read_and_verify
+    method: GET
+    path: /api/products/{id}
+    requires_var: id
+  - step: 3
+    action: update
+    method: PUT
+    path: /api/products/{id}
+    requires_var: id
+  - step: 4
+    action: delete
+    method: DELETE
+    path: /api/products/{id}
+    requires_var: id
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.products
+    snippet: CRUD operations on module 'products'
+    confidence: 0.9
+    explanation: Inferred from matching POST, GET, and DELETE operations
+- workflow_id: workflow_purchase_orders_crud
+  name: Purchase_Orders Lifecycle Workflow
+  description: 'Sequential lifecycle chain for purchase_orders: create, retrieve,
+    update, and delete'
+  steps:
+  - step: 1
+    action: create
+    method: POST
+    path: /api/purchase-orders
+    extract: id
+  - step: 2
+    action: read_and_verify
+    method: GET
+    path: /api/purchase-orders/{id}
+    requires_var: id
+  - step: 3
+    action: update
+    method: PUT
+    path: /api/purchase-orders/{id}
+    requires_var: id
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.purchase_orders
+    snippet: CRUD operations on module 'purchase_orders'
+    confidence: 0.9
+    explanation: Inferred from matching POST, GET, and DELETE operations
+- workflow_id: workflow_sales_crud
+  name: Sales Lifecycle Workflow
+  description: 'Sequential lifecycle chain for sales: create, retrieve, update, and
+    delete'
+  steps:
+  - step: 1
+    action: create
+    method: POST
+    path: /api/sales
+    extract: id
+  - step: 2
+    action: read_and_verify
+    method: GET
+    path: /api/sales/{id}
+    requires_var: id
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.sales
+    snippet: CRUD operations on module 'sales'
+    confidence: 0.9
+    explanation: Inferred from matching POST, GET, and DELETE operations
+- workflow_id: workflow_stock_audits_crud
+  name: Stock_Audits Lifecycle Workflow
+  description: 'Sequential lifecycle chain for stock_audits: create, retrieve, update,
+    and delete'
+  steps:
+  - step: 1
+    action: create
+    method: POST
+    path: /api/stock-audits
+    extract: id
+  - step: 2
+    action: read_and_verify
+    method: GET
+    path: /api/stock-audits/{id}
+    requires_var: id
+  - step: 3
+    action: update
+    method: PUT
+    path: /api/stock-audits/{auditId}/items/{itemId}
+    requires_var: id
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.stock_audits
+    snippet: CRUD operations on module 'stock_audits'
+    confidence: 0.9
+    explanation: Inferred from matching POST, GET, and DELETE operations
+- workflow_id: workflow_suppliers_crud
+  name: Suppliers Lifecycle Workflow
+  description: 'Sequential lifecycle chain for suppliers: create, retrieve, update,
+    and delete'
+  steps:
+  - step: 1
+    action: create
+    method: POST
+    path: /api/suppliers
+    extract: id
+  - step: 2
+    action: read_and_verify
+    method: GET
+    path: /api/suppliers/{id}
+    requires_var: id
+  - step: 3
+    action: update
+    method: PUT
+    path: /api/suppliers/{id}
+    requires_var: id
+  - step: 4
+    action: delete
+    method: DELETE
+    path: /api/suppliers/{id}
+    requires_var: id
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.suppliers
+    snippet: CRUD operations on module 'suppliers'
+    confidence: 0.9
+    explanation: Inferred from matching POST, GET, and DELETE operations
+- workflow_id: workflow_surplus_listings_crud
+  name: Surplus_Listings Lifecycle Workflow
+  description: 'Sequential lifecycle chain for surplus_listings: create, retrieve,
+    update, and delete'
+  steps:
+  - step: 1
+    action: create
+    method: POST
+    path: /api/surplus-listings
+    extract: id
+  - step: 2
+    action: read_and_verify
+    method: GET
+    path: /api/surplus-listings/{id}
+    requires_var: id
+  - step: 3
+    action: update
+    method: PUT
+    path: /api/surplus-listings/{id}
+    requires_var: id
+  status: INFERRED
+  evidence:
+  - source_type: OPENAPI
+    source_ref: module.surplus_listings
+    snippet: CRUD operations on module 'surplus_listings'
+    confidence: 0.9
+    explanation: Inferred from matching POST, GET, and DELETE operations
+business_rules: []
+test_data_requirements:
+- field_name: period
+  entity: dashboard
+  data_type: string
+  example_value: sample_param
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/dashboard.parameters.period
+    snippet: Parameter 'period' (string)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: from
+  entity: dashboard
+  data_type: string
+  example_value: sample_param
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/dashboard.parameters.from
+    snippet: Parameter 'from' (string)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: to
+  entity: dashboard
+  data_type: string
+  example_value: sample_param
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/dashboard.parameters.to
+    snippet: Parameter 'to' (string)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: category
+  entity: expenses
+  data_type: string
+  example_value: sample_param
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/expenses.parameters.category
+    snippet: Parameter 'category' (string)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: limit
+  entity: expenses
+  data_type: integer
+  example_value: 1
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/expenses.parameters.limit
+    snippet: Parameter 'limit' (integer)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: offset
+  entity: expenses
+  data_type: integer
+  example_value: 1
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/expenses.parameters.offset
+    snippet: Parameter 'offset' (integer)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: page
+  entity: expenses
+  data_type: integer
+  example_value: 1
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/expenses.parameters.page
+    snippet: Parameter 'page' (integer)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: size
+  entity: expenses
+  data_type: integer
+  example_value: 1
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/expenses.parameters.size
+    snippet: Parameter 'size' (integer)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: id
+  entity: expenses
+  data_type: integer
+  example_value: 1
+  constraints:
+    location: path
+    required: true
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/expenses/{id}.parameters.id
+    snippet: Parameter 'id' (integer)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: productId
+  entity: movements
+  data_type: integer
+  example_value: 1
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/movements.parameters.productId
+    snippet: Parameter 'productId' (integer)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: movementType
+  entity: movements
+  data_type: string
+  example_value: sample_param
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/movements.parameters.movementType
+    snippet: Parameter 'movementType' (string)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: search
+  entity: products
+  data_type: string
+  example_value: sample_param
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/products.parameters.search
+    snippet: Parameter 'search' (string)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: supplierId
+  entity: purchase_orders
+  data_type: integer
+  example_value: 1
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/purchase-orders.parameters.supplierId
+    snippet: Parameter 'supplierId' (integer)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: status
+  entity: purchase_orders
+  data_type: string
+  example_value: sample_param
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/purchase-orders.parameters.status
+    snippet: Parameter 'status' (string)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: date
+  entity: reports
+  data_type: string
+  example_value: sample_param
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/reports/inventory-loss.parameters.date
+    snippet: Parameter 'date' (string)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: month
+  entity: reports
+  data_type: integer
+  example_value: 1
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/reports/inventory-loss.parameters.month
+    snippet: Parameter 'month' (integer)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: year
+  entity: reports
+  data_type: integer
+  example_value: 1
+  constraints:
+    location: query
+    required: false
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/reports/inventory-loss.parameters.year
+    snippet: Parameter 'year' (integer)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: auditId
+  entity: stock_audits
+  data_type: integer
+  example_value: 1
+  constraints:
+    location: path
+    required: true
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/stock-audits/{auditId}/items/{itemId}.parameters.auditId
+    snippet: Parameter 'auditId' (integer)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+- field_name: itemId
+  entity: stock_audits
+  data_type: integer
+  example_value: 1
+  constraints:
+    location: path
+    required: true
+  evidence:
+  - source_type: OPENAPI
+    source_ref: paths./api/stock-audits/{auditId}/items/{itemId}.parameters.itemId
+    snippet: Parameter 'itemId' (integer)
+    confidence: 1.0
+    explanation: Extracted from parameter declaration
+risk_areas:
+- area_id: risk_unauthenticated_mutations
+  category: security_authentication
+  description: Found 30 mutating operations that do not require authentication.
+  affected_endpoints:
+  - POST /api/expenses
+  - DELETE /api/expenses/{id}
+  - PUT /api/expenses/{id}
+  - POST /api/inventory/adjust
+  - POST /api/inventory/stock-in
+  - POST /api/inventory/stock-out
+  - POST /api/movements
+  - POST /api/products
+  - DELETE /api/products/{id}
+  - PUT /api/products/{id}
+  severity: HIGH
+  evidence:
+  - source_type: OPENAPI
+    source_ref: security
+    snippet: 30 unauth endpoints
+    confidence: 1.0
+    explanation: OpenAPI operations have empty or missing security requirement
+- area_id: risk_undocumented_response_schemas
+  category: documentation_gap
+  description: 17 operations lack documented 2xx schemas, preventing deterministic
+    schema assertions.
+  affected_endpoints:
+  - GET /api/expenses
+  - DELETE /api/expenses/{id}
+  - GET /api/intelligence
+  - GET /api/movements
+  - GET /api/products
+  - DELETE /api/products/{id}
+  - GET /api/products/{id}/movements
+  - DELETE /api/products/{productId}/supplier
+  - GET /api/purchase-orders
+  - GET /api/sales
+  severity: MEDIUM
+  evidence:
+  - source_type: OPENAPI
+    source_ref: responses
+    snippet: 17 operations lack schema
+    confidence: 0.95
+    explanation: Missing schema in OpenAPI responses
+- area_id: risk_idor_candidate_endpoints
+  category: security_idor
+  description: Found 8 GET endpoints accepting resource ID parameters to verify for
+    horizontal authorization boundaries.
+  affected_endpoints:
+  - GET /api/products/{id}
+  - GET /api/products/{id}/movements
+  - GET /api/purchase-orders/{id}
+  - GET /api/sales/{id}
+  - GET /api/stock-audits/{id}
+  - GET /api/suppliers/{id}
+  - GET /api/suppliers/{id}/products
+  - GET /api/surplus-listings/{id}
+  severity: HIGH
+  evidence:
+  - source_type: OPENAPI
+    source_ref: parameters
+    snippet: 8 ID-based GET endpoints
+    confidence: 0.85
+    explanation: Path parameter implies entity lookup
+missing_information:
+- category: generic_tags
+  description: OpenAPI operations share generic or monolithic tags (['stockpile-controller']).
+    Functional modules inferred from URL path segments.
+  affected_endpoints: []
+  recommendation: Define distinct, domain-specific tags per resource controller (e.g.,
+    'products', 'suppliers', 'sales').
+- category: SHADOW_ENDPOINT
+  description: Endpoint 'GET /api/v1/health' implemented in ApiHealthController (apps/java/stockpile-api/src/main/java/com/stockpile/api/controller/ApiHealthController.java:25)
+    is not documented in OpenAPI.
+  affected_endpoints:
+  - GET /api/v1/health
+  recommendation: Review source controller to document or decommission route.
+- category: SHADOW_ENDPOINT
+  description: Endpoint 'POST /' implemented in forecast (apps/analytics/app/api/routes/forecast.py:9)
+    is not documented in OpenAPI.
+  affected_endpoints:
+  - POST /
+  recommendation: Review source controller to document or decommission route.
+- category: SHADOW_ENDPOINT
+  description: Endpoint 'GET /health' implemented in health (apps/analytics/app/api/routes/health.py:8)
+    is not documented in OpenAPI.
+  affected_endpoints:
+  - GET /health
+  recommendation: Review source controller to document or decommission route.
+warnings: []

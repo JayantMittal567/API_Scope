@@ -1,0 +1,170 @@
+{
+  "run_id": "b8fa5f4c-1954-41ff-98b6-26bd9b7ef719",
+  "total_tests": 8,
+  "passed_tests": 8,
+  "failed_tests": 0,
+  "error_tests": 0,
+  "skipped_tests": 0,
+  "cases": [
+    {
+      "name": "StockPile smoke: GET /api/health",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 9.270999999898777,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200"
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema."
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile smoke: GET /api/products",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 2.589300000181538,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200"
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema."
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile smoke: GET /api/suppliers",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.709099999970931,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200"
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema."
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile smoke: GET /api/stock-audits",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.4026999997440726,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200"
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema."
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile smoke: GET /api/purchase-orders",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.4209000000846572,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200"
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema."
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile smoke: GET /api/sales",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.4031000000613858,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200"
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema."
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile smoke: GET /api/surplus-listings",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 1.623499999368505,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200"
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema."
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "StockPile smoke: GET /api/reports/summary",
+      "status": "PASSED",
+      "verified": true,
+      "http_status": 200,
+      "elapsed_ms": 3.159000000778178,
+      "assertions": [
+        {
+          "type": "status",
+          "passed": true,
+          "message": "Expected status 200, received 200"
+        },
+        {
+          "type": "json_schema",
+          "passed": true,
+          "message": "Response body conforms to JSON Schema."
+        }
+      ],
+      "error": null
+    }
+  ]
+}

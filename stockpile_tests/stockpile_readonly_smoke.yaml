@@ -1,0 +1,144 @@
+# Curated safe subset of generated_suite.yaml. GET-only, no resource IDs.
+# Only run against a disposable local StockPile test instance.
+name: StockPile read-only smoke validation (curated)
+module: stockpile-controller
+tags:
+- smoke
+- read-only
+tests:
+- name: 'StockPile smoke: GET /api/health'
+  module: stockpile-controller
+  tags:
+  - smoke
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/health
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+- name: 'StockPile smoke: GET /api/products'
+  module: stockpile-controller
+  tags:
+  - smoke
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/products
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+- name: 'StockPile smoke: GET /api/suppliers'
+  module: stockpile-controller
+  tags:
+  - smoke
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/suppliers
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+- name: 'StockPile smoke: GET /api/stock-audits'
+  module: stockpile-controller
+  tags:
+  - smoke
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/stock-audits
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+- name: 'StockPile smoke: GET /api/purchase-orders'
+  module: stockpile-controller
+  tags:
+  - smoke
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/purchase-orders
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+- name: 'StockPile smoke: GET /api/sales'
+  module: stockpile-controller
+  tags:
+  - smoke
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/sales
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+- name: 'StockPile smoke: GET /api/surplus-listings'
+  module: stockpile-controller
+  tags:
+  - smoke
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/surplus-listings
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+- name: 'StockPile smoke: GET /api/reports/summary'
+  module: stockpile-controller
+  tags:
+  - smoke
+  - read-only
+  source: handwritten
+  status: approved
+  request:
+    method: GET
+    url: http://localhost:8080/api/reports/summary
+    timeout: 10.0
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object

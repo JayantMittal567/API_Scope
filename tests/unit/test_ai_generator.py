@@ -5,6 +5,7 @@ Covers: FR-50, FR-51, FR-52, FR-53, FR-54, NFR-02, NFR-03, NFR-06.
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import httpx
@@ -278,11 +279,14 @@ def test_build_ai_generation_prompt_structure() -> None:
     assert "/orders/{order_id}/cancel" in user_prompt
 
 
-def test_llm_config_from_env_variations(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_llm_config_from_env_variations(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     """Covers: FR-50, NFR-03.
 
     Test environment resolution for Gemini, OpenAI, Groq, and explicit params.
     """
+    monkeypatch.chdir(tmp_path)
     # 1. Gemini via GEMINI_API_KEY
     monkeypatch.setenv("GEMINI_API_KEY", "gemini-env-key-99")
     monkeypatch.delenv("APISCOPE_LLM_KEY", raising=False)
@@ -317,6 +321,35 @@ def test_llm_config_from_env_variations(monkeypatch: pytest.MonkeyPatch) -> None
     assert cfg3.base_url == "https://custom.endpoint/v1"
     assert cfg3.timeout_sec == 60.0
     assert cfg3.temperature == 0.7
+
+
+def test_llm_config_from_env_autoloads_dotenv_file(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Covers: FR-50, NFR-03.
+
+    Verify that LLMConfig.from_env() automatically parses .env in cwd.
+    """
+    env_content = (
+        "# Sample .env file\n"
+        'GEMINI_API_KEY="auto-gemini-key-123"\n'
+        "OPENAI_API_KEY='auto-openai-key-456'\n"
+        "CUSTOM_LLM_KEY=auto-custom-key-789\n"
+        "# Comment line with = sign: IGNORE_ME=true\n"
+    )
+    (tmp_path / ".env").write_text(env_content, encoding="utf-8")
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("APISCOPE_LLM_API_KEY", raising=False)
+    monkeypatch.delenv("CUSTOM_LLM_KEY", raising=False)
+
+    cfg = LLMConfig.from_env()
+    assert cfg.provider == "gemini"
+    assert cfg.api_key == "auto-gemini-key-123"
+    assert os.environ.get("OPENAI_API_KEY") == "auto-openai-key-456"
+    assert os.environ.get("CUSTOM_LLM_KEY") == "auto-custom-key-789"
 
 
 def test_live_http_llm_provider_openai_success() -> None:

@@ -1,0 +1,3246 @@
+name: 'Compiled Suite: OpenAPI definition'
+module: openapi-definition
+tags:
+- compiled-suite
+tests:
+- name: '[SCN-SURPLUS_LISTINGS-POS-060] GET /api/surplus-listings'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SURPLUS_LISTINGS-SCH-061] GET /api/surplus-listings'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+          productId:
+            type: integer
+            format: int64
+          productName:
+            type: string
+          sku:
+            type: string
+          category:
+            type: string
+          quantityListed:
+            type: integer
+            format: int32
+          quantitySold:
+            type: integer
+            format: int32
+          quantityRemaining:
+            type: integer
+            format: int32
+          regularUnitPricePaise:
+            type: integer
+            format: int64
+          discountedUnitPricePaise:
+            type: integer
+            format: int64
+          discountPercentage:
+            type: number
+            format: double
+          unitCostPaiseSnapshot:
+            type: integer
+            format: int64
+          recoveredRevenuePaise:
+            type: integer
+            format: int64
+          grossProfitPaise:
+            type: integer
+            format: int64
+          status:
+            type: string
+          reason:
+            type: string
+          notes:
+            type: string
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+          cancelledAt:
+            type: string
+          sales:
+            type: array
+            items:
+              type: object
+              properties:
+                saleId:
+                  type: integer
+                  format: int64
+                saleItemId:
+                  type: integer
+                  format: int64
+                quantity:
+                  type: integer
+                  format: int32
+                unitSellingPricePaise:
+                  type: integer
+                  format: int64
+                unitPurchasePricePaise:
+                  type: integer
+                  format: int64
+                lineTotalPaise:
+                  type: integer
+                  format: int64
+                lineCostPaise:
+                  type: integer
+                  format: int64
+                paymentMethod:
+                  type: string
+                status:
+                  type: string
+                createdAt:
+                  type: string
+                grossProfitPaise:
+                  type: integer
+                  format: int64
+              _original_ref: '#/components/schemas/SurplusSaleTransaction'
+          discountedSellingPricePaise:
+            type: integer
+            format: int64
+          totalRealizedRevenuePaise:
+            type: integer
+            format: int64
+          originalSellingPricePaise:
+            type: integer
+            format: int64
+          totalRealizedGrossProfitPaise:
+            type: integer
+            format: int64
+          originalPurchasePricePaise:
+            type: integer
+            format: int64
+          totalPotentialRevenuePaise:
+            type: integer
+            format: int64
+        _original_ref: '#/components/schemas/SurplusListingDetails'
+- name: '[SCN-SURPLUS_LISTINGS-POS-062] POST /api/surplus-listings'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - contract_positive
+  - priority:high
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      quantity: 1
+      discountedPricePaise: 1
+      reason: sample_reason
+      notes: sample_notes
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-SURPLUS_LISTINGS-SCH-063] POST /api/surplus-listings'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        sku:
+          type: string
+        category:
+          type: string
+        quantityListed:
+          type: integer
+          format: int32
+        quantitySold:
+          type: integer
+          format: int32
+        quantityRemaining:
+          type: integer
+          format: int32
+        regularUnitPricePaise:
+          type: integer
+          format: int64
+        discountedUnitPricePaise:
+          type: integer
+          format: int64
+        discountPercentage:
+          type: number
+          format: double
+        unitCostPaiseSnapshot:
+          type: integer
+          format: int64
+        recoveredRevenuePaise:
+          type: integer
+          format: int64
+        grossProfitPaise:
+          type: integer
+          format: int64
+        status:
+          type: string
+        reason:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        cancelledAt:
+          type: string
+        sales:
+          type: array
+          items:
+            type: object
+            properties:
+              saleId:
+                type: integer
+                format: int64
+              saleItemId:
+                type: integer
+                format: int64
+              quantity:
+                type: integer
+                format: int32
+              unitSellingPricePaise:
+                type: integer
+                format: int64
+              unitPurchasePricePaise:
+                type: integer
+                format: int64
+              lineTotalPaise:
+                type: integer
+                format: int64
+              lineCostPaise:
+                type: integer
+                format: int64
+              paymentMethod:
+                type: string
+              status:
+                type: string
+              createdAt:
+                type: string
+              grossProfitPaise:
+                type: integer
+                format: int64
+            _original_ref: '#/components/schemas/SurplusSaleTransaction'
+        discountedSellingPricePaise:
+          type: integer
+          format: int64
+        totalRealizedRevenuePaise:
+          type: integer
+          format: int64
+        originalSellingPricePaise:
+          type: integer
+          format: int64
+        totalRealizedGrossProfitPaise:
+          type: integer
+          format: int64
+        originalPurchasePricePaise:
+          type: integer
+          format: int64
+        totalPotentialRevenuePaise:
+          type: integer
+          format: int64
+      _original_ref: '#/components/schemas/SurplusListingDetails'
+- name: '[SCN-SUPPLIERS-POS-076] GET /api/suppliers'
+  module: suppliers
+  tags:
+  - suppliers
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/suppliers'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SUPPLIERS-SCH-077] GET /api/suppliers'
+  module: suppliers
+  tags:
+  - suppliers
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/suppliers'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+          name:
+            type: string
+          contactPerson:
+            type: string
+          phone:
+            type: string
+          email:
+            type: string
+          address:
+            type: string
+          notes:
+            type: string
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+        _original_ref: '#/components/schemas/Supplier'
+- name: '[SCN-SUPPLIERS-POS-078] POST /api/suppliers'
+  module: suppliers
+  tags:
+  - suppliers
+  - contract_positive
+  - priority:high
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers'
+    headers:
+      Content-Type: application/json
+    body:
+      name: sample_name
+      contactPerson: sample_contactPerson
+      phone: sample_phone
+      email: sample_email
+      address: sample_address
+      notes: sample_notes
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-SUPPLIERS-SCH-079] POST /api/suppliers'
+  module: suppliers
+  tags:
+  - suppliers
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        contactPerson:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      _original_ref: '#/components/schemas/Supplier'
+- name: '[SCN-STOCK_AUDITS-POS-082] GET /api/stock-audits'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/stock-audits'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-STOCK_AUDITS-SCH-083] GET /api/stock-audits'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/stock-audits'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+          auditId:
+            type: integer
+            format: int64
+          status:
+            type: string
+          notes:
+            type: string
+          createdAt:
+            type: string
+          completedAt:
+            type: string
+          cancelledAt:
+            type: string
+          cancellationReason:
+            type: string
+          totalProducts:
+            type: integer
+            format: int32
+          productsCounted:
+            type: integer
+            format: int32
+          productsWithDiscrepancies:
+            type: integer
+            format: int32
+        _original_ref: '#/components/schemas/StockAuditSummary'
+- name: '[SCN-STOCK_AUDITS-POS-084] POST /api/stock-audits'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - contract_positive
+  - priority:high
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits'
+    headers:
+      Content-Type: application/json
+    body:
+      productIds: []
+      notes: sample_notes
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-STOCK_AUDITS-SCH-085] POST /api/stock-audits'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        auditId:
+          type: integer
+          format: int64
+        status:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+        completedAt:
+          type: string
+        cancelledAt:
+          type: string
+        cancellationReason:
+          type: string
+        totalProducts:
+          type: integer
+          format: int32
+        countedProducts:
+          type: integer
+          format: int32
+        discrepancyCount:
+          type: integer
+          format: int32
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+              itemId:
+                type: integer
+                format: int64
+              auditId:
+                type: integer
+                format: int64
+              productId:
+                type: integer
+                format: int64
+              productNameSnapshot:
+                type: string
+              skuSnapshot:
+                type: string
+              systemQuantity:
+                type: integer
+                format: int32
+              countedQuantity:
+                type: integer
+                format: int32
+              variance:
+                type: integer
+                format: int32
+              countStatus:
+                type: string
+              itemNotes:
+                type: string
+            _original_ref: '#/components/schemas/StockAuditItemDetails'
+      _original_ref: '#/components/schemas/StockAuditDetails'
+- name: '[SCN-SALES-POS-097] GET /api/sales'
+  module: sales
+  tags:
+  - sales
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SALES-SCH-098] GET /api/sales'
+  module: sales
+  tags:
+  - sales
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+          saleId:
+            type: integer
+            format: int64
+          subtotalPaise:
+            type: integer
+            format: int64
+          discountPaise:
+            type: integer
+            format: int64
+          discountPercentBasisPoints:
+            type: integer
+            format: int32
+          discountPercent:
+            type: number
+            format: double
+          totalPaise:
+            type: integer
+            format: int64
+          totalCostPaise:
+            type: integer
+            format: int64
+          grossProfitPaise:
+            type: integer
+            format: int64
+          paymentMethod:
+            type: string
+          status:
+            type: string
+          createdAt:
+            type: string
+          cancelledAt:
+            type: string
+          itemCount:
+            type: integer
+            format: int32
+          totalQuantity:
+            type: integer
+            format: int32
+        _original_ref: '#/components/schemas/SaleSummary'
+- name: '[SCN-SALES-POS-099] POST /api/sales'
+  module: sales
+  tags:
+  - sales
+  - contract_positive
+  - priority:high
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales'
+    headers:
+      Content-Type: application/json
+    body:
+      items: []
+      discountPaise: 1
+      discountPercent: 9.99
+      paymentMethod: sample_paymentMethod
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-SALES-SCH-100] POST /api/sales'
+  module: sales
+  tags:
+  - sales
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        saleId:
+          type: integer
+          format: int64
+        subtotalPaise:
+          type: integer
+          format: int64
+        discountPaise:
+          type: integer
+          format: int64
+        discountPercentBasisPoints:
+          type: integer
+          format: int32
+        discountPercent:
+          type: number
+          format: double
+        totalPaise:
+          type: integer
+          format: int64
+        totalCostPaise:
+          type: integer
+          format: int64
+        grossProfitPaise:
+          type: integer
+          format: int64
+        paymentMethod:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+        cancelledAt:
+          type: string
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+              saleId:
+                type: integer
+                format: int64
+              productId:
+                type: integer
+                format: int64
+              productNameSnapshot:
+                type: string
+              skuSnapshot:
+                type: string
+              quantity:
+                type: integer
+                format: int32
+              unitSellingPricePaise:
+                type: integer
+                format: int64
+              unitPurchasePricePaise:
+                type: integer
+                format: int64
+              lineTotalPaise:
+                type: integer
+                format: int64
+              lineCostPaise:
+                type: integer
+                format: int64
+              surplusListingId:
+                type: integer
+                format: int64
+              belowCost:
+                type: boolean
+            _original_ref: '#/components/schemas/SaleItemDetails'
+        hasBelowCostItem:
+          type: boolean
+      _original_ref: '#/components/schemas/SaleDetails'
+- name: '[SCN-PURCHASE_ORDERS-POS-108] GET /api/purchase-orders'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/purchase-orders'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-PURCHASE_ORDERS-SCH-109] GET /api/purchase-orders'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/purchase-orders'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+          orderId:
+            type: integer
+            format: int64
+          supplierId:
+            type: integer
+            format: int64
+          supplierName:
+            type: string
+          status:
+            type: string
+          totalAmountPaise:
+            type: integer
+            format: int64
+          notes:
+            type: string
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+          placedAt:
+            type: string
+          receivedAt:
+            type: string
+          cancelledAt:
+            type: string
+          itemCount:
+            type: integer
+            format: int32
+          totalQuantityOrdered:
+            type: integer
+            format: int32
+          totalQuantityReceived:
+            type: integer
+            format: int32
+        _original_ref: '#/components/schemas/PurchaseOrderSummary'
+- name: '[SCN-PURCHASE_ORDERS-POS-110] POST /api/purchase-orders'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - contract_positive
+  - priority:high
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders'
+    headers:
+      Content-Type: application/json
+    body:
+      supplierId: 1
+      notes: sample_notes
+      items: []
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-PURCHASE_ORDERS-SCH-111] POST /api/purchase-orders'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        orderId:
+          type: integer
+          format: int64
+        supplierId:
+          type: integer
+          format: int64
+        supplierName:
+          type: string
+        status:
+          type: string
+        totalAmountPaise:
+          type: integer
+          format: int64
+        notes:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        placedAt:
+          type: string
+        receivedAt:
+          type: string
+        cancelledAt:
+          type: string
+        cancellationReason:
+          type: string
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+              purchaseOrderId:
+                type: integer
+                format: int64
+              productId:
+                type: integer
+                format: int64
+              productNameSnapshot:
+                type: string
+              skuSnapshot:
+                type: string
+              quantityOrdered:
+                type: integer
+                format: int32
+              quantityReceived:
+                type: integer
+                format: int32
+              remainingQuantity:
+                type: integer
+                format: int32
+              unitCostPaise:
+                type: integer
+                format: int64
+              lineTotalPaise:
+                type: integer
+                format: int64
+            _original_ref: '#/components/schemas/PurchaseOrderItemDetails'
+      _original_ref: '#/components/schemas/PurchaseOrderDetails'
+- name: '[SCN-PRODUCTS-POS-128] GET /api/products'
+  module: products
+  tags:
+  - products
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/products'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-PRODUCTS-SCH-129] GET /api/products'
+  module: products
+  tags:
+  - products
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/products'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+          name:
+            type: string
+          sku:
+            type: string
+          category:
+            type: string
+          purchasePricePaise:
+            type: integer
+            format: int64
+          sellingPricePaise:
+            type: integer
+            format: int64
+          quantity:
+            type: integer
+            format: int32
+          minStockLevel:
+            type: integer
+            format: int32
+          targetStockLevel:
+            type: integer
+            format: int32
+          averageDailySales:
+            type: number
+            format: double
+          leadTimeDays:
+            type: integer
+            format: int32
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+          supplierId:
+            type: integer
+            format: int64
+          supplierName:
+            type: string
+        _original_ref: '#/components/schemas/Product'
+- name: '[SCN-PRODUCTS-POS-130] POST /api/products'
+  module: products
+  tags:
+  - products
+  - contract_positive
+  - priority:high
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body:
+      name: sample_name
+      sku: sample_sku
+      category: sample_category
+      purchasePricePaise: 1
+      sellingPricePaise: 1
+      quantity: 1
+      minStockLevel: 1
+      targetStockLevel: 1
+      averageDailySales: 9.99
+      leadTimeDays: 1
+      supplierId: 1
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-PRODUCTS-SCH-131] POST /api/products'
+  module: products
+  tags:
+  - products
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        sku:
+          type: string
+        category:
+          type: string
+        purchasePricePaise:
+          type: integer
+          format: int64
+        sellingPricePaise:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          format: int32
+        minStockLevel:
+          type: integer
+          format: int32
+        targetStockLevel:
+          type: integer
+          format: int32
+        averageDailySales:
+          type: number
+          format: double
+        leadTimeDays:
+          type: integer
+          format: int32
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        supplierId:
+          type: integer
+          format: int64
+        supplierName:
+          type: string
+      _original_ref: '#/components/schemas/Product'
+- name: '[SCN-MOVEMENTS-POS-134] GET /api/movements'
+  module: movements
+  tags:
+  - movements
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/movements'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-MOVEMENTS-SCH-135] GET /api/movements'
+  module: movements
+  tags:
+  - movements
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/movements'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          movementId:
+            type: integer
+            format: int64
+          productId:
+            type: integer
+            format: int64
+          productName:
+            type: string
+          movementType:
+            type: string
+          quantity:
+            type: integer
+            format: int32
+          previousQuantity:
+            type: integer
+            format: int32
+          newQuantity:
+            type: integer
+            format: int32
+          reason:
+            type: string
+          createdAt:
+            type: string
+        _original_ref: '#/components/schemas/RecentMovement'
+- name: '[SCN-MOVEMENTS-POS-136] POST /api/movements'
+  module: movements
+  tags:
+  - movements
+  - contract_positive
+  - priority:high
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/movements'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: sample_movementType
+      quantity: 1
+      reason: sample_reason
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-MOVEMENTS-SCH-137] POST /api/movements'
+  module: movements
+  tags:
+  - movements
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/movements'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        movementId:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        movementType:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        previousQuantity:
+          type: integer
+          format: int32
+        newQuantity:
+          type: integer
+          format: int32
+        reason:
+          type: string
+        createdAt:
+          type: string
+      _original_ref: '#/components/schemas/RecentMovement'
+- name: '[SCN-INVENTORY-POS-140] POST /api/inventory/stock-out'
+  module: inventory
+  tags:
+  - inventory
+  - contract_positive
+  - priority:high
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-out'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: sample_movementType
+      quantity: 1
+      reason: sample_reason
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-INVENTORY-SCH-141] POST /api/inventory/stock-out'
+  module: inventory
+  tags:
+  - inventory
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-out'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        movementId:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        movementType:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        previousQuantity:
+          type: integer
+          format: int32
+        newQuantity:
+          type: integer
+          format: int32
+        reason:
+          type: string
+        createdAt:
+          type: string
+      _original_ref: '#/components/schemas/RecentMovement'
+- name: '[SCN-INVENTORY-POS-144] POST /api/inventory/stock-in'
+  module: inventory
+  tags:
+  - inventory
+  - contract_positive
+  - priority:high
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-in'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: sample_movementType
+      quantity: 1
+      reason: sample_reason
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-INVENTORY-SCH-145] POST /api/inventory/stock-in'
+  module: inventory
+  tags:
+  - inventory
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-in'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        movementId:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        movementType:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        previousQuantity:
+          type: integer
+          format: int32
+        newQuantity:
+          type: integer
+          format: int32
+        reason:
+          type: string
+        createdAt:
+          type: string
+      _original_ref: '#/components/schemas/RecentMovement'
+- name: '[SCN-INVENTORY-POS-148] POST /api/inventory/adjust'
+  module: inventory
+  tags:
+  - inventory
+  - contract_positive
+  - priority:high
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/adjust'
+    headers:
+      Content-Type: application/json
+    body:
+      productId: 1
+      movementType: sample_movementType
+      quantity: 1
+      reason: sample_reason
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-INVENTORY-SCH-149] POST /api/inventory/adjust'
+  module: inventory
+  tags:
+  - inventory
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/adjust'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        movementId:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        movementType:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        previousQuantity:
+          type: integer
+          format: int32
+        newQuantity:
+          type: integer
+          format: int32
+        reason:
+          type: string
+        createdAt:
+          type: string
+      _original_ref: '#/components/schemas/RecentMovement'
+- name: '[SCN-EXPENSES-POS-152] GET /api/expenses'
+  module: expenses
+  tags:
+  - expenses
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/expenses'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-EXPENSES-SCH-153] GET /api/expenses'
+  module: expenses
+  tags:
+  - expenses
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/expenses'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+          category:
+            type: string
+          amountPaise:
+            type: integer
+            format: int64
+          description:
+            type: string
+          createdAt:
+            type: string
+        _original_ref: '#/components/schemas/ExpenseRecord'
+- name: '[SCN-EXPENSES-POS-154] POST /api/expenses'
+  module: expenses
+  tags:
+  - expenses
+  - contract_positive
+  - priority:high
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/expenses'
+    headers:
+      Content-Type: application/json
+    body:
+      category: sample_category
+      amountPaise: 1
+      description: sample_description
+      date: sample_date
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-EXPENSES-SCH-155] POST /api/expenses'
+  module: expenses
+  tags:
+  - expenses
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/expenses'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        category:
+          type: string
+        amountPaise:
+          type: integer
+          format: int64
+        description:
+          type: string
+        createdAt:
+          type: string
+      _original_ref: '#/components/schemas/ExpenseRecord'
+- name: '[SCN-SURPLUS_LISTINGS-POS-158] GET /api/surplus-listings/summary'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings/summary'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SURPLUS_LISTINGS-SCH-159] GET /api/surplus-listings/summary'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        totalListings:
+          type: integer
+          format: int32
+        activeListings:
+          type: integer
+          format: int32
+        partiallySoldListings:
+          type: integer
+          format: int32
+        fullySoldListings:
+          type: integer
+          format: int32
+        cancelledListings:
+          type: integer
+          format: int32
+        totalUnitsListed:
+          type: integer
+          format: int32
+        totalUnitsSold:
+          type: integer
+          format: int32
+        totalUnitsRemaining:
+          type: integer
+          format: int32
+        totalSurplusSalesRevenuePaise:
+          type: integer
+          format: int64
+        totalSurplusCostPaise:
+          type: integer
+          format: int64
+        totalSurplusGrossProfitPaise:
+          type: integer
+          format: int64
+        totalSurplusRevenuePaise:
+          type: integer
+          format: int64
+        activeListingsCount:
+          type: integer
+          format: int32
+      _original_ref: '#/components/schemas/SurplusSummary'
+- name: '[SCN-SURPLUS_LISTINGS-POS-160] GET /api/surplus-listings/suggestions'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings/suggestions'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SURPLUS_LISTINGS-SCH-161] GET /api/surplus-listings/suggestions'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings/suggestions'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          productId:
+            type: integer
+            format: int64
+          productName:
+            type: string
+          sku:
+            type: string
+          category:
+            type: string
+          currentQuantity:
+            type: integer
+            format: int32
+          reservedQuantity:
+            type: integer
+            format: int32
+          availableQuantity:
+            type: integer
+            format: int32
+          preferredStockLevel:
+            type: integer
+            format: int32
+          suggestedSurplusQuantity:
+            type: integer
+            format: int32
+          sellingPricePaise:
+            type: integer
+            format: int64
+          purchasePricePaise:
+            type: integer
+            format: int64
+          unitsSoldLast30Days:
+            type: integer
+            format: int32
+          lastSoldAt:
+            type: string
+          salesActivity:
+            type: string
+          recommendationReason:
+            type: string
+        _original_ref: '#/components/schemas/SurplusSuggestion'
+- name: '[SCN-STOCK_AUDITS-POS-168] GET /api/stock-audits/summary'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/stock-audits/summary'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-STOCK_AUDITS-SCH-169] GET /api/stock-audits/summary'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/stock-audits/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        openAudits:
+          type: integer
+          format: int32
+        pendingDiscrepancies:
+          type: integer
+          format: int32
+        inventoryLossTodayPaise:
+          type: integer
+          format: int64
+        completedAuditsThisMonth:
+          type: integer
+          format: int32
+      _original_ref: '#/components/schemas/StockAuditMetricsSummary'
+- name: '[SCN-SALES-POS-173] GET /api/sales/trend'
+  module: sales
+  tags:
+  - sales
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales/trend'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SALES-SCH-174] GET /api/sales/trend'
+  module: sales
+  tags:
+  - sales
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales/trend'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          saleDate:
+            type: string
+          totalPaise:
+            type: integer
+            format: int64
+          orderCount:
+            type: integer
+            format: int32
+        _original_ref: '#/components/schemas/DailySalesTrend'
+- name: '[SCN-SALES-POS-175] GET /api/sales/summary'
+  module: sales
+  tags:
+  - sales
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales/summary'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SALES-SCH-176] GET /api/sales/summary'
+  module: sales
+  tags:
+  - sales
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        salesTodayPaise:
+          type: integer
+          format: int64
+        salesTodayCount:
+          type: integer
+          format: int32
+        salesMonthPaise:
+          type: integer
+          format: int64
+        salesMonthCount:
+          type: integer
+          format: int32
+        totalSalesPaise:
+          type: integer
+          format: int64
+        totalCostPaise:
+          type: integer
+          format: int64
+        totalProfitPaise:
+          type: integer
+          format: int64
+        totalSalesCount:
+          type: integer
+          format: int32
+      _original_ref: '#/components/schemas/SalesMetricsSummary'
+- name: '[SCN-REPORTS-POS-177] GET /api/reports/summary'
+  module: reports
+  tags:
+  - reports
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/summary'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-SCH-178] GET /api/reports/summary'
+  module: reports
+  tags:
+  - reports
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            periodType:
+              type: string
+            from:
+              type: string
+            to:
+              type: string
+            generatedAt:
+              type: string
+            currency:
+              type: string
+          _original_ref: '#/components/schemas/ReportMetadata'
+        periodType:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        generatedAt:
+          type: string
+        currency:
+          type: string
+        grossSalesPaise:
+          type: integer
+          format: int64
+        discountsPaise:
+          type: integer
+          format: int64
+        netRevenuePaise:
+          type: integer
+          format: int64
+        cogsPaise:
+          type: integer
+          format: int64
+        grossProfitPaise:
+          type: integer
+          format: int64
+        inventoryLossPaise:
+          type: integer
+          format: int64
+        operatingExpensesPaise:
+          type: integer
+          format: int64
+        operatingResultPaise:
+          type: integer
+          format: int64
+        totalPurchasesPaise:
+          type: integer
+          format: int64
+        purchaseOrdersCount:
+          type: integer
+          format: int32
+        completedSalesCount:
+          type: integer
+          format: int32
+        unitsSold:
+          type: integer
+          format: int32
+        breakdown:
+          type: array
+          items:
+            type: object
+            properties:
+              period:
+                type: string
+              grossSalesPaise:
+                type: integer
+                format: int64
+              discountsPaise:
+                type: integer
+                format: int64
+              netRevenuePaise:
+                type: integer
+                format: int64
+              cogsPaise:
+                type: integer
+                format: int64
+              grossProfitPaise:
+                type: integer
+                format: int64
+              inventoryLossPaise:
+                type: integer
+                format: int64
+              operatingExpensesPaise:
+                type: integer
+                format: int64
+              operatingResultPaise:
+                type: integer
+                format: int64
+              salesCount:
+                type: integer
+                format: int32
+              unitsSold:
+                type: integer
+                format: int32
+            _original_ref: '#/components/schemas/FinancialMetricBreakdown'
+        transactions:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+              saleId:
+                type: integer
+                format: int64
+              subtotalPaise:
+                type: integer
+                format: int64
+              discountPaise:
+                type: integer
+                format: int64
+              discountPercentBasisPoints:
+                type: integer
+                format: int32
+              discountPercent:
+                type: number
+                format: double
+              totalPaise:
+                type: integer
+                format: int64
+              totalCostPaise:
+                type: integer
+                format: int64
+              grossProfitPaise:
+                type: integer
+                format: int64
+              paymentMethod:
+                type: string
+              status:
+                type: string
+              createdAt:
+                type: string
+              cancelledAt:
+                type: string
+              itemCount:
+                type: integer
+                format: int32
+              totalQuantity:
+                type: integer
+                format: int32
+            _original_ref: '#/components/schemas/SaleSummary'
+      _original_ref: '#/components/schemas/FinancialSummaryReport'
+- name: '[SCN-REPORTS-POS-179] GET /api/reports/sales'
+  module: reports
+  tags:
+  - reports
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/sales'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-SCH-180] GET /api/reports/sales'
+  module: reports
+  tags:
+  - reports
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            periodType:
+              type: string
+            from:
+              type: string
+            to:
+              type: string
+            generatedAt:
+              type: string
+            currency:
+              type: string
+          _original_ref: '#/components/schemas/ReportMetadata'
+        periodType:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        generatedAt:
+          type: string
+        currency:
+          type: string
+        completedSalesCount:
+          type: integer
+          format: int32
+        unitsSold:
+          type: integer
+          format: int32
+        grossSalesPaise:
+          type: integer
+          format: int64
+        discountsPaise:
+          type: integer
+          format: int64
+        netRevenuePaise:
+          type: integer
+          format: int64
+        cogsPaise:
+          type: integer
+          format: int64
+        grossProfitPaise:
+          type: integer
+          format: int64
+        averageOrderValuePaise:
+          type: integer
+          format: int64
+        paymentMethods:
+          type: array
+          items:
+            type: object
+            properties:
+              paymentMethod:
+                type: string
+              orderCount:
+                type: integer
+                format: int32
+              totalPaise:
+                type: integer
+                format: int64
+            _original_ref: '#/components/schemas/PaymentMethodSummary'
+        topSellingProducts:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: integer
+                format: int64
+              productName:
+                type: string
+              sku:
+                type: string
+              category:
+                type: string
+              unitsSold:
+                type: integer
+                format: int32
+              totalRevenuePaise:
+                type: integer
+                format: int64
+              totalCostPaise:
+                type: integer
+                format: int64
+              grossProfitPaise:
+                type: integer
+                format: int64
+            _original_ref: '#/components/schemas/TopSellingProduct'
+        trend:
+          type: array
+          items:
+            type: object
+            properties:
+              period:
+                type: string
+              grossSalesPaise:
+                type: integer
+                format: int64
+              discountsPaise:
+                type: integer
+                format: int64
+              netRevenuePaise:
+                type: integer
+                format: int64
+              cogsPaise:
+                type: integer
+                format: int64
+              grossProfitPaise:
+                type: integer
+                format: int64
+              inventoryLossPaise:
+                type: integer
+                format: int64
+              operatingExpensesPaise:
+                type: integer
+                format: int64
+              operatingResultPaise:
+                type: integer
+                format: int64
+              salesCount:
+                type: integer
+                format: int32
+              unitsSold:
+                type: integer
+                format: int32
+            _original_ref: '#/components/schemas/FinancialMetricBreakdown'
+        sales:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+              saleId:
+                type: integer
+                format: int64
+              subtotalPaise:
+                type: integer
+                format: int64
+              discountPaise:
+                type: integer
+                format: int64
+              discountPercentBasisPoints:
+                type: integer
+                format: int32
+              discountPercent:
+                type: number
+                format: double
+              totalPaise:
+                type: integer
+                format: int64
+              totalCostPaise:
+                type: integer
+                format: int64
+              grossProfitPaise:
+                type: integer
+                format: int64
+              paymentMethod:
+                type: string
+              status:
+                type: string
+              createdAt:
+                type: string
+              cancelledAt:
+                type: string
+              itemCount:
+                type: integer
+                format: int32
+              totalQuantity:
+                type: integer
+                format: int32
+            _original_ref: '#/components/schemas/SaleSummary'
+      _original_ref: '#/components/schemas/SalesReport'
+- name: '[SCN-REPORTS-POS-181] GET /api/reports/purchases'
+  module: reports
+  tags:
+  - reports
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/purchases'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-SCH-182] GET /api/reports/purchases'
+  module: reports
+  tags:
+  - reports
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/purchases'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            periodType:
+              type: string
+            from:
+              type: string
+            to:
+              type: string
+            generatedAt:
+              type: string
+            currency:
+              type: string
+          _original_ref: '#/components/schemas/ReportMetadata'
+        periodType:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        generatedAt:
+          type: string
+        currency:
+          type: string
+        totalOrdersCount:
+          type: integer
+          format: int32
+        totalSpendPaise:
+          type: integer
+          format: int64
+        totalUnitsOrdered:
+          type: integer
+          format: int32
+        totalUnitsReceived:
+          type: integer
+          format: int32
+        countByStatus:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+        spendByStatus:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64
+        supplierBreakdown:
+          type: array
+          items:
+            type: object
+            properties:
+              supplierId:
+                type: integer
+                format: int64
+              supplierName:
+                type: string
+              orderCount:
+                type: integer
+                format: int32
+              totalSpendPaise:
+                type: integer
+                format: int64
+            _original_ref: '#/components/schemas/SupplierSpendSummary'
+        orders:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+              orderId:
+                type: integer
+                format: int64
+              supplierId:
+                type: integer
+                format: int64
+              supplierName:
+                type: string
+              status:
+                type: string
+              totalAmountPaise:
+                type: integer
+                format: int64
+              notes:
+                type: string
+              createdAt:
+                type: string
+              updatedAt:
+                type: string
+              placedAt:
+                type: string
+              receivedAt:
+                type: string
+              cancelledAt:
+                type: string
+              itemCount:
+                type: integer
+                format: int32
+              totalQuantityOrdered:
+                type: integer
+                format: int32
+              totalQuantityReceived:
+                type: integer
+                format: int32
+            _original_ref: '#/components/schemas/PurchaseOrderSummary'
+      _original_ref: '#/components/schemas/PurchasesReport'
+- name: '[SCN-REPORTS-POS-183] GET /api/reports/profit-loss'
+  module: reports
+  tags:
+  - reports
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/profit-loss'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-SCH-184] GET /api/reports/profit-loss'
+  module: reports
+  tags:
+  - reports
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/profit-loss'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            periodType:
+              type: string
+            from:
+              type: string
+            to:
+              type: string
+            generatedAt:
+              type: string
+            currency:
+              type: string
+          _original_ref: '#/components/schemas/ReportMetadata'
+        periodType:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        generatedAt:
+          type: string
+        currency:
+          type: string
+        grossSalesPaise:
+          type: integer
+          format: int64
+        discountsPaise:
+          type: integer
+          format: int64
+        netRevenuePaise:
+          type: integer
+          format: int64
+        cogsPaise:
+          type: integer
+          format: int64
+        grossProfitPaise:
+          type: integer
+          format: int64
+        grossMarginPercentage:
+          type: number
+          format: double
+        inventoryLossPaise:
+          type: integer
+          format: int64
+        operatingExpensesPaise:
+          type: integer
+          format: int64
+        totalOperatingExpensesPaise:
+          type: integer
+          format: int64
+        operatingResultPaise:
+          type: integer
+          format: int64
+        netMarginPercentage:
+          type: number
+          format: double
+        breakdown:
+          type: array
+          items:
+            type: object
+            properties:
+              period:
+                type: string
+              grossSalesPaise:
+                type: integer
+                format: int64
+              discountsPaise:
+                type: integer
+                format: int64
+              netRevenuePaise:
+                type: integer
+                format: int64
+              cogsPaise:
+                type: integer
+                format: int64
+              grossProfitPaise:
+                type: integer
+                format: int64
+              inventoryLossPaise:
+                type: integer
+                format: int64
+              operatingExpensesPaise:
+                type: integer
+                format: int64
+              operatingResultPaise:
+                type: integer
+                format: int64
+              salesCount:
+                type: integer
+                format: int32
+              unitsSold:
+                type: integer
+                format: int32
+            _original_ref: '#/components/schemas/FinancialMetricBreakdown'
+      _original_ref: '#/components/schemas/ProfitLossReport'
+- name: '[SCN-REPORTS-POS-185] GET /api/reports/inventory-loss'
+  module: reports
+  tags:
+  - reports
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/inventory-loss'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-SCH-186] GET /api/reports/inventory-loss'
+  module: reports
+  tags:
+  - reports
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/inventory-loss'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            periodType:
+              type: string
+            from:
+              type: string
+            to:
+              type: string
+            generatedAt:
+              type: string
+            currency:
+              type: string
+          _original_ref: '#/components/schemas/ReportMetadata'
+        periodType:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        generatedAt:
+          type: string
+        currency:
+          type: string
+        totalLossPaise:
+          type: integer
+          format: int64
+        totalUnitsLost:
+          type: integer
+          format: int32
+        incidentCount:
+          type: integer
+          format: int32
+        breakdown:
+          type: array
+          items:
+            type: object
+            properties:
+              period:
+                type: string
+              grossSalesPaise:
+                type: integer
+                format: int64
+              discountsPaise:
+                type: integer
+                format: int64
+              netRevenuePaise:
+                type: integer
+                format: int64
+              cogsPaise:
+                type: integer
+                format: int64
+              grossProfitPaise:
+                type: integer
+                format: int64
+              inventoryLossPaise:
+                type: integer
+                format: int64
+              operatingExpensesPaise:
+                type: integer
+                format: int64
+              operatingResultPaise:
+                type: integer
+                format: int64
+              salesCount:
+                type: integer
+                format: int32
+              unitsSold:
+                type: integer
+                format: int32
+            _original_ref: '#/components/schemas/FinancialMetricBreakdown'
+        incidents:
+          type: array
+          items:
+            type: object
+            properties:
+              movementId:
+                type: integer
+                format: int64
+              productId:
+                type: integer
+                format: int64
+              productName:
+                type: string
+              sku:
+                type: string
+              unitsLost:
+                type: integer
+                format: int32
+              unitCostPaise:
+                type: integer
+                format: int64
+              totalLossPaise:
+                type: integer
+                format: int64
+              reason:
+                type: string
+              createdAt:
+                type: string
+            _original_ref: '#/components/schemas/InventoryLossIncident'
+      _original_ref: '#/components/schemas/InventoryLossReport'
+- name: '[SCN-INTELLIGENCE-POS-190] GET /api/intelligence'
+  module: intelligence
+  tags:
+  - intelligence
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/intelligence'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-INTELLIGENCE-SCH-191] GET /api/intelligence'
+  module: intelligence
+  tags:
+  - intelligence
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/intelligence'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          productId:
+            type: integer
+            format: int64
+          productName:
+            type: string
+          sku:
+            type: string
+          category:
+            type: string
+          currentQuantity:
+            type: integer
+            format: int32
+          minStockLevel:
+            type: integer
+            format: int32
+          targetStockLevel:
+            type: integer
+            format: int32
+          averageDailySales:
+            type: number
+            format: double
+          leadTimeDays:
+            type: integer
+            format: int32
+          reorderPoint:
+            type: number
+            format: double
+          reorderQuantity:
+            type: integer
+            format: int32
+          surplusQuantity:
+            type: integer
+            format: int32
+          status:
+            type: string
+          recommendation:
+            type: string
+        _original_ref: '#/components/schemas/ProductIntelligence'
+- name: '[SCN-INTELLIGENCE-POS-192] GET /api/intelligence/sales'
+  module: intelligence
+  tags:
+  - intelligence
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/intelligence/sales'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-INTELLIGENCE-SCH-193] GET /api/intelligence/sales'
+  module: intelligence
+  tags:
+  - intelligence
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/intelligence/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        summary:
+          type: object
+          properties:
+            totalProducts:
+              type: integer
+              format: int32
+            fastSellingProducts:
+              type: array
+              items:
+                type: object
+                properties:
+                  productId:
+                    type: integer
+                    format: int64
+                  productName:
+                    type: string
+                  sku:
+                    type: string
+                  category:
+                    type: string
+                  currentQuantity:
+                    type: integer
+                    format: int32
+                  lowStockLevel:
+                    type: integer
+                    format: int32
+                  preferredStockLevel:
+                    type: integer
+                    format: int32
+                  unitsSoldLast30Days:
+                    type: integer
+                    format: int32
+                  unitsSoldPrevious30Days:
+                    type: integer
+                    format: int32
+                  averageDailySalesLast30Days:
+                    type: number
+                    format: double
+                  lastSoldAt:
+                    type: string
+                  daysSinceLastSale:
+                    type: integer
+                    format: int32
+                  salesActivity:
+                    type: string
+                  salesTrend:
+                    type: string
+                  recommendedRestockQuantity:
+                    type: integer
+                    format: int32
+                  recommendation:
+                    type: string
+                _original_ref: '#/components/schemas/ProductSalesIntelligence'
+            slowMovingProducts:
+              type: integer
+              format: int32
+            potentialDeadStockProducts:
+              type: integer
+              format: int32
+            noSalesHistoryProducts:
+              type: integer
+              format: int32
+            outOfStockProducts:
+              type: integer
+              format: int32
+            productsNeedingRestock:
+              type: integer
+              format: int32
+          _original_ref: '#/components/schemas/SalesIntelligenceSummary'
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: integer
+                format: int64
+              productName:
+                type: string
+              sku:
+                type: string
+              category:
+                type: string
+              currentQuantity:
+                type: integer
+                format: int32
+              lowStockLevel:
+                type: integer
+                format: int32
+              preferredStockLevel:
+                type: integer
+                format: int32
+              unitsSoldLast30Days:
+                type: integer
+                format: int32
+              unitsSoldPrevious30Days:
+                type: integer
+                format: int32
+              averageDailySalesLast30Days:
+                type: number
+                format: double
+              lastSoldAt:
+                type: string
+              daysSinceLastSale:
+                type: integer
+                format: int32
+              salesActivity:
+                type: string
+              salesTrend:
+                type: string
+              recommendedRestockQuantity:
+                type: integer
+                format: int32
+              recommendation:
+                type: string
+            _original_ref: '#/components/schemas/ProductSalesIntelligence'
+      _original_ref: '#/components/schemas/SalesIntelligenceResponse'
+- name: '[SCN-HEALTH-POS-194] GET /api/health'
+  module: health
+  tags:
+  - health
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/health'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-HEALTH-SCH-195] GET /api/health'
+  module: health
+  tags:
+  - health
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/health'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        status:
+          type: string
+        database:
+          type: string
+        databaseType:
+          type: string
+        totalProducts:
+          type: integer
+          format: int32
+        totalMovements:
+          type: integer
+          format: int32
+        timestamp:
+          type: string
+      _original_ref: '#/components/schemas/HealthStatus'
+- name: '[SCN-DASHBOARD-POS-196] GET /api/dashboard'
+  module: dashboard
+  tags:
+  - dashboard
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/dashboard'
+    body: {}
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-DASHBOARD-SCH-197] GET /api/dashboard'
+  module: dashboard
+  tags:
+  - dashboard
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - deterministic
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/dashboard'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+  - type: json_schema
+    schema:
+      type: object
+      properties:
+        totalProducts:
+          type: integer
+          format: int32
+        totalQuantity:
+          type: integer
+          format: int32
+        inventoryValuePaise:
+          type: integer
+          format: int64
+        lowStockCount:
+          type: integer
+          format: int32
+        outOfStockCount:
+          type: integer
+          format: int32
+        summary:
+          type: object
+          properties:
+            totalProducts:
+              type: integer
+              format: int32
+            totalQuantity:
+              type: integer
+              format: int32
+            inventoryValuePaise:
+              type: integer
+              format: int64
+            lowStockCount:
+              type: integer
+              format: int32
+            outOfStockCount:
+              type: integer
+              format: int32
+            activeSurplusListings:
+              type: integer
+              format: int32
+            pendingPurchaseOrders:
+              type: integer
+              format: int32
+            openStockAudits:
+              type: integer
+              format: int32
+          _original_ref: '#/components/schemas/DashboardSummary'
+        categoryBreakdown:
+          type: array
+          items:
+            type: object
+            properties:
+              category:
+                type: string
+              productCount:
+                type: integer
+                format: int32
+              totalQuantity:
+                type: integer
+                format: int32
+            _original_ref: '#/components/schemas/CategoryBreakdown'
+        recentMovements:
+          type: array
+          items:
+            type: object
+            properties:
+              movementId:
+                type: integer
+                format: int64
+              productId:
+                type: integer
+                format: int64
+              productName:
+                type: string
+              movementType:
+                type: string
+              quantity:
+                type: integer
+                format: int32
+              previousQuantity:
+                type: integer
+                format: int32
+              newQuantity:
+                type: integer
+                format: int32
+              reason:
+                type: string
+              createdAt:
+                type: string
+            _original_ref: '#/components/schemas/RecentMovement'
+        liveState:
+          type: object
+          properties:
+            totalProducts:
+              type: integer
+              format: int32
+            totalQuantity:
+              type: integer
+              format: int32
+            inventoryValuePaise:
+              type: integer
+              format: int64
+            lowStockCount:
+              type: integer
+              format: int32
+            outOfStockCount:
+              type: integer
+              format: int32
+            activeSurplusListings:
+              type: integer
+              format: int32
+            pendingPurchaseOrders:
+              type: integer
+              format: int32
+            openStockAudits:
+              type: integer
+              format: int32
+          _original_ref: '#/components/schemas/LiveBusinessState'
+        periodActivity:
+          type: object
+          properties:
+            period:
+              type: string
+            from:
+              type: string
+            to:
+              type: string
+            salesPaise:
+              type: integer
+              format: int64
+            grossProfitPaise:
+              type: integer
+              format: int64
+            unitsSold:
+              type: integer
+              format: int32
+            expensesPaise:
+              type: integer
+              format: int64
+            inventoryLossPaise:
+              type: integer
+              format: int64
+            discrepanciesCount:
+              type: integer
+              format: int32
+            completedSalesCount:
+              type: integer
+              format: int32
+          _original_ref: '#/components/schemas/PeriodActivity'
+      _original_ref: '#/components/schemas/DashboardResponse'

@@ -1,0 +1,12 @@
+name: "stockpile_env"
+variables:
+  base_url: "http://127.0.0.1:8000"
+  auth_token: "token-viewer-ok"
+  token: "token-viewer-ok"
+  manager_token: "token-manager-ok"
+  admin_token: "token-manager-ok"
+  viewer_token: "token-viewer-ok"
+secrets:
+  - "auth_token"
+  - "manager_token"
+  - "admin_token"
