@@ -294,7 +294,7 @@ def test_llm_config_from_env_variations(
     cfg1 = LLMConfig.from_env()
     assert cfg1.provider == "gemini"
     assert cfg1.api_key == "gemini-env-key-99"
-    assert cfg1.model == "gemini-2.5-flash"
+    assert cfg1.model == "gemini-3.5-flash-lite"
     assert "generativelanguage" in cfg1.base_url
 
     # 2. OpenAI via OPENAI_API_KEY
