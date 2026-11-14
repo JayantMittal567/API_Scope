@@ -10,6 +10,7 @@ Security and Governance Controls:
   - Preserves ApiScope's global SSRF protection.
   - Generates detailed JSON test audit results and console coverage diagnostics.
 """
+
 from __future__ import annotations
 
 import json
@@ -124,24 +125,28 @@ def main() -> None:
                 passed_assertions += 1
             else:
                 failed_assertions += 1
-            case_asserts.append({
-                "type": a.get("assertion_type"),
-                "passed": passed,
-                "message": a.get("message"),
-                "expected": a.get("expected"),
-                "actual": a.get("actual"),
-            })
+            case_asserts.append(
+                {
+                    "type": a.get("assertion_type"),
+                    "passed": passed,
+                    "message": a.get("message"),
+                    "expected": a.get("expected"),
+                    "actual": a.get("actual"),
+                }
+            )
 
-        cases_report.append({
-            "name": case.test_name,
-            "status": case.status.value,
-            "verified": case.verified,
-            "http_status": case.status_code,
-            "elapsed_ms": case.elapsed_ms,
-            "assertions_count": len(case.assertion_results),
-            "assertions": case_asserts,
-            "error": case.error_message,
-        })
+        cases_report.append(
+            {
+                "name": case.test_name,
+                "status": case.status.value,
+                "verified": case.verified,
+                "http_status": case.status_code,
+                "elapsed_ms": case.elapsed_ms,
+                "assertions_count": len(case.assertion_results),
+                "assertions": case_asserts,
+                "error": case.error_message,
+            }
+        )
 
     print("-" * 70)
     print("SUMMARY OF VERIFICATION OUTCOMES:")
