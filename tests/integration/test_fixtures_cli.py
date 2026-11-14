@@ -12,6 +12,7 @@ from pathlib import Path
 
 import pytest
 import yaml
+from click.utils import strip_ansi
 from typer.testing import CliRunner
 
 from apiscope.cli.main import EXIT_OK, app
@@ -221,17 +222,18 @@ def sample_test_plan_file(tmp_path: Path) -> Path:
 def test_cli_prepare_tests_help() -> None:
     """Verify prepare-tests --help displays all required options."""
     res = runner.invoke(app, ["prepare-tests", "--help"])
+    res_help = strip_ansi(res.output)
     assert res.exit_code == EXIT_OK
-    assert "prepare-tests" in res.output
-    assert "--plan" in res.output
-    assert "--spec" in res.output
-    assert "--contract" in res.output
-    assert "--intelligence" in res.output
-    assert "--fixtures" in res.output
-    assert "--output" in res.output
-    assert "--report" in res.output
-    assert "--allow-mutating-setup" in res.output
-    assert "--base-url-var" in res.output
+    assert "prepare-tests" in res_help
+    assert "--plan" in res_help
+    assert "--spec" in res_help
+    assert "--contract" in res_help
+    assert "--intelligence" in res_help
+    assert "--fixtures" in res_help
+    assert "--output" in res_help
+    assert "--report" in res_help
+    assert "--allow-mutating-setup" in res_help
+    assert "--base-url-var" in res_help
 
 
 def test_cli_prepare_tests_missing_plan_fails() -> None:
