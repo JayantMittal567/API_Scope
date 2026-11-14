@@ -334,6 +334,9 @@ class RunRepository:
         if finished_at.tzinfo is None:
             finished_at = finished_at.replace(tzinfo=UTC)
 
+        blocked_count = sum(1 for c in case_results if c.status == CaseStatus.BLOCKED)
+        has_warnings = bool(dict(run_row).get("has_warnings", 0))
+
         return RunResult(
             run_id=run_row["run_id"],
             environment_name=run_row["environment_name"],
@@ -345,6 +348,8 @@ class RunRepository:
             failed_tests=run_row["failed_tests"],
             error_tests=run_row["error_tests"],
             skipped_tests=run_row["skipped_tests"],
+            has_warnings=has_warnings,
+            blocked_tests=blocked_count,
             results=case_results,
         )
 

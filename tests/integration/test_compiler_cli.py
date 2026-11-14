@@ -341,20 +341,22 @@ def test_cli_compile_plan_stockpile_real_fixtures(tmp_path: Path) -> None:
 
     assert result.exit_code == EXIT_OK
     assert "Total Scenarios Evaluated: 205" in result.output
-    assert "[COMPILED]     : 66" in result.output
+    # Task 20 fixed 8 FK false positives (e.g. POST surplus-listings productId: 1)
+    # correctly moving them from COMPILED to NEEDS_FIXTURE
+    assert "[COMPILED]     : 58" in result.output
     assert "[NEEDS_REVIEW] : 89" in result.output
-    assert "[NEEDS_FIXTURE]: 50" in result.output
+    assert "[NEEDS_FIXTURE]: 58" in result.output
     assert "[BLOCKED]      : 0" in result.output
-    assert "Total Executable Tests Synthesized: 66" in result.output
+    assert "Total Executable Tests Synthesized: 58" in result.output
 
     assert out_suite.is_file()
     col = load_collection(out_suite)
-    assert len(col.tests) == 66
+    assert len(col.tests) == 58
 
     assert out_report.is_file()
     rep_data = json.loads(out_report.read_text(encoding="utf-8"))
     assert rep_data["summary"]["total_scenarios"] == 205
-    assert rep_data["summary"]["compiled_count"] == 66
+    assert rep_data["summary"]["compiled_count"] == 58
     assert rep_data["summary"]["needs_review_count"] == 89
-    assert rep_data["summary"]["needs_fixture_count"] == 50
+    assert rep_data["summary"]["needs_fixture_count"] == 58
     assert rep_data["summary"]["blocked_count"] == 0

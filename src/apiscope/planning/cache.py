@@ -6,6 +6,7 @@ findings by fingerprinting contract, intelligence context, model, and prompt sch
 
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import json
 from pathlib import Path
@@ -107,7 +108,5 @@ class PlanningCache:
         if not self.cache_dir.exists():
             return
         for item in self.cache_dir.glob("*.json"):
-            try:
+            with contextlib.suppress(Exception):
                 item.unlink()
-            except Exception:
-                pass

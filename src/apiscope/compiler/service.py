@@ -124,7 +124,26 @@ class TestPlanCompiler:
         )
         self.contract = contract
         self.oracle_validator = OracleValidator(contract)
-        self.fixture_analyzer = FixtureAnalyzer(contract)
+
+        intel_rels: list[dict[str, Any]] = []
+        if intelligence_path:
+            ip = Path(intelligence_path)
+            if ip.is_file():
+                try:
+                    raw_i = (
+                        yaml.safe_load(ip.read_text(encoding="utf-8"))
+                        if ip.suffix in (".yaml", ".yml")
+                        else json.loads(ip.read_text(encoding="utf-8"))
+                    )
+                    if isinstance(raw_i, dict):
+                        intel_rels = raw_i.get("inferred_relationships", [])
+                except Exception:
+                    intel_rels = []
+
+        self.fixture_analyzer = FixtureAnalyzer(
+            contract,
+            intelligence_relationships=intel_rels,
+        )
 
         op_map = {f"{op.method.upper()} {op.path}": op for op in contract.operations}
 

@@ -399,7 +399,7 @@ class DeterministicTestPlanner:
         )
 
     def _plan_security_tests(
-        self, op: CanonicalOperation, prereqs: list[str]
+        self, op: CanonicalOperation, _prereqs: list[str]
     ) -> list[TestScenario]:
         """Propose authentication and permission boundary test scenarios."""
         scenarios: list[TestScenario] = []
@@ -592,7 +592,6 @@ class DeterministicTestPlanner:
             # Look for GET collection and POST creation on same path
             if "GET" in methods and "POST" in methods:
                 post_op = next(o for o in ops if o.method == "POST")
-                get_op = next(o for o in ops if o.method == "GET")
 
                 scn_id = self._next_id(post_op.module, "CONS")
                 step1 = ScenarioStep(

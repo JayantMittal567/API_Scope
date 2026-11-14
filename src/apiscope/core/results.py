@@ -11,7 +11,7 @@ from typing import Any
 
 
 class CaseStatus(StrEnum):
-    """Execution status for an individual test case."""
+    """Execution status for an individual test case or workflow action."""
 
     __test__ = False
 
@@ -19,6 +19,8 @@ class CaseStatus(StrEnum):
     FAILED = "FAILED"
     ERROR = "ERROR"
     SKIPPED = "SKIPPED"
+    BLOCKED = "BLOCKED"
+    CLEANUP_FAILED = "CLEANUP_FAILED"
 
 
 # Backward-compatibility alias
@@ -101,6 +103,7 @@ class RunResult:
     skipped_tests: int
     results: list[CaseResult]
     has_warnings: bool = False
+    blocked_tests: int = 0
 
     @property
     def all_passed(self) -> bool:
@@ -128,6 +131,7 @@ class RunResult:
             "failed_tests": self.failed_tests,
             "error_tests": self.error_tests,
             "skipped_tests": self.skipped_tests,
+            "blocked_tests": self.blocked_tests,
             "all_passed": self.all_passed,
             "has_warnings": self.has_warnings,
             "results": [r.to_dict() for r in self.results],

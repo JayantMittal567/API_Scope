@@ -7,6 +7,7 @@ historical run trends.
 
 from __future__ import annotations
 
+import contextlib
 import json
 from pathlib import Path
 from typing import Annotated, Any
@@ -36,6 +37,7 @@ from apiscope.core.exceptions import (
     PathTraversalError,
 )
 from apiscope.core.executor import RequestExecutor, TargetAccessPolicy
+from apiscope.core.results import RunResult
 from apiscope.core.run_service import RunService
 from apiscope.data.connection import DatabaseManager
 from apiscope.data.repositories import RunRepository
@@ -46,10 +48,19 @@ from apiscope.definitions.collection import (
 )
 from apiscope.definitions.environment import Environment, load_environment
 from apiscope.definitions.yaml_loader import load_test_definition
+from apiscope.execution import WorkflowExecutionService
+from apiscope.execution.models import WorkflowDryRunReport, WorkflowExecutionResult
+from apiscope.fixtures.models import FixturePreparationReport
+from apiscope.fixtures.resolver import FixtureResolver
+from apiscope.fixtures.service import FixtureService
 from apiscope.generators.ai_generator import AiGeneratorService, LLMConfig
 from apiscope.generators.openapi_importer import OpenAPISpec, load_openapi_spec
 from apiscope.generators.service import GeneratorService
 from apiscope.intelligence.service import ProjectIntelligenceService
+from apiscope.investigation import (
+    FailureInvestigationReport,
+    FailureInvestigationService,
+)
 from apiscope.planning.service import TestPlanningService
 from apiscope.reports.report_service import ReportService
 from apiscope.web import DashboardConfig, create_web_app
@@ -159,6 +170,217 @@ def _load_suite(suite_path: Path) -> TestCollection:
         raise DefinitionError(
             f"Test suite '{suite_path}' must contain either 'tests' or 'request'."
         )
+
+
+def _is_workflow_file(path: Path) -> bool:
+    """Safely inspect file to determine whether it contains a stateful workflow or report."""
+    if not path.is_file():
+        return False
+    try:
+        content = path.read_text(encoding="utf-8")
+        data = (
+            yaml.safe_load(content)
+            if path.suffix in (".yaml", ".yml")
+            else json.loads(content)
+        )
+        if isinstance(data, dict):
+            if "planned_workflows" in data:
+                return True
+            if "workflow_id" in data and (
+                "setup_steps" in data or "test_steps" in data or "cleanup_steps" in data
+            ):
+                return True
+    except Exception:
+        return False
+    return False
+
+
+def _print_workflow_dry_run(report: WorkflowDryRunReport) -> None:
+    """Render a structured dry-run execution plan for a stateful workflow."""
+    typer.echo(f"\n=== DRY-RUN WORKFLOW PLAN: {report.workflow_id} ===")
+    if report.environment_name:
+        typer.echo(f"Target Environment: {report.environment_name}")
+    typer.echo(f"Execution Eligible: {'YES' if report.eligible_to_execute else 'NO'}")
+    if not report.eligible_to_execute and report.ineligibility_reasons:
+        for reason in report.ineligibility_reasons:
+            typer.echo(f"  [INELIGIBLE REASON] {reason}")
+
+    typer.echo(
+        f"\nPlanned Steps: "
+        f"{len(report.planned_setup_steps)} Setup | "
+        f"{len(report.planned_test_steps)} Test | "
+        f"{len(report.planned_cleanup_steps)} Cleanup (LIFO)"
+    )
+
+    if report.planned_setup_steps:
+        typer.echo("-" * 80)
+        typer.echo("SETUP STEPS:")
+        for step in report.planned_setup_steps:
+            vars_info = (
+                f" -> Extracts: {list(step.get('extract', {}).keys())}"
+                if step.get("extract")
+                else ""
+            )
+            typer.echo(
+                f"  {step.get('method', 'GET'):<6} {step.get('url', ''):<42} | "
+                f"Risk: {step.get('risk', ''):<10} | {step.get('name', '')}{vars_info}"
+            )
+
+    if report.planned_test_steps:
+        typer.echo("-" * 80)
+        typer.echo("TEST STEPS:")
+        for step in report.planned_test_steps:
+            assert_count = len(step.get("assertions", []))
+            typer.echo(
+                f"  {step.get('method', 'GET'):<6} {step.get('url', ''):<42} | "
+                f"Risk: {step.get('risk', ''):<10} | Assertions: {assert_count:<2} | {step.get('name', '')}"
+            )
+
+    if report.planned_cleanup_steps:
+        typer.echo("-" * 80)
+        typer.echo("CLEANUP STEPS (Reverse / LIFO Dependency Order):")
+        for step in report.planned_cleanup_steps:
+            rollback = step.get("rollback_endpoint") or ""
+            target_info = f" (Target: {rollback})" if rollback else ""
+            typer.echo(
+                f"  {step.get('method', 'DELETE'):<6} {step.get('url', ''):<42} | "
+                f"Risk: {step.get('risk', ''):<10} | {step.get('name', '')}{target_info}"
+            )
+
+    if report.missing_variables:
+        typer.echo("-" * 80)
+        typer.echo(f"Missing Variables: {', '.join(sorted(report.missing_variables))}")
+    typer.echo("-" * 80)
+
+
+def _print_workflow_execution(result: WorkflowExecutionResult) -> None:
+    """Print step-by-step progress and final status for a workflow execution."""
+    typer.echo(f"\n--- Workflow: {result.workflow_id} ---")
+    if result.setup_results:
+        typer.echo("Setup Results:")
+        for s in result.setup_results:
+            err = f" | Error: {s.error_message}" if s.error_message else ""
+            typer.echo(
+                f"  [SETUP]   {s.name:<30} -> {s.status.value:<12} ({s.elapsed_ms:.1f}ms){err}"
+            )
+
+    typer.echo("Test Results:")
+    for s in result.test_results:
+        err = f" | Error: {s.error_message}" if s.error_message else ""
+        typer.echo(
+            f"  [TEST]    {s.name:<30} -> {s.status.value:<12} ({s.elapsed_ms:.1f}ms){err}"
+        )
+
+    if result.cleanup_results:
+        typer.echo("Cleanup Results (LIFO):")
+        for s in result.cleanup_results:
+            err = f" | Error: {s.error_message}" if s.error_message else ""
+            typer.echo(
+                f"  [CLEANUP] {s.name:<30} -> {s.status.value:<12} ({s.elapsed_ms:.1f}ms){err}"
+            )
+
+    typer.echo(
+        f"Workflow Verdict: {result.status.value} | Duration: {result.duration_ms:.1f}ms"
+    )
+
+
+def _execute_workflow_entry(
+    workflow_path: Path,
+    workflow_id: str | None,
+    environment: Environment | None,
+    allowed_targets_list: list[str],
+    allow_mutation: bool,
+    allow_setup_mutation: bool | None,
+    allow_cleanup_mutation: bool | None,
+    confirm_isolated_env: bool,
+    fixtures_path: Path | None,
+    dry_run: bool,
+    db: Path,
+    output: Path | None,
+    format: str,
+    strict: bool,
+) -> None:
+    """Execute or dry-run stateful workflows and record results."""
+    static_fixtures: dict[str, Any] | None = None
+    if fixtures_path is not None:
+        p_fix = Path(fixtures_path)
+        effective_base = p_fix.parent if p_fix.is_absolute() else Path.cwd()
+        safe_fix_path = validate_safe_path(
+            base_dir=effective_base,
+            ref_path=fixtures_path,
+        )
+        if not safe_fix_path.is_file():
+            raise DefinitionError(f"Fixtures file not found: '{fixtures_path}'")
+        resolver = FixtureResolver(fixture_file=safe_fix_path)
+        static_fixtures = resolver.get_all_resolved_values()
+
+    policy = TargetAccessPolicy(
+        allow_private_networks=False,
+        allowed_targets=allowed_targets_list if allowed_targets_list else None,
+    )
+    executor = RequestExecutor(policy=policy)
+    wf_service = WorkflowExecutionService(executor=executor)
+
+    workflows = wf_service.load_workflows_from_file(
+        file_path=workflow_path,
+        workflow_id=workflow_id,
+    )
+    if not workflows:
+        raise DefinitionError(f"No workflows found to execute in '{workflow_path}'")
+
+    if dry_run:
+        for wf in workflows:
+            report = wf_service.dry_run_workflow(
+                workflow=wf,
+                environment=environment,
+                allow_mutation=allow_mutation,
+                allow_setup_mutation=allow_setup_mutation,
+                allow_cleanup_mutation=allow_cleanup_mutation,
+                confirm_isolated_env=confirm_isolated_env,
+                static_fixtures=static_fixtures,
+            )
+            _print_workflow_dry_run(report)
+        return
+
+    wf_results, run_result = wf_service.execute_workflows(
+        workflows=workflows,
+        environment=environment,
+        allow_mutation=allow_mutation,
+        allow_setup_mutation=allow_setup_mutation,
+        allow_cleanup_mutation=allow_cleanup_mutation,
+        confirm_isolated_env=confirm_isolated_env,
+        static_fixtures=static_fixtures,
+    )
+
+    for res in wf_results:
+        _print_workflow_execution(res)
+
+    db_manager = DatabaseManager(db)
+    repo = RunRepository(db_manager)
+    repo.save_run(run_result, has_warnings=run_result.has_warnings)
+
+    if output is not None:
+        report_service = ReportService(repo)
+        report_service.generate_report(
+            run_id=run_result.run_id,
+            report_format=format,
+            output_path=output,
+        )
+
+    typer.echo(
+        f"\nRun ID: {run_result.run_id} | Total Steps: {run_result.total_tests} | "
+        f"Passed: {run_result.passed_tests} | Failed: {run_result.failed_tests} | "
+        f"Blocked: {run_result.blocked_tests} | Errors: {run_result.error_tests} | "
+        f"Skipped: {run_result.skipped_tests} | Duration: {run_result.duration_ms:.1f}ms"
+    )
+
+    if not run_result.all_passed:
+        raise typer.Exit(code=EXIT_TEST_FAILURE)
+
+    if run_result.has_warnings and strict:
+        raise typer.Exit(code=EXIT_WARNINGS_STRICT)
+
+    raise typer.Exit(code=EXIT_OK)
 
 
 @app.callback()
@@ -311,6 +533,41 @@ def run(
             ),
         ),
     ] = False,
+    workflow_id: Annotated[
+        str | None,
+        typer.Option(
+            "--workflow-id",
+            help="Specific workflow ID to run when a preparation report is provided",
+        ),
+    ] = None,
+    allow_setup_mutation: Annotated[
+        bool | None,
+        typer.Option(
+            "--allow-setup-mutation",
+            help="Authorize setup mutating operations (POST, PUT, PATCH, DELETE)",
+        ),
+    ] = None,
+    allow_cleanup_mutation: Annotated[
+        bool | None,
+        typer.Option(
+            "--allow-cleanup-mutation",
+            help="Authorize cleanup mutations (DELETE)",
+        ),
+    ] = None,
+    confirm_isolated_env: Annotated[
+        bool,
+        typer.Option(
+            "--confirm-isolated-env",
+            help="Explicit confirmation that target is an isolated test environment",
+        ),
+    ] = False,
+    fixtures: Annotated[
+        Path | None,
+        typer.Option(
+            "--fixtures",
+            help="Path to static fixtures JSON/YAML file",
+        ),
+    ] = None,
 ) -> None:
     """Execute API test suites and record execution telemetry."""
     db_manager: DatabaseManager | None = None
@@ -347,14 +604,40 @@ def run(
             else:
                 raise ConfigurationError("No environment file provided")
 
-        collection = _load_suite(suite_path)
-
         allowed_targets_list: list[str] = []
         if allow_target:
             for item in allow_target:
                 for sub in item.split(","):
                     if sub.strip():
                         allowed_targets_list.append(sub.strip())
+
+        suite_p = Path(suite_path)
+        effective_base = suite_p.parent if suite_p.is_absolute() else Path.cwd()
+        safe_suite_path = validate_safe_path(
+            base_dir=effective_base, ref_path=suite_path
+        )
+
+        is_wf = (workflow_id is not None) or _is_workflow_file(safe_suite_path)
+        if is_wf:
+            _execute_workflow_entry(
+                workflow_path=safe_suite_path,
+                workflow_id=workflow_id,
+                environment=environment,
+                allowed_targets_list=allowed_targets_list,
+                allow_mutation=allow_mutation,
+                allow_setup_mutation=allow_setup_mutation,
+                allow_cleanup_mutation=allow_cleanup_mutation,
+                confirm_isolated_env=confirm_isolated_env,
+                fixtures_path=fixtures,
+                dry_run=dry_run,
+                db=db,
+                output=output,
+                format=format,
+                strict=strict,
+            )
+            return
+
+        collection = _load_suite(safe_suite_path)
 
         policy = TargetAccessPolicy(
             allow_private_networks=False,
@@ -1788,6 +2071,589 @@ def compile_plan_cmd(
             typer.echo(f"Compilation report saved to: {report}")
 
         raise typer.Exit(code=EXIT_OK)
+
+    except typer.Exit:
+        raise
+    except ApiScopeError as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+    except Exception as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+
+
+@app.command("prepare-tests")
+def prepare_tests_cmd(
+    plan: Annotated[
+        Path,
+        typer.Option(
+            "--plan",
+            "-p",
+            help="Path to TestPlan YAML or JSON file",
+        ),
+    ],
+    spec: Annotated[
+        Path | None,
+        typer.Option(
+            "--spec",
+            "-s",
+            help="Path to OpenAPI spec file (if not in contract or plan)",
+        ),
+    ] = None,
+    contract: Annotated[
+        Path | None,
+        typer.Option(
+            "--contract",
+            "-c",
+            help="Path to CanonicalContract YAML/JSON file",
+        ),
+    ] = None,
+    intelligence: Annotated[
+        Path | None,
+        typer.Option(
+            "--intelligence",
+            "-i",
+            help="Path to ProjectIntelligenceReport JSON/YAML file",
+        ),
+    ] = None,
+    fixtures: Annotated[
+        Path | None,
+        typer.Option(
+            "--fixtures",
+            "-f",
+            help="Path to static fixture definition file (YAML/JSON)",
+        ),
+    ] = None,
+    output: Annotated[
+        Path | None,
+        typer.Option(
+            "--output",
+            "-o",
+            help="Output path for prepared executable test suite (YAML)",
+        ),
+    ] = None,
+    report: Annotated[
+        Path | None,
+        typer.Option(
+            "--report",
+            "-r",
+            help="Output path for detailed preparation report (JSON)",
+        ),
+    ] = None,
+    base_url_var: Annotated[
+        str,
+        typer.Option(
+            "--base-url-var",
+            help="Base URL placeholder (defaults to '{{base_url}}')",
+        ),
+    ] = "{{base_url}}",
+    allow_mutating_setup: Annotated[
+        bool,
+        typer.Option(
+            "--allow-mutating-setup",
+            help="Allow stateful workflow setup to generate mutating operations",
+        ),
+    ] = False,
+    include_proposed: Annotated[
+        bool,
+        typer.Option(
+            "--include-proposed",
+            help="Include AI-proposed scenarios without human approval",
+        ),
+    ] = False,
+) -> None:
+    """Prepare executable tests with fixture resolution and stateful workflow setup.
+
+    Detects payload foreign key references, maps static fixtures, constructs
+    dependency ordering graphs, and plans LIFO cleanup sequences.
+    """
+    try:
+        service = FixtureService()
+        suite, prep_report = service.prepare_tests(
+            plan=plan,
+            spec_path=spec,
+            contract_path=contract,
+            intelligence_path=intelligence,
+            fixture_file=fixtures,
+            base_url_var=base_url_var,
+            allow_mutating_setup=allow_mutating_setup,
+            include_proposed=include_proposed,
+        )
+
+        typer.echo(
+            f"=== ApiScope Test Data & Fixture Preparation: {prep_report.title} ==="
+        )
+        typer.echo(
+            f"Total Scenarios Evaluated: {prep_report.total_scenarios_evaluated}"
+        )
+        typer.echo("\nPreparation Status Breakdown:")
+        typer.echo(f"  [FIXTURE_READY]       : {prep_report.fixture_ready_count}")
+        typer.echo(f"  [UNRESOLVED_FIXTURES] : {prep_report.unresolved_fixture_count}")
+        typer.echo(
+            f"  [UNVERIFIED_BODY_FK]  : {len(prep_report.unverified_body_placeholders)}"
+        )
+        typer.echo(
+            f"  [WORKFLOWS_PLANNED]   : {prep_report.stateful_workflows_planned}"
+        )
+        typer.echo(f"  [MUTATING_SETUP_ALLOWED]: {prep_report.mutating_setup_allowed}")
+        typer.echo(
+            f"\nTotal Executable Tests Synthesized: {prep_report.total_tests_generated}"
+        )
+
+        if prep_report.unverified_body_placeholders:
+            typer.echo(
+                f"\nUnverified Body Placeholders "
+                f"({len(prep_report.unverified_body_placeholders)} detected):"
+            )
+            for ref in prep_report.unverified_body_placeholders[:8]:
+                field_name = ref.get("field_name")
+                target = ref.get("target_entity")
+                val = ref.get("current_value")
+                loc = ref.get("location", "body")
+                typer.echo(
+                    f"  * {loc} field '{field_name}' -> '{target}' (value: {val!r})"
+                )
+            remaining_fk = len(prep_report.unverified_body_placeholders) - 8
+            if remaining_fk > 0:
+                typer.echo(f"  ... and {remaining_fk} more")
+
+        if prep_report.unresolved_fixtures:
+            typer.echo(
+                f"\nMissing / Unresolved Fixtures "
+                f"({len(prep_report.unresolved_fixtures)} total):"
+            )
+            for fix in prep_report.unresolved_fixtures[:8]:
+                typer.echo(f"  * {fix}")
+            if len(prep_report.unresolved_fixtures) > 8:
+                typer.echo(f"  ... and {len(prep_report.unresolved_fixtures) - 8} more")
+
+        if output is not None:
+            service.save_prepared_suite(suite, output)
+            typer.echo(f"\nPrepared test suite saved to: {output}")
+
+        if report is not None:
+            service.save_preparation_report(prep_report, report)
+            typer.echo(f"Preparation report saved to: {report}")
+
+        raise typer.Exit(code=EXIT_OK)
+
+    except typer.Exit:
+        raise
+    except ApiScopeError as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+    except Exception as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+
+
+@app.command("run-workflow")
+def run_workflow(
+    workflow_file: Annotated[
+        Path,
+        typer.Argument(
+            help=(
+                "Path to stateful workflow YAML/JSON or FixturePreparationReport file"
+            ),
+        ),
+    ],
+    workflow_id: Annotated[
+        str | None,
+        typer.Option(
+            "--workflow-id",
+            help="Specific workflow ID to run when a preparation report is provided",
+        ),
+    ] = None,
+    env_file: Annotated[
+        Path | None,
+        typer.Option("--env-file", help="Path to YAML environment file"),
+    ] = None,
+    env: Annotated[
+        str | None,
+        typer.Option("--env", help="Environment name to use"),
+    ] = None,
+    fixtures: Annotated[
+        Path | None,
+        typer.Option("--fixtures", help="Path to static fixtures JSON/YAML file"),
+    ] = None,
+    allow_target: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--allow-target",
+            help=(
+                "Permit execution against specific target origin (e.g. "
+                "'http://localhost:8080'). Can be specified multiple times."
+            ),
+        ),
+    ] = None,
+    allow_mutation: Annotated[
+        bool,
+        typer.Option(
+            "--allow-mutation",
+            help=(
+                "Authorize mutating and destructive operations (POST, PUT, "
+                "PATCH, DELETE) in designated non-production environments."
+            ),
+        ),
+    ] = False,
+    allow_setup_mutation: Annotated[
+        bool | None,
+        typer.Option(
+            "--allow-setup-mutation",
+            help="Authorize setup mutating operations (POST, PUT, PATCH, DELETE)",
+        ),
+    ] = None,
+    allow_cleanup_mutation: Annotated[
+        bool | None,
+        typer.Option(
+            "--allow-cleanup-mutation",
+            help="Authorize cleanup mutations (DELETE)",
+        ),
+    ] = None,
+    confirm_isolated_env: Annotated[
+        bool,
+        typer.Option(
+            "--confirm-isolated-env",
+            help="Explicit confirmation that target is an isolated test environment",
+        ),
+    ] = False,
+    dry_run: Annotated[
+        bool,
+        typer.Option(
+            "--dry-run",
+            help=(
+                "Preview planned workflow steps, risk classifications, masked "
+                "secrets, and execution eligibility without network requests."
+            ),
+        ),
+    ] = False,
+    db: Annotated[
+        Path,
+        typer.Option("--db", help="Path to SQLite history database"),
+    ] = Path(".apiscope/history.db"),
+    output: Annotated[
+        Path | None,
+        typer.Option("--output", help="Optional path to write report file"),
+    ] = None,
+    format: Annotated[
+        str,
+        typer.Option(
+            "--format",
+            help="Report format if --output is set (json, junit, html)",
+        ),
+    ] = "json",
+    strict: Annotated[
+        bool,
+        typer.Option("--strict", help="Treat cleanup warnings as exit code 2"),
+    ] = False,
+) -> None:
+    """Execute policy-controlled stateful workflows with setup and LIFO cleanup."""
+    try:
+        environment: Environment | None = None
+        if env_file is not None:
+            env_p = Path(env_file)
+            effective_base = env_p.parent if env_p.is_absolute() else Path.cwd()
+            safe_env_path = validate_safe_path(
+                base_dir=effective_base, ref_path=env_file
+            )
+            environment = load_environment(safe_env_path)
+            if env is not None and environment.name != env:
+                raise ConfigurationError(
+                    f"Environment '{env}' not found in '{env_file}'"
+                )
+        elif env is not None:
+            default_env_path = Path("apiscope.env.yaml")
+            if default_env_path.is_file():
+                environment = load_environment(default_env_path)
+                if environment.name != env:
+                    raise ConfigurationError(
+                        f"Environment '{env}' not found in '{default_env_path}'"
+                    )
+            else:
+                raise ConfigurationError("No environment file provided")
+
+        allowed_targets_list: list[str] = []
+        if allow_target:
+            for item in allow_target:
+                for sub in item.split(","):
+                    if sub.strip():
+                        allowed_targets_list.append(sub.strip())
+
+        wf_p = Path(workflow_file)
+        effective_base = wf_p.parent if wf_p.is_absolute() else Path.cwd()
+        safe_wf_path = validate_safe_path(
+            base_dir=effective_base,
+            ref_path=workflow_file,
+        )
+
+        _execute_workflow_entry(
+            workflow_path=safe_wf_path,
+            workflow_id=workflow_id,
+            environment=environment,
+            allowed_targets_list=allowed_targets_list,
+            allow_mutation=allow_mutation,
+            allow_setup_mutation=allow_setup_mutation,
+            allow_cleanup_mutation=allow_cleanup_mutation,
+            confirm_isolated_env=confirm_isolated_env,
+            fixtures_path=fixtures,
+            dry_run=dry_run,
+            db=db,
+            output=output,
+            format=format,
+            strict=strict,
+        )
+    except typer.Exit:
+        raise
+    except ApiScopeError as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+    except Exception as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+
+
+def _print_investigation_report(report: FailureInvestigationReport) -> None:
+    """Print readable CLI summary table of failure investigation findings."""
+    typer.echo("\n=== ApiScope Root-Cause Failure Investigation ===")
+    typer.echo(f"Run ID:                  {report.run_id}")
+    typer.echo(f"Evaluated Cases:         {report.total_cases_evaluated}")
+    typer.echo(f"Failures / Blocks:       {report.total_failures_detected}")
+    typer.echo(f"Primary Failures:        {report.primary_failures_count}")
+    typer.echo(f"Downstream Consequences: {report.downstream_consequences_count}")
+
+    if report.total_failures_detected == 0:
+        typer.echo(
+            "\n[Summary] All cases executed cleanly with no failures or policy blocks."
+        )
+        return
+
+    typer.echo("\n[Category Breakdown]")
+    for cat, count in sorted(report.category_counts.items()):
+        typer.echo(f"  * {cat}: {count}")
+
+    primary_findings = [f for f in report.findings if f.is_primary_failure]
+    if primary_findings:
+        typer.echo("\n[Primary Failures & Root-Cause Hypotheses]")
+        for f in primary_findings:
+            phase_str = f"[{f.execution_phase.value}]"
+            code_str = f"HTTP {f.status_code}" if f.status_code else "No Response"
+            typer.echo(
+                f"\n* {f.finding_id} {phase_str} {f.method} {f.url} -> {code_str}"
+            )
+            typer.echo(f"  Symptom:     {f.observed_symptom}")
+            typer.echo(
+                f"  Category:    {f.category.value} | Confidence: {f.confidence.value} | Severity: {f.severity.value}"
+            )
+            typer.echo(f"  Disposition: {f.disposition.value}")
+            if f.candidate_causes:
+                typer.echo("  Candidate Causes:")
+                for c in f.candidate_causes:
+                    typer.echo(f"    - {c}")
+            if f.recommended_next_step:
+                typer.echo(f"  Recommendation: {f.recommended_next_step}")
+            if f.downstream_impact_count > 0:
+                typer.echo(
+                    f"  Cascade Impact: {f.downstream_impact_count} downstream step(s) skipped/blocked"
+                )
+            if f.ai_hypothesis:
+                typer.echo(f"  AI Hypothesis:  {f.ai_hypothesis}")
+
+    downstream_findings = [f for f in report.findings if not f.is_primary_failure]
+    if downstream_findings:
+        typer.echo("\n[Downstream Cascades (Caused by Upstream Failures)]")
+        for f in downstream_findings:
+            typer.echo(
+                f"  - {f.finding_id} [{f.execution_phase.value}] {f.method} {f.url} "
+                f"(Caused by {f.primary_finding_id} -> {f.observed_symptom})"
+            )
+
+    if report.missing_evidence_gaps:
+        typer.echo("\n[Evidence Gaps & Uncertainties]")
+        for gap in report.missing_evidence_gaps:
+            typer.echo(f"  ? {gap}")
+
+
+@app.command("investigate")
+def investigate(
+    run_id: Annotated[
+        str | None,
+        typer.Option(
+            "--run-id",
+            "-r",
+            help="Execution run ID to investigate from SQLite history database",
+        ),
+    ] = None,
+    file: Annotated[
+        Path | None,
+        typer.Option(
+            "--file",
+            "-f",
+            help="Path to recorded test run or workflow execution JSON report file",
+        ),
+    ] = None,
+    spec: Annotated[
+        Path | None,
+        typer.Option(
+            "--spec",
+            "-s",
+            help="Optional path to OpenAPI specification for contract reconciliation",
+        ),
+    ] = None,
+    plan: Annotated[
+        Path | None,
+        typer.Option(
+            "--plan",
+            "-p",
+            help="Optional path to test plan / compiler report for scenario provenance",
+        ),
+    ] = None,
+    fixtures: Annotated[
+        Path | None,
+        typer.Option(
+            "--fixtures",
+            help="Optional path to fixture preparation report JSON/YAML file",
+        ),
+    ] = None,
+    output: Annotated[
+        Path | None,
+        typer.Option(
+            "--output",
+            "-o",
+            help="Optional path to save structured investigation report (JSON/YAML)",
+        ),
+    ] = None,
+    format: Annotated[
+        str,
+        typer.Option(
+            "--format",
+            help="Output serialization format if --output is set ('json' or 'yaml')",
+        ),
+    ] = "json",
+    with_ai: Annotated[
+        bool,
+        typer.Option(
+            "--with-ai",
+            help="Opt-in to Gemini AI-assisted root-cause diagnostic hypotheses",
+        ),
+    ] = False,
+    provider: Annotated[
+        str,
+        typer.Option(
+            "--provider",
+            help="LLM provider for AI reasoning ('gemini' or 'openai')",
+        ),
+    ] = "gemini",
+    model: Annotated[
+        str | None,
+        typer.Option(
+            "--model",
+            help="Custom model name for AI reasoning",
+        ),
+    ] = None,
+    api_key: Annotated[
+        str | None,
+        typer.Option(
+            "--api-key",
+            help="API key for LLM provider (or via GEMINI_API_KEY / OPENAI_API_KEY)",
+        ),
+    ] = None,
+    db: Annotated[
+        Path,
+        typer.Option(
+            "--db",
+            help="Path to SQLite history database",
+        ),
+    ] = Path(".apiscope/history.db"),
+) -> None:
+    """Investigate recorded test failures with deterministic triage and evidence attribution."""
+    try:
+        if not run_id and not file:
+            typer.echo(
+                "Error: Please provide either --run-id <RUN_ID> or --file <PATH>",
+                err=True,
+            )
+            raise typer.Exit(code=EXIT_TOOL_ERROR)
+
+        db_manager = DatabaseManager(db)
+        inv_service = FailureInvestigationService(db_manager=db_manager)
+
+        run_result: RunResult | None = None
+
+        if run_id:
+            repo = RunRepository(db_manager)
+            run_result = repo.get_run(run_id)
+            if run_result is None:
+                typer.echo(
+                    f"Error: Run '{run_id}' not found in SQLite database '{db}'",
+                    err=True,
+                )
+                raise typer.Exit(code=EXIT_TOOL_ERROR)
+        elif file:
+            p_file = Path(file)
+            effective_base = p_file.parent if p_file.is_absolute() else Path.cwd()
+            safe_file = validate_safe_path(base_dir=effective_base, ref_path=file)
+            run_result = inv_service.load_run_from_file(safe_file)
+
+        if run_result is None:
+            typer.echo("Error: Unable to load execution run result", err=True)
+            raise typer.Exit(code=EXIT_TOOL_ERROR)
+
+        # Optional contract reconciliation
+        contract = None
+        if spec is not None:
+            spec_p = Path(spec)
+            effective_base = spec_p.parent if spec_p.is_absolute() else Path.cwd()
+            safe_spec = validate_safe_path(base_dir=effective_base, ref_path=spec)
+            contract_service = ContractAnalysisService()
+            contract = contract_service.analyze_contract(spec_path=safe_spec)
+
+        # Optional compiler report
+        compiler_report = None
+        if plan is not None:
+            plan_p = Path(plan)
+            effective_base = plan_p.parent if plan_p.is_absolute() else Path.cwd()
+            safe_plan = validate_safe_path(base_dir=effective_base, ref_path=plan)
+            with contextlib.suppress(Exception):
+                content = safe_plan.read_text(encoding="utf-8")
+                compiler_report = json.loads(content)
+
+        # Optional fixture report
+        fixture_report = None
+        if fixtures is not None:
+            fix_p = Path(fixtures)
+            effective_base = fix_p.parent if fix_p.is_absolute() else Path.cwd()
+            safe_fix = validate_safe_path(base_dir=effective_base, ref_path=fixtures)
+            with contextlib.suppress(Exception):
+                content = safe_fix.read_text(encoding="utf-8")
+                fix_data = json.loads(content)
+                fixture_report = FixturePreparationReport.from_dict(fix_data)
+
+        # Optional AI configuration
+        llm_config = None
+        if with_ai:
+            llm_config = LLMConfig(
+                provider=provider,
+                model=model or "",
+                api_key=api_key or "",
+            )
+
+        report = inv_service.investigate_run(
+            run_result=run_result,
+            contract=contract,
+            compiler_report=compiler_report,
+            fixture_report=fixture_report,
+            with_ai=with_ai,
+            llm_config=llm_config,
+        )
+
+        _print_investigation_report(report)
+
+        if output is not None:
+            out_p = Path(output)
+            effective_base = out_p.parent if out_p.is_absolute() else Path.cwd()
+            safe_out = validate_safe_path(base_dir=effective_base, ref_path=output)
+            inv_service.export_report(report, safe_out, format=format)
+            typer.echo(f"\nInvestigation report written to: {safe_out}")
 
     except typer.Exit:
         raise

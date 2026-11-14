@@ -1,4 +1,4 @@
-"""Dependency and fixture requirement analyzer for ApiScope Compiler (Task 19).
+"""Dependency and fixture requirement analyzer for ApiScope Compiler (Task 19 & 20).
 
 Identifies unresolved test data prerequisites, missing path parameter fixtures,
 and external environment dependencies without fabricating arbitrary resource IDs
@@ -8,17 +8,27 @@ or artificial credentials.
 from __future__ import annotations
 
 import re
+from typing import Any
 
 from apiscope.contract.models import CanonicalContract
+from apiscope.fixtures.entity_reference_detector import EntityReferenceDetector
 from apiscope.planning.models import ScenarioCategory, TestScenario
 
 
 class FixtureAnalyzer:
     """Analyzes scenarios for unresolved data dependencies and required fixtures."""
 
-    def __init__(self, contract: CanonicalContract) -> None:
-        """Initialize analyzer with contract context."""
+    def __init__(
+        self,
+        contract: CanonicalContract,
+        intelligence_relationships: list[dict[str, Any]] | None = None,
+    ) -> None:
+        """Initialize analyzer with contract and intelligence context."""
         self.contract = contract
+        self.detector = EntityReferenceDetector(
+            contract=contract,
+            intelligence_relationships=intelligence_relationships,
+        )
 
     def analyze_scenario_fixtures(
         self,
@@ -63,7 +73,44 @@ class FixtureAnalyzer:
                     f"requires existing resource fixture."
                 )
 
-        # 3. Check for synthetic placeholder substitution (e.g. ID: 1 in single step)
+        # 3. Inspect step request bodies and parameters for unverified FK placeholders
+        for step in scenario.steps:
+            body = (
+                step.request_template.get("body")
+                if isinstance(step.request_template, dict)
+                else None
+            )
+            params = (
+                step.request_template.get("parameters")
+                if isinstance(step.request_template, dict)
+                else None
+            )
+            if params is None and isinstance(step.request_template, dict):
+                params = step.request_template.get("query")
+
+            detected_refs = self.detector.detect_references(
+                method=step.method,
+                path=step.path,
+                body=body,
+                params=params,
+            )
+
+            for ref in detected_refs:
+                if (
+                    ref.status == "UNVERIFIED"
+                    and ref.is_placeholder
+                    and not self._is_ref_produced_by_prior_step(
+                        ref.target_entity, step.step_number, scenario
+                    )
+                ):
+                    missing_fixtures.append(
+                        f"Request {ref.location} field '{ref.field_name}' on "
+                        f"{step.method} {step.path} references entity "
+                        f"'{ref.target_entity}' but uses an unverified "
+                        f"placeholder value ({ref.current_value!r})."
+                    )
+
+        # 4. Check for synthetic placeholder substitution (e.g. ID: 1 in single step)
         if (
             scenario.category
             in (ScenarioCategory.CONTRACT_POSITIVE, ScenarioCategory.RESPONSE_SCHEMA)
@@ -116,4 +163,21 @@ class FixtureAnalyzer:
             # A preceding POST or PUT step acts as a producer
             if s.method.upper() in ("POST", "PUT"):
                 return True
+        return False
+
+    def _is_ref_produced_by_prior_step(
+        self,
+        target_entity: str,
+        current_step_num: int,
+        scenario: TestScenario,
+    ) -> bool:
+        """Check if a preceding step in this scenario produces the target entity."""
+        target_norm = target_entity.lower().replace("_", "").replace("-", "")
+        for s in scenario.steps:
+            if s.step_number >= current_step_num:
+                break
+            if s.method.upper() in ("POST", "PUT"):
+                step_path_norm = s.path.lower().replace("_", "").replace("-", "")
+                if target_norm in step_path_norm:
+                    return True
         return False
