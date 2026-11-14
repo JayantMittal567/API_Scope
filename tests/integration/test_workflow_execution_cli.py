@@ -12,6 +12,7 @@ from pathlib import Path
 
 import pytest
 import yaml
+from click.utils import strip_ansi
 from typer.testing import CliRunner
 
 from apiscope.cli.main import (
@@ -106,21 +107,23 @@ def sample_env_yaml(tmp_path: Path) -> Path:
 def test_cli_run_help_shows_workflow_options() -> None:
     """Verify 'apiscope run --help' displays workflow-aware flags."""
     result = runner.invoke(app, ["run", "--help"])
+    result_help = strip_ansi(result.stdout)
     assert result.exit_code == EXIT_OK
-    assert "--workflow-id" in result.stdout
-    assert "--allow-setup-mutation" in result.stdout
-    assert "--allow-cleanup-mutation" in result.stdout
-    assert "--confirm-isolated-env" in result.stdout
-    assert "--fixtures" in result.stdout
+    assert "--workflow-id" in result_help
+    assert "--allow-setup-mutation" in result_help
+    assert "--allow-cleanup-mutation" in result_help
+    assert "--confirm-isolated-env" in result_help
+    assert "--fixtures" in result_help
 
 
 def test_cli_run_workflow_help() -> None:
     """Verify 'apiscope run-workflow --help' command presence and help output."""
     result = runner.invoke(app, ["run-workflow", "--help"])
+    result_help = strip_ansi(result.stdout)
     assert result.exit_code == EXIT_OK
-    assert "workflow_file" in result.stdout
-    assert "--confirm-isolated-env" in result.stdout
-    assert "--dry-run" in result.stdout
+    assert "workflow_file" in result_help
+    assert "--confirm-isolated-env" in result_help
+    assert "--dry-run" in result_help
 
 
 # =====================================================================
