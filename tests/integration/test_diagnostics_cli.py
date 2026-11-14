@@ -18,6 +18,7 @@ from pathlib import Path
 
 import pytest
 import yaml
+from click.utils import strip_ansi
 from typer.testing import CliRunner
 
 from apiscope.cli.main import (
@@ -75,13 +76,14 @@ def _create_sample_run(
 def test_diagnose_silent_cli_help() -> None:
     """Diagnose-silent displays help and options."""
     res = runner.invoke(app, ["diagnose-silent", "--help"])
+    res_help = strip_ansi(res.output)
     assert res.exit_code == EXIT_OK
-    assert "--run-id" in res.output
-    assert "--file" in res.output
-    assert "--workflow" in res.output
-    assert "--app-log" in res.output
-    assert "--health-file" in res.output
-    assert "--baseline-run" in res.output
+    assert "--run-id" in res_help
+    assert "--file" in res_help
+    assert "--workflow" in res_help
+    assert "--app-log" in res_help
+    assert "--health-file" in res_help
+    assert "--baseline-run" in res_help
 
 
 def test_diagnose_silent_cli_stockpile_smoke() -> None:
@@ -165,13 +167,14 @@ def test_diagnose_silent_cli_export_json_and_yaml(tmp_path: Path) -> None:
 def test_latency_drift_cli_help() -> None:
     """Latency-drift displays help and options."""
     res = runner.invoke(app, ["latency-drift", "--help"])
+    res_help = strip_ansi(res.output)
     assert res.exit_code == EXIT_OK
-    assert "--baseline" in res.output
-    assert "--current" in res.output
-    assert "--min-samples" in res.output
-    assert "--tolerance-pct" in res.output
-    assert "--min-abs-ms" in res.output
-    assert "--strict-env" in res.output
+    assert "--baseline" in res_help
+    assert "--current" in res_help
+    assert "--min-samples" in res_help
+    assert "--tolerance-pct" in res_help
+    assert "--min-abs-ms" in res_help
+    assert "--strict-env" in res_help
 
 
 def test_latency_drift_cli_with_files(tmp_path: Path) -> None:
