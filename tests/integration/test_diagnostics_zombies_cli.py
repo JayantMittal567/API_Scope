@@ -17,6 +17,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import yaml
+from click.utils import strip_ansi
 from typer.testing import CliRunner
 
 from apiscope.cli.main import (
@@ -105,13 +106,14 @@ def _create_sample_run_file(path: Path) -> Path:
 def test_diagnose_zombies_cli_help() -> None:
     """Verify diagnose-zombies --help displays options."""
     res = runner.invoke(app, ["diagnose-zombies", "--help"])
+    res_help = strip_ansi(res.output)
     assert res.exit_code == EXIT_OK
-    assert "--spec" in res.output
-    assert "--repo" in res.output
-    assert "--run-file" in res.output
-    assert "--plan" in res.output
-    assert "--output" in res.output
-    assert "--strict" in res.output
+    assert "--spec" in res_help
+    assert "--repo" in res_help
+    assert "--run-file" in res_help
+    assert "--plan" in res_help
+    assert "--output" in res_help
+    assert "--strict" in res_help
 
 
 def test_diagnose_zombies_cli_with_run_file(tmp_path: Path) -> None:
