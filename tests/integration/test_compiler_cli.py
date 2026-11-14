@@ -12,6 +12,7 @@ from pathlib import Path
 
 import pytest
 import yaml
+from click.utils import strip_ansi
 from typer.testing import CliRunner
 
 from apiscope.cli.main import EXIT_OK, EXIT_TOOL_ERROR, app
@@ -213,15 +214,16 @@ def temp_test_plan(tmp_path: Path, temp_openapi_file: Path) -> Path:
 def test_cli_compile_plan_help() -> None:
     """Verify compile-plan --help displays expected options and documentation."""
     result = runner.invoke(app, ["compile-plan", "--help"])
+    result_help = strip_ansi(result.output)
     assert result.exit_code == EXIT_OK
-    assert "compile-plan" in result.output
-    assert "--plan" in result.output
-    assert "--spec" in result.output
-    assert "--contract" in result.output
-    assert "--output" in result.output
-    assert "--report" in result.output
-    assert "--base-url-var" in result.output
-    assert "--include-proposed" in result.output
+    assert "compile-plan" in result_help
+    assert "--plan" in result_help
+    assert "--spec" in result_help
+    assert "--contract" in result_help
+    assert "--output" in result_help
+    assert "--report" in result_help
+    assert "--base-url-var" in result_help
+    assert "--include-proposed" in result_help
 
 
 def test_cli_compile_plan_missing_plan_fails() -> None:
