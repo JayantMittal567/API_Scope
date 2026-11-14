@@ -25,6 +25,12 @@ from apiscope.analysis.health_service import (
     DEFAULT_LATENCY_TOLERANCE_FACTOR,
     HealthService,
 )
+from apiscope.analysis.latency_drift import (
+    DriftVerdict,
+    LatencyComparison,
+    LatencyDriftAnalyzer,
+    LatencyDriftReport,
+)
 from apiscope.analysis.path_normalizer import (
     compile_spec_path_regex,
     extract_url_path,
@@ -33,12 +39,16 @@ from apiscope.analysis.path_normalizer import (
 )
 from apiscope.analysis.silent_failure_service import (
     AppLogEntry,
+    SilentFailureFinding,
     SilentFailureReport,
     SilentFailureService,
     SilentFailureSignal,
     SilentSignalType,
+    VerificationState,
     load_app_log,
+    load_run_file,
     parse_app_log,
+    parse_run_data,
 )
 from apiscope.analysis.zombie_service import (
     MAX_LOG_FILE_BYTES,
@@ -55,6 +65,10 @@ from apiscope.analysis.zombie_service import (
 __all__ = [
     "DEFAULT_COVERAGE_THRESHOLD_PCT",
     "DEFAULT_LATENCY_TOLERANCE_FACTOR",
+    "DriftVerdict",
+    "LatencyComparison",
+    "LatencyDriftAnalyzer",
+    "LatencyDriftReport",
     "MAX_LOG_FILE_BYTES",
     "MAX_LOG_LINES",
     "AccessLogEntry",
@@ -64,11 +78,13 @@ __all__ = [
     "HealthService",
     "HealthVerdict",
     "ModuleHealthReport",
+    "SilentFailureFinding",
     "SilentFailureReport",
     "SilentFailureService",
     "SilentFailureSignal",
     "SilentSignalType",
     "StrategyEvaluationMetrics",
+    "VerificationState",
     "ZombieClass",
     "ZombieFinding",
     "ZombieReport",
@@ -77,10 +93,12 @@ __all__ = [
     "extract_url_path",
     "load_access_log",
     "load_app_log",
+    "load_run_file",
     "match_path_to_spec",
     "normalize_unmatched_path",
     "parse_access_log",
     "parse_app_log",
+    "parse_run_data",
     "render_evaluation_markdown",
     "run_planted_bug_experiment",
 ]

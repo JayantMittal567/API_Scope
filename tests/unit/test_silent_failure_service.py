@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -17,6 +18,7 @@ from apiscope.analysis.silent_failure_service import (
     MAX_LOG_LINES,
     SilentFailureService,
     SilentSignalType,
+    VerificationState,
     load_app_log,
     parse_app_log,
 )
@@ -35,6 +37,7 @@ def _make_case(
     elapsed_ms: float = 20.0,
     response_headers: dict[str, str] | None = None,
     response_body: str = "",
+    assertion_results: list[dict[str, Any]] | None = None,
 ) -> CaseResult:
     """Helper to construct a deterministic CaseResult."""
     return CaseResult(
@@ -50,7 +53,11 @@ def _make_case(
         request_headers={},
         response_headers=response_headers or {},
         response_body=response_body,
-        assertion_results=[{"rule_type": "status", "passed": True}],
+        assertion_results=(
+            assertion_results
+            if assertion_results is not None
+            else [{"rule_type": "status", "passed": True}]
+        ),
         extracted_variables={},
         extraction_errors=[],
     )
@@ -331,6 +338,10 @@ def test_silent_failure_report_verdict_banner_and_to_dict() -> None:
         "S2_DEPENDENCY_PROBE",
         "S3_LATENCY_DRIFT",
         "S4_SUSPICIOUS_2XX",
+        "S5_UNVERIFIED_EFFECT",
+        "S6_CONTRACT_CONTRADICTION",
+        "S7_INVARIANT_VIOLATION",
+        "S8_INCONSISTENT_OBSERVATION",
     }
 
     # Report with signal
@@ -390,3 +401,392 @@ def test_load_app_log_enforces_safe_path_and_size_limits(tmp_path: Path) -> None
     )
     with pytest.raises(ConfigurationError, match="exceeds maximum"):
         parse_app_log(huge_lines)
+
+
+def test_case_1_true_side_effect_violation() -> None:
+    """Case 1: Mutating POST returns 201 Created, follow-up GET returns 404.
+
+    Must produce S5 finding with VERIFIED_OBSERVATION and has_silent_failures=True.
+    """
+    post_case = _make_case(
+        name="create_product",
+        module="products",
+        method="POST",
+        url="http://localhost:8000/api/products",
+        status_code=201,
+        response_body='{"id": 101, "name": "Widget"}',
+    )
+    get_case = _make_case(
+        name="verify_product",
+        module="products",
+        method="GET",
+        url="http://localhost:8000/api/products/101",
+        status=CaseStatus.FAILED,
+        status_code=404,
+        response_body='{"error": "Not Found"}',
+    )
+
+    run = RunResult(
+        run_id="run-c1",
+        environment_name="test",
+        started_at=datetime.now(UTC),
+        finished_at=datetime.now(UTC),
+        duration_ms=40.0,
+        total_tests=2,
+        passed_tests=1,
+        failed_tests=1,
+        error_tests=0,
+        skipped_tests=0,
+        results=[post_case, get_case],
+    )
+
+    service = SilentFailureService()
+    report = service.analyze(run_result=run)
+
+    assert report.has_silent_failures is True
+    assert report.verified_mismatches_count >= 1
+    s5_findings = [
+        f
+        for f in report.findings
+        if f.signal_type == SilentSignalType.S5_UNVERIFIED_EFFECT
+    ]
+    assert len(s5_findings) >= 1
+    mismatch_f = s5_findings[0]
+    assert mismatch_f.verification_state == VerificationState.VERIFIED_OBSERVATION
+    assert (
+        "returned 404" in mismatch_f.description or "missing" in mismatch_f.description
+    )
+    assert "SILENT FAILURE DETECTED" in report.verdict_banner
+
+
+def test_case_2_correctly_verified_side_effect() -> None:
+    """Case 2: Mutating POST returns 201 Created, follow-up GET returns 200.
+
+    Must NOT produce any mismatch finding; has_silent_failures=False.
+    """
+    post_case = _make_case(
+        name="create_product",
+        module="products",
+        method="POST",
+        url="http://localhost:8000/api/products",
+        status_code=201,
+        response_body='{"id": 101, "name": "Widget"}',
+    )
+    get_case = _make_case(
+        name="verify_product",
+        module="products",
+        method="GET",
+        url="http://localhost:8000/api/products/101",
+        status_code=200,
+        response_body='{"id": 101, "name": "Widget"}',
+    )
+
+    run = RunResult(
+        run_id="run-c2",
+        environment_name="test",
+        started_at=datetime.now(UTC),
+        finished_at=datetime.now(UTC),
+        duration_ms=40.0,
+        total_tests=2,
+        passed_tests=2,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=[post_case, get_case],
+    )
+
+    service = SilentFailureService()
+    report = service.analyze(run_result=run)
+
+    assert report.has_silent_failures is False
+    assert report.verified_mismatches_count == 0
+
+
+def test_case_3_unverified_write_outcome() -> None:
+    """Case 3: Mutating POST returns 201 Created, but no follow-up GET executes.
+
+    Must produce S5 finding with UNVERIFIED_EFFECT; has_silent_failures=False.
+    """
+    post_case = _make_case(
+        name="create_product",
+        module="products",
+        method="POST",
+        url="http://localhost:8000/api/products",
+        status_code=201,
+        response_body='{"id": 101, "name": "Widget"}',
+    )
+
+    run = RunResult(
+        run_id="run-c3",
+        environment_name="test",
+        started_at=datetime.now(UTC),
+        finished_at=datetime.now(UTC),
+        duration_ms=20.0,
+        total_tests=1,
+        passed_tests=1,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=[post_case],
+    )
+
+    service = SilentFailureService()
+    report = service.analyze(run_result=run)
+
+    assert report.has_silent_failures is False
+    assert report.untested_effects_count >= 1
+    unverified_f = [
+        f
+        for f in report.findings
+        if f.verification_state == VerificationState.UNVERIFIED_EFFECT
+    ]
+    assert len(unverified_f) >= 1
+    assert (
+        "without a subsequent GET" in unverified_f[0].evidence
+        or "unverified" in unverified_f[0].description.lower()
+    )
+    assert "side-effects unverified" in report.verdict_banner.lower()
+
+
+def test_case_4_valid_empty_204_and_collection() -> None:
+    """Case 4: Valid 204 No Content and empty list [] in GET response.
+
+    Must NOT be flagged as suspicious or silent failure; has_silent_failures=False.
+    """
+    delete_case = _make_case(
+        name="delete_item",
+        module="items",
+        method="DELETE",
+        url="http://localhost:8000/api/items/99",
+        status_code=204,
+        response_body="",
+    )
+    get_empty_case = _make_case(
+        name="list_empty_items",
+        module="items",
+        method="GET",
+        url="http://localhost:8000/api/items",
+        status_code=200,
+        response_body="[]",
+    )
+
+    run = RunResult(
+        run_id="run-c4",
+        environment_name="test",
+        started_at=datetime.now(UTC),
+        finished_at=datetime.now(UTC),
+        duration_ms=30.0,
+        total_tests=2,
+        passed_tests=2,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=[delete_case, get_empty_case],
+    )
+
+    service = SilentFailureService()
+    report = service.analyze(run_result=run)
+
+    # Neither 204 nor [] is an S4 error
+    s4_findings = [
+        f
+        for f in report.findings
+        if f.signal_type == SilentSignalType.S4_SUSPICIOUS_2XX
+    ]
+    assert len(s4_findings) == 0
+
+
+def test_case_5_eventually_consistent_202_accepted() -> None:
+    """Case 5: POST returns 202 Accepted, follow-up GET returns 404 (in progress).
+
+    Must produce INCONCLUSIVE finding, NOT a confirmed silent failure.
+    """
+    post_case = _make_case(
+        name="async_job",
+        module="jobs",
+        method="POST",
+        url="http://localhost:8000/api/jobs",
+        status_code=202,
+        response_body='{"status": "queued"}',
+    )
+    get_case = _make_case(
+        name="poll_job",
+        module="jobs",
+        method="GET",
+        url="http://localhost:8000/api/jobs/job-1",
+        status_code=404,
+        response_body='{"error": "job not ready"}',
+    )
+
+    run = RunResult(
+        run_id="run-c5",
+        environment_name="test",
+        started_at=datetime.now(UTC),
+        finished_at=datetime.now(UTC),
+        duration_ms=25.0,
+        total_tests=2,
+        passed_tests=1,
+        failed_tests=1,
+        error_tests=0,
+        skipped_tests=0,
+        results=[post_case, get_case],
+    )
+
+    service = SilentFailureService()
+    report = service.analyze(run_result=run)
+
+    assert report.has_silent_failures is False
+    assert report.inconclusive_count >= 1
+    inconclusive_f = [
+        f
+        for f in report.findings
+        if f.verification_state == VerificationState.INCONCLUSIVE
+    ]
+    assert len(inconclusive_f) >= 1
+    assert (
+        "202 Accepted" in inconclusive_f[0].description
+        or "eventually consistent" in inconclusive_f[0].description
+    )
+
+
+def test_contract_contradiction_s6() -> None:
+    """Signal S6: 2xx status code but assertion failed in assertion_results."""
+    case = _make_case(
+        name="test_schema_mismatch",
+        module="users",
+        method="GET",
+        url="http://localhost:8000/api/users/1",
+        status_code=200,
+        response_body='{"id": 1}',
+        assertion_results=[
+            {"rule_type": "status", "passed": True},
+            {
+                "rule_type": "json_schema",
+                "passed": False,
+                "message": "Missing required field 'email'",
+            },
+        ],
+    )
+
+    run = RunResult(
+        run_id="run-s6",
+        environment_name="test",
+        started_at=datetime.now(UTC),
+        finished_at=datetime.now(UTC),
+        duration_ms=20.0,
+        total_tests=1,
+        passed_tests=1,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=[case],
+    )
+
+    service = SilentFailureService()
+    report = service.analyze(run_result=run)
+
+    assert report.has_silent_failures is True
+    assert report.verified_mismatches_count >= 1
+    s6_findings = [
+        f
+        for f in report.findings
+        if f.signal_type == SilentSignalType.S6_CONTRACT_CONTRADICTION
+    ]
+    assert len(s6_findings) == 1
+    assert s6_findings[0].verification_state == VerificationState.VERIFIED_OBSERVATION
+    assert "Missing required field 'email'" in s6_findings[0].evidence
+
+
+def test_invariant_violation_s7() -> None:
+    """Signal S7: 2xx response violates approved business invariant (e.g. stock >= 0)."""
+    case = _make_case(
+        name="test_negative_stock",
+        module="inventory",
+        method="GET",
+        url="http://localhost:8000/api/inventory/item-1",
+        status_code=200,
+        response_body='{"item_id": 1, "stock": -5}',
+    )
+
+    run = RunResult(
+        run_id="run-s7",
+        environment_name="test",
+        started_at=datetime.now(UTC),
+        finished_at=datetime.now(UTC),
+        duration_ms=20.0,
+        total_tests=1,
+        passed_tests=1,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=[case],
+    )
+
+    approved_invariants = [
+        {
+            "name": "Non-negative inventory stock",
+            "field": "stock",
+            "operator": "gte",
+            "value": 0,
+        }
+    ]
+
+    service = SilentFailureService()
+    report = service.analyze(run_result=run, approved_invariants=approved_invariants)
+
+    assert report.has_silent_failures is True
+    assert report.verified_mismatches_count >= 1
+    s7_findings = [
+        f
+        for f in report.findings
+        if f.signal_type == SilentSignalType.S7_INVARIANT_VIOLATION
+    ]
+    assert len(s7_findings) == 1
+    assert s7_findings[0].verification_state == VerificationState.VERIFIED_OBSERVATION
+    assert "violated rule 'gte 0'" in s7_findings[0].evidence
+
+
+def test_inconsistent_repeated_observation_s8() -> None:
+    """Signal S8: Identical idempotent GET requests return contradictory bodies."""
+    case1 = _make_case(
+        name="read_product_1",
+        module="products",
+        method="GET",
+        url="http://localhost:8000/api/products/1",
+        status_code=200,
+        response_body='{"id": 1, "price": 10.0}',
+    )
+    case2 = _make_case(
+        name="read_product_2",
+        module="products",
+        method="GET",
+        url="http://localhost:8000/api/products/1",
+        status_code=200,
+        response_body='{"id": 1, "price": 99.0}',
+    )
+
+    run = RunResult(
+        run_id="run-s8",
+        environment_name="test",
+        started_at=datetime.now(UTC),
+        finished_at=datetime.now(UTC),
+        duration_ms=30.0,
+        total_tests=2,
+        passed_tests=2,
+        failed_tests=0,
+        error_tests=0,
+        skipped_tests=0,
+        results=[case1, case2],
+    )
+
+    service = SilentFailureService()
+    report = service.analyze(run_result=run)
+
+    assert report.has_silent_failures is True
+    s8_findings = [
+        f
+        for f in report.findings
+        if f.signal_type == SilentSignalType.S8_INCONSISTENT_OBSERVATION
+    ]
+    assert len(s8_findings) == 1
+    assert s8_findings[0].verification_state == VerificationState.SUSPECTED_BEHAVIOUR

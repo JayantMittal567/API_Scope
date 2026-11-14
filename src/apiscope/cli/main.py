@@ -2672,3 +2672,339 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          f"  * [{f.verification_state.value}] [{f.signal_type.value}] {f.module}: {f.description}"
+            )
+            typer.echo(f"      Evidence: {f.evidence}")
+            if f.suggested_action:
+                typer.echo(f"      Action:   {f.suggested_action}")
+
+
+def _print_latency_report(report: LatencyDriftReport) -> None:
+    """Print structured latency drift report to console."""
+    typer.echo("\n" + "=" * 60)
+    typer.echo("  LATENCY DRIFT DIAGNOSTIC REPORT")
+    typer.echo("=" * 60)
+    typer.echo(f"Summary: {report.summary}")
+    typer.echo(
+        f"Regressions: {report.regressions_count} | Stable: {report.stable_count} | "
+        f"Improved: {report.improved_count} | Insufficient Data: {report.insufficient_data_count} | "
+        f"Incompatible Context: {report.incompatible_context_count}"
+    )
+
+    if report.comparisons:
+        typer.echo("\n[Operation Comparisons]")
+        for comp in report.comparisons:
+            p95_str = (
+                f" (p95: {comp.baseline_p95_ms} -> {comp.current_p95_ms} ms)"
+                if comp.current_p95_ms is not None and comp.baseline_p95_ms is not None
+                else ""
+            )
+            typer.echo(
+                f"  * [{comp.verdict.value}] {comp.operation}: "
+                f"med {comp.baseline_median_ms:.1f} -> {comp.current_median_ms:.1f} ms "
+                f"({comp.abs_change_ms:+} ms, {comp.rel_change_pct:+}%)"
+                f"{p95_str}"
+            )
+            typer.echo(f"      Details: {comp.details}")
+
+
+@app.command("diagnose-silent")
+def diagnose_silent(
+    run_id: Annotated[
+        str | None,
+        typer.Option(
+            "--run-id",
+            "-r",
+            help="Execution run ID to diagnose from SQLite history database",
+        ),
+    ] = None,
+    file: Annotated[
+        Path | None,
+        typer.Option(
+            "--file",
+            "-f",
+            help="Path to recorded test run JSON report file",
+        ),
+    ] = None,
+    workflow: Annotated[
+        Path | None,
+        typer.Option(
+            "--workflow",
+            "-w",
+            help="Path to executed workflow result JSON file",
+        ),
+    ] = None,
+    app_log: Annotated[
+        Path | None,
+        typer.Option(
+            "--app-log",
+            "-l",
+            help="Path to application log file for S1 error correlation",
+        ),
+    ] = None,
+    health_file: Annotated[
+        Path | None,
+        typer.Option(
+            "--health-file",
+            help="Path to health probe JSON file for S2 dependency check",
+        ),
+    ] = None,
+    baseline_run: Annotated[
+        Path | None,
+        typer.Option(
+            "--baseline-run",
+            "-b",
+            help="Path to historical baseline test run JSON for S3 latency drift",
+        ),
+    ] = None,
+    spec: Annotated[
+        Path | None,
+        typer.Option(
+            "--spec",
+            "-s",
+            help="Optional path to OpenAPI spec for S6 contract reconciliation",
+        ),
+    ] = None,
+    output: Annotated[
+        Path | None,
+        typer.Option(
+            "--output",
+            "-o",
+            help="Optional path to save structured silent failure report",
+        ),
+    ] = None,
+    format: Annotated[
+        str,
+        typer.Option(
+            "--format",
+            help="Output format: 'json' or 'yaml'",
+        ),
+    ] = "json",
+    db: Annotated[
+        Path,
+        typer.Option(
+            "--db",
+            help="Path to SQLite history database",
+        ),
+    ] = Path(".apiscope/history.db"),
+) -> None:
+    """Diagnose silent failures, swallowed errors, and unverified state effects."""
+    try:
+        run_res: RunResult | None = None
+        db_manager = DatabaseManager(db)
+
+        if run_id:
+            repo = RunRepository(db_manager)
+            run_res = repo.get_run(run_id)
+            if run_res is None:
+                typer.echo(
+                    f"Error: Run '{run_id}' not found in SQLite database '{db}'",
+                    err=True,
+                )
+                raise typer.Exit(code=EXIT_TOOL_ERROR)
+        elif file:
+            p_file = Path(file)
+            effective_base = p_file.parent if p_file.is_absolute() else Path.cwd()
+            safe_file = validate_safe_path(base_dir=effective_base, ref_path=file)
+            run_res = load_run_file(safe_file)
+        elif workflow:
+            p_wf = Path(workflow)
+            effective_base = p_wf.parent if p_wf.is_absolute() else Path.cwd()
+            safe_wf = validate_safe_path(base_dir=effective_base, ref_path=workflow)
+            run_res = load_run_file(safe_wf)
+
+        app_entries = None
+        if app_log:
+            p_log = Path(app_log)
+            effective_base = p_log.parent if p_log.is_absolute() else Path.cwd()
+            safe_log = validate_safe_path(base_dir=effective_base, ref_path=app_log)
+            app_entries = load_app_log(safe_log)
+
+        health_payload = None
+        if health_file:
+            p_h = Path(health_file)
+            effective_base = p_h.parent if p_h.is_absolute() else Path.cwd()
+            safe_h = validate_safe_path(base_dir=effective_base, ref_path=health_file)
+            content = safe_h.read_text(encoding="utf-8")
+            health_payload = json.loads(content)
+
+        base_res = None
+        if baseline_run:
+            p_b = Path(baseline_run)
+            effective_base = p_b.parent if p_b.is_absolute() else Path.cwd()
+            safe_b = validate_safe_path(base_dir=effective_base, ref_path=baseline_run)
+            base_res = load_run_file(safe_b)
+
+        contract = None
+        if spec:
+            p_s = Path(spec)
+            effective_base = p_s.parent if p_s.is_absolute() else Path.cwd()
+            safe_s = validate_safe_path(base_dir=effective_base, ref_path=spec)
+            contract_service = ContractAnalysisService()
+            contract = contract_service.analyze_contract(spec_path=safe_s)
+
+        service = SilentFailureService()
+        report = service.analyze(
+            run_result=run_res,
+            app_log_entries=app_entries,
+            health_probe_payload=health_payload,
+            baseline_run=base_res,
+            contract=contract,
+        )
+
+        _print_silent_report(report)
+
+        if output is not None:
+            out_p = Path(output)
+            effective_base = out_p.parent if out_p.is_absolute() else Path.cwd()
+            safe_out = validate_safe_path(base_dir=effective_base, ref_path=output)
+            if format.lower() == "yaml":
+                safe_out.write_text(report.to_yaml(), encoding="utf-8")
+            else:
+                safe_out.write_text(report.to_json(indent=2), encoding="utf-8")
+            typer.echo(f"\nSilent failure report written to: {safe_out}")
+
+    except typer.Exit:
+        raise
+    except ApiScopeError as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+    except Exception as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+
+
+@app.command("latency-drift")
+def latency_drift(
+    baseline: Annotated[
+        str,
+        typer.Option(
+            "--baseline",
+            "-b",
+            help="Baseline run ID from database or path to baseline run JSON file",
+        ),
+    ],
+    current: Annotated[
+        str,
+        typer.Option(
+            "--current",
+            "-c",
+            help="Current run ID from database or path to current run JSON file",
+        ),
+    ],
+    min_samples: Annotated[
+        int,
+        typer.Option(
+            "--min-samples",
+            help="Minimum sample count per operation to evaluate drift (default: 5)",
+        ),
+    ] = 5,
+    tolerance_pct: Annotated[
+        float,
+        typer.Option(
+            "--tolerance-pct",
+            help="Relative drift tolerance percentage before flagging regression (default: 40.0%)",
+        ),
+    ] = 40.0,
+    min_abs_ms: Annotated[
+        float,
+        typer.Option(
+            "--min-abs-ms",
+            help="Minimum absolute latency increase in ms to flag regression (default: 20.0 ms)",
+        ),
+    ] = 20.0,
+    strict_env: Annotated[
+        bool,
+        typer.Option(
+            "--strict-env/--allow-cross-env",
+            help="Reject cross-environment latency comparisons (default: strict)",
+        ),
+    ] = True,
+    output: Annotated[
+        Path | None,
+        typer.Option(
+            "--output",
+            "-o",
+            help="Optional path to save structured latency drift report",
+        ),
+    ] = None,
+    format: Annotated[
+        str,
+        typer.Option(
+            "--format",
+            help="Output serialization format ('json' or 'yaml')",
+        ),
+    ] = "json",
+    db: Annotated[
+        Path,
+        typer.Option(
+            "--db",
+            help="Path to SQLite history database",
+        ),
+    ] = Path(".apiscope/history.db"),
+) -> None:
+    """Analyze latency drift and statistical response time regressions between test runs."""
+    try:
+        db_manager = DatabaseManager(db)
+        repo = RunRepository(db_manager)
+
+        def _resolve_run(identifier: str) -> RunResult:
+            p = Path(identifier)
+            if p.is_file():
+                effective_base = p.parent if p.is_absolute() else Path.cwd()
+                safe_p = validate_safe_path(
+                    base_dir=effective_base, ref_path=identifier
+                )
+                return load_run_file(safe_p)
+            # Try database lookup
+            run_res = repo.get_run(identifier)
+            if run_res is not None:
+                return run_res
+            raise ConfigurationError(
+                f"Could not resolve test run from file or database ID '{identifier}'"
+            )
+
+        baseline_res = _resolve_run(baseline)
+        current_res = _resolve_run(current)
+
+        tolerance_factor = 1.0 + (tolerance_pct / 100.0)
+        analyzer = LatencyDriftAnalyzer(
+            min_samples_threshold=min_samples,
+            tolerance_factor=tolerance_factor,
+            min_abs_drift_ms=min_abs_ms,
+            strict_environment_match=strict_env,
+        )
+
+        report = analyzer.compare_runs(
+            baseline_run=baseline_res, current_run=current_res
+        )
+
+        _print_latency_report(report)
+
+        if output is not None:
+            out_p = Path(output)
+            effective_base = out_p.parent if out_p.is_absolute() else Path.cwd()
+            safe_out = validate_safe_path(base_dir=effective_base, ref_path=output)
+            if format.lower() == "yaml":
+                safe_out.write_text(report.to_yaml(), encoding="utf-8")
+            else:
+                safe_out.write_text(report.to_json(indent=2), encoding="utf-8")
+            typer.echo(f"\nLatency drift report written to: {safe_out}")
+
+    except typer.Exit:
+        raise
+    except ApiScopeError as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+    except Exception as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+
+
+def main() -> None:
+    """Primary entry point for the console script."""
+    app()
+
+
+if __name__ == "__main__":
+    main()
