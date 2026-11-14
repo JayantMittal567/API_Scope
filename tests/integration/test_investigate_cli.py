@@ -18,6 +18,7 @@ from pathlib import Path
 
 import pytest
 import yaml
+from click.utils import strip_ansi
 from typer.testing import CliRunner
 
 from apiscope.cli.main import (
@@ -35,13 +36,14 @@ runner = CliRunner()
 def test_investigate_cli_help() -> None:
     """Investigate command displays help and options."""
     res = runner.invoke(app, ["investigate", "--help"])
+    res_help = strip_ansi(res.output)
     assert res.exit_code == EXIT_OK
-    assert "--run-id" in res.output
-    assert "--file" in res.output
-    assert "--output" in res.output
-    assert "--format" in res.output
-    assert "--with-ai" in res.output
-    assert "--spec" in res.output
+    assert "--run-id" in res_help
+    assert "--file" in res_help
+    assert "--output" in res_help
+    assert "--format" in res_help
+    assert "--with-ai" in res_help
+    assert "--spec" in res_help
 
 
 def test_investigate_cli_missing_args() -> None:
