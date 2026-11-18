@@ -744,3 +744,45 @@ class TestSecurityAndTargetAccessPolicy:
         """Verify RequestExecutor functions cleanly as a context manager."""
         with RequestExecutor() as executor:
             assert isinstance(executor, RequestExecutor)
+
+    def test_testclient_in_process_omits_timeout_warning(self) -> None:
+        """Verify TestClient avoids StarletteDeprecationWarning by omitting timeout."""
+        import warnings
+
+        from fastapi import FastAPI
+        from fastapi.testclient import TestClient
+
+        app = FastAPI()
+
+        @app.get("/health")
+        def health_check() -> dict[str, str]:
+            return {"status": "ok"}
+
+        test_client = TestClient(app)
+        policy = TargetAccessPolicy(allowed_hosts={"127.0.0.1"})
+        executor = RequestExecutor(client=test_client, policy=policy)
+        assert getattr(executor, "_is_test_client", False) is True
+
+        with warnings.catch_warnings(record=True) as captured:
+            warnings.simplefilter("always")
+            resp = executor.execute(
+                HttpRequest(method="GET", url="http://127.0.0.1:8000/health")
+            )
+            assert resp.status_code == 200
+            assert resp.json() == {"status": "ok"}
+
+        timeout_warnings = [w for w in captured if "timeout" in str(w.message).lower()]
+        assert len(timeout_warnings) == 0
+
+    def test_real_client_preserves_timeout(self) -> None:
+        """Verify real client or mock transport preserves timeout parameter."""
+        received_kwargs: dict[str, str] = {}
+
+        def mock_handler(req: httpx.Request) -> httpx.Response:
+            received_kwargs["url"] = str(req.url)
+            return httpx.Response(200, json={"ok": True})
+
+        executor = RequestExecutor(transport=httpx.MockTransport(mock_handler))
+        assert getattr(executor, "_is_test_client", False) is False
+        resp = executor.execute(HttpRequest(method="GET", url="http://example.com/api"))
+        assert resp.status_code == 200

@@ -1,0 +1,39 @@
+# Version control
+.git
+.gitignore
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python caches and bytecode
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Local configuration and credentials (CRITICAL: zero secrets in images)
+.env
+.env.*
+*.key
+*.pem
+credentials.json
+credentials.yaml
+
+# Testing caches & coverage
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local databases and runtime state
+*.sqlite
+*.sqlite3
+*.db
+.apiscope/
+
+# Documentation and temporary directories
+.gemini/
+docs/

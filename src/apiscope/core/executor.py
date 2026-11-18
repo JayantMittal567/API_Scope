@@ -329,6 +329,12 @@ class RequestExecutor:
         self.backoff_factor = max(0.0, backoff_factor)
         self.sleep_func = sleep_func
         self._external_client = client is not None
+        self._is_test_client = client is not None and (
+            type(client).__name__ == "TestClient"
+            or getattr(type(client), "__module__", "").startswith(
+                "starlette.testclient"
+            )
+        )
         if client is not None:
             self._client = client
         else:
@@ -435,16 +441,19 @@ class RequestExecutor:
 
             start_time = time.perf_counter()
             try:
-                raw_response = self._client.request(
-                    method=method,
-                    url=url,
-                    headers=headers,
-                    params=params,
-                    auth=auth,
-                    timeout=timeout,
-                    follow_redirects=False,
+                request_kwargs: dict[str, Any] = {
+                    "method": method,
+                    "url": url,
+                    "headers": headers,
+                    "params": params,
+                    "auth": auth,
+                    "follow_redirects": False,
                     **body_kwargs,
-                )
+                }
+                if not self._is_test_client:
+                    request_kwargs["timeout"] = timeout
+
+                raw_response = self._client.request(**request_kwargs)
                 hop_elapsed_ms += (time.perf_counter() - start_time) * 1000.0
 
                 # Evaluate transient retry criteria

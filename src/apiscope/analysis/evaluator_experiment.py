@@ -18,7 +18,12 @@ from typing import Any
 
 import httpx
 from fastapi import FastAPI
-from sample_app.app import create_sample_app, reset_state
+
+try:
+    from sample_app.app import create_sample_app, reset_state
+except ImportError:
+    create_sample_app = None  # type: ignore[assignment]
+    reset_state = None  # type: ignore[assignment]
 
 from apiscope.analysis.health_service import HealthService
 from apiscope.analysis.silent_failure_service import (

@@ -1,8 +1,8 @@
 {
   "manifest_version": "1.0.0",
   "target_app": "ApiScope Benchmark Reference API v1.0.0",
-  "execution_timestamp": "2026-11-18T14:56:49Z",
-  "duration_sec": 1.742,
+  "execution_timestamp": "2026-11-18T16:02:47Z",
+  "duration_sec": 1.457,
   "environment_info": {
     "python_version": "3.13.14",
     "platform": "win32",

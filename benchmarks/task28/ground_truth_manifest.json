@@ -2,7 +2,7 @@
   "manifest_version": "1.0.0",
   "title": "ApiScope Defect-Detection Ground-Truth Benchmark Manifest",
   "description": "Independent ground-truth specification defining 16 planted defects (A-P) and 16 clean negative controls for ApiScope 1.0 accuracy evaluation.",
-  "generated_at": "2026-11-18T14:56:49Z",
+  "generated_at": "2026-11-18T16:02:47Z",
   "summary": {
     "total_cases": 32,
     "defect_cases_count": 16,

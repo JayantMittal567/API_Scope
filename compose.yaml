@@ -1,0 +1,25 @@
+# ApiScope 1.0 — Local Compose Deployment
+# Binds exclusively to host loopback (127.0.0.1) for secure local dashboard access.
+# Runs in read-only inspection mode with zero automated mutations or AI calls.
+
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: apiscope-dashboard
+    ports:
+      # Host-side loopback binding prevents external network exposure
+      - "127.0.0.1:8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Mount persistent history DB and artifacts locally
+      - apiscope_data:/app/.apiscope
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  apiscope_data:
+    name: apiscope_data
