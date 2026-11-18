@@ -2,14 +2,14 @@
   "plan_id": "plan_openapi_definition_9382",
   "title": "OpenAPI definition",
   "schema_version": "1.0.0",
-  "generated_at": "2026-11-14T12:33:25.935296+00:00",
+  "generated_at": "2026-11-14T13:10:59.587802+00:00",
   "summary": {
     "total_scenarios": 205,
-    "compiled_count": 66,
+    "compiled_count": 58,
     "needs_review_count": 89,
-    "needs_fixture_count": 50,
+    "needs_fixture_count": 58,
     "blocked_count": 0,
-    "total_tests_generated": 66,
+    "total_tests_generated": 58,
     "scenarios_by_category": {
       "CONTRACT_POSITIVE": 60,
       "RESPONSE_SCHEMA": 56,
@@ -51,6 +51,20 @@
     "Path parameter '{itemId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
     "Path parameter '{productId}' on DELETE /api/products/{productId}/supplier requires existing resource fixture.",
     "Path parameter '{productId}' on PUT /api/products/{productId}/supplier requires existing resource fixture.",
+    "Request body field 'productId' on POST /api/inventory/adjust references entity 'Product' but uses an unverified placeholder value (1).",
+    "Request body field 'productId' on POST /api/inventory/stock-in references entity 'Product' but uses an unverified placeholder value (1).",
+    "Request body field 'productId' on POST /api/inventory/stock-out references entity 'Product' but uses an unverified placeholder value (1).",
+    "Request body field 'productId' on POST /api/movements references entity 'Product' but uses an unverified placeholder value (1).",
+    "Request body field 'productId' on POST /api/surplus-listings references entity 'Product' but uses an unverified placeholder value (1).",
+    "Request body field 'productIds' on POST /api/stock-audits references entity 'Product' but uses an unverified placeholder value ([]).",
+    "Request body field 'supplierId' on POST /api/products references entity 'Supplier' but uses an unverified placeholder value (1).",
+    "Request body field 'supplierId' on POST /api/purchase-orders references entity 'Supplier' but uses an unverified placeholder value (1).",
+    "Request body field 'supplierId' on PUT /api/products/{productId}/supplier references entity 'Supplier' but uses an unverified placeholder value (1).",
+    "Request body field 'supplierId' on PUT /api/purchase-orders/{id} references entity 'Supplier' but uses an unverified placeholder value (1).",
+    "Request query field 'auditId' on PUT /api/stock-audits/{auditId}/items/{itemId} references entity 'StockAudit' but uses an unverified placeholder value (1).",
+    "Request query field 'itemId' on PUT /api/stock-audits/{auditId}/items/{itemId} references entity 'Item' but uses an unverified placeholder value (1).",
+    "Request query field 'productId' on DELETE /api/products/{productId}/supplier references entity 'Product' but uses an unverified placeholder value (1).",
+    "Request query field 'productId' on PUT /api/products/{productId}/supplier references entity 'Product' but uses an unverified placeholder value (1).",
     "Single-step scenario targeting parameterized path '/api/expenses/{id}' lacks a preceding setup fixture or resource producer.",
     "Single-step scenario targeting parameterized path '/api/products/{id}' lacks a preceding setup fixture or resource producer.",
     "Single-step scenario targeting parameterized path '/api/products/{id}/movements' lacks a preceding setup fixture or resource producer.",
@@ -461,6 +475,8 @@
         "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{auditId}/items/{itemId}'",
         "Path parameter '{auditId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
         "Path parameter '{itemId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+        "Request query field 'auditId' on PUT /api/stock-audits/{auditId}/items/{itemId} references entity 'StockAudit' but uses an unverified placeholder value (1).",
+        "Request query field 'itemId' on PUT /api/stock-audits/{auditId}/items/{itemId} references entity 'Item' but uses an unverified placeholder value (1).",
         "Single-step scenario targeting parameterized path '/api/stock-audits/{auditId}/items/{itemId}' lacks a preceding setup fixture or resource producer."
       ],
       "compiled_test_names": [],
@@ -468,6 +484,8 @@
         "Unresolved dependency: needs_existing_resource_id for path '/api/stock-audits/{auditId}/items/{itemId}'",
         "Path parameter '{auditId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
         "Path parameter '{itemId}' on PUT /api/stock-audits/{auditId}/items/{itemId} requires existing resource fixture.",
+        "Request query field 'auditId' on PUT /api/stock-audits/{auditId}/items/{itemId} references entity 'StockAudit' but uses an unverified placeholder value (1).",
+        "Request query field 'itemId' on PUT /api/stock-audits/{auditId}/items/{itemId} references entity 'Item' but uses an unverified placeholder value (1).",
         "Single-step scenario targeting parameterized path '/api/stock-audits/{auditId}/items/{itemId}' lacks a preceding setup fixture or resource producer."
       ]
     },
@@ -619,12 +637,14 @@
       "reasons": [
         "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'",
         "Path parameter '{id}' on PUT /api/purchase-orders/{id} requires existing resource fixture.",
+        "Request body field 'supplierId' on PUT /api/purchase-orders/{id} references entity 'Supplier' but uses an unverified placeholder value (1).",
         "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}' lacks a preceding setup fixture or resource producer."
       ],
       "compiled_test_names": [],
       "missing_fixtures": [
         "Unresolved dependency: needs_existing_resource_id for path '/api/purchase-orders/{id}'",
         "Path parameter '{id}' on PUT /api/purchase-orders/{id} requires existing resource fixture.",
+        "Request body field 'supplierId' on PUT /api/purchase-orders/{id} references entity 'Supplier' but uses an unverified placeholder value (1).",
         "Single-step scenario targeting parameterized path '/api/purchase-orders/{id}' lacks a preceding setup fixture or resource producer."
       ]
     },
@@ -713,12 +733,16 @@
       "reasons": [
         "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'",
         "Path parameter '{productId}' on PUT /api/products/{productId}/supplier requires existing resource fixture.",
+        "Request body field 'supplierId' on PUT /api/products/{productId}/supplier references entity 'Supplier' but uses an unverified placeholder value (1).",
+        "Request query field 'productId' on PUT /api/products/{productId}/supplier references entity 'Product' but uses an unverified placeholder value (1).",
         "Single-step scenario targeting parameterized path '/api/products/{productId}/supplier' lacks a preceding setup fixture or resource producer."
       ],
       "compiled_test_names": [],
       "missing_fixtures": [
         "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'",
         "Path parameter '{productId}' on PUT /api/products/{productId}/supplier requires existing resource fixture.",
+        "Request body field 'supplierId' on PUT /api/products/{productId}/supplier references entity 'Supplier' but uses an unverified placeholder value (1).",
+        "Request query field 'productId' on PUT /api/products/{productId}/supplier references entity 'Product' but uses an unverified placeholder value (1).",
         "Single-step scenario targeting parameterized path '/api/products/{productId}/supplier' lacks a preceding setup fixture or resource producer."
       ]
     },
@@ -807,12 +831,14 @@
       "reasons": [
         "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'",
         "Path parameter '{productId}' on DELETE /api/products/{productId}/supplier requires existing resource fixture.",
+        "Request query field 'productId' on DELETE /api/products/{productId}/supplier references entity 'Product' but uses an unverified placeholder value (1).",
         "Single-step scenario targeting parameterized path '/api/products/{productId}/supplier' lacks a preceding setup fixture or resource producer."
       ],
       "compiled_test_names": [],
       "missing_fixtures": [
         "Unresolved dependency: needs_existing_resource_id for path '/api/products/{productId}/supplier'",
         "Path parameter '{productId}' on DELETE /api/products/{productId}/supplier requires existing resource fixture.",
+        "Request query field 'productId' on DELETE /api/products/{productId}/supplier references entity 'Product' but uses an unverified placeholder value (1).",
         "Single-step scenario targeting parameterized path '/api/products/{productId}/supplier' lacks a preceding setup fixture or resource producer."
       ]
     },
@@ -1241,12 +1267,14 @@
       "origin": "DETERMINISTIC",
       "priority": "HIGH",
       "risk": "MEDIUM",
-      "status": "COMPILED",
-      "reasons": [],
-      "compiled_test_names": [
-        "[SCN-SURPLUS_LISTINGS-POS-062] POST /api/surplus-listings"
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Request body field 'productId' on POST /api/surplus-listings references entity 'Product' but uses an unverified placeholder value (1)."
       ],
-      "missing_fixtures": []
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Request body field 'productId' on POST /api/surplus-listings references entity 'Product' but uses an unverified placeholder value (1)."
+      ]
     },
     {
       "scenario_id": "SCN-SURPLUS_LISTINGS-SCH-063",
@@ -1599,12 +1627,14 @@
       "origin": "DETERMINISTIC",
       "priority": "HIGH",
       "risk": "MEDIUM",
-      "status": "COMPILED",
-      "reasons": [],
-      "compiled_test_names": [
-        "[SCN-STOCK_AUDITS-POS-084] POST /api/stock-audits"
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Request body field 'productIds' on POST /api/stock-audits references entity 'Product' but uses an unverified placeholder value ([])."
       ],
-      "missing_fixtures": []
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Request body field 'productIds' on POST /api/stock-audits references entity 'Product' but uses an unverified placeholder value ([])."
+      ]
     },
     {
       "scenario_id": "SCN-STOCK_AUDITS-SCH-085",
@@ -2032,12 +2062,14 @@
       "origin": "DETERMINISTIC",
       "priority": "HIGH",
       "risk": "MEDIUM",
-      "status": "COMPILED",
-      "reasons": [],
-      "compiled_test_names": [
-        "[SCN-PURCHASE_ORDERS-POS-110] POST /api/purchase-orders"
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Request body field 'supplierId' on POST /api/purchase-orders references entity 'Supplier' but uses an unverified placeholder value (1)."
       ],
-      "missing_fixtures": []
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Request body field 'supplierId' on POST /api/purchase-orders references entity 'Supplier' but uses an unverified placeholder value (1)."
+      ]
     },
     {
       "scenario_id": "SCN-PURCHASE_ORDERS-SCH-111",
@@ -2380,12 +2412,14 @@
       "origin": "DETERMINISTIC",
       "priority": "HIGH",
       "risk": "MEDIUM",
-      "status": "COMPILED",
-      "reasons": [],
-      "compiled_test_names": [
-        "[SCN-PRODUCTS-POS-130] POST /api/products"
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Request body field 'supplierId' on POST /api/products references entity 'Supplier' but uses an unverified placeholder value (1)."
       ],
-      "missing_fixtures": []
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Request body field 'supplierId' on POST /api/products references entity 'Supplier' but uses an unverified placeholder value (1)."
+      ]
     },
     {
       "scenario_id": "SCN-PRODUCTS-SCH-131",
@@ -2465,12 +2499,14 @@
       "origin": "DETERMINISTIC",
       "priority": "HIGH",
       "risk": "MEDIUM",
-      "status": "COMPILED",
-      "reasons": [],
-      "compiled_test_names": [
-        "[SCN-MOVEMENTS-POS-136] POST /api/movements"
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Request body field 'productId' on POST /api/movements references entity 'Product' but uses an unverified placeholder value (1)."
       ],
-      "missing_fixtures": []
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Request body field 'productId' on POST /api/movements references entity 'Product' but uses an unverified placeholder value (1)."
+      ]
     },
     {
       "scenario_id": "SCN-MOVEMENTS-SCH-137",
@@ -2522,12 +2558,14 @@
       "origin": "DETERMINISTIC",
       "priority": "HIGH",
       "risk": "MEDIUM",
-      "status": "COMPILED",
-      "reasons": [],
-      "compiled_test_names": [
-        "[SCN-INVENTORY-POS-140] POST /api/inventory/stock-out"
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Request body field 'productId' on POST /api/inventory/stock-out references entity 'Product' but uses an unverified placeholder value (1)."
       ],
-      "missing_fixtures": []
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Request body field 'productId' on POST /api/inventory/stock-out references entity 'Product' but uses an unverified placeholder value (1)."
+      ]
     },
     {
       "scenario_id": "SCN-INVENTORY-SCH-141",
@@ -2579,12 +2617,14 @@
       "origin": "DETERMINISTIC",
       "priority": "HIGH",
       "risk": "MEDIUM",
-      "status": "COMPILED",
-      "reasons": [],
-      "compiled_test_names": [
-        "[SCN-INVENTORY-POS-144] POST /api/inventory/stock-in"
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Request body field 'productId' on POST /api/inventory/stock-in references entity 'Product' but uses an unverified placeholder value (1)."
       ],
-      "missing_fixtures": []
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Request body field 'productId' on POST /api/inventory/stock-in references entity 'Product' but uses an unverified placeholder value (1)."
+      ]
     },
     {
       "scenario_id": "SCN-INVENTORY-SCH-145",
@@ -2636,12 +2676,14 @@
       "origin": "DETERMINISTIC",
       "priority": "HIGH",
       "risk": "MEDIUM",
-      "status": "COMPILED",
-      "reasons": [],
-      "compiled_test_names": [
-        "[SCN-INVENTORY-POS-148] POST /api/inventory/adjust"
+      "status": "NEEDS_FIXTURE",
+      "reasons": [
+        "Request body field 'productId' on POST /api/inventory/adjust references entity 'Product' but uses an unverified placeholder value (1)."
       ],
-      "missing_fixtures": []
+      "compiled_test_names": [],
+      "missing_fixtures": [
+        "Request body field 'productId' on POST /api/inventory/adjust references entity 'Product' but uses an unverified placeholder value (1)."
+      ]
     },
     {
       "scenario_id": "SCN-INVENTORY-SCH-149",

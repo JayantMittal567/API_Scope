@@ -3977,6 +3977,130 @@ def guided(
         raise typer.Exit(code=EXIT_TOOL_ERROR) from err
 
 
+@app.command("benchmark")
+def run_benchmark_command(
+    output_dir: Annotated[
+        Path,
+        typer.Option(
+            "--output-dir",
+            "-o",
+            help="Directory where benchmark evaluation artifacts are written",
+        ),
+    ] = Path("benchmarks/task28"),
+    mode: Annotated[
+        str,
+        typer.Option(
+            "--mode",
+            "-m",
+            help="Benchmark mode: 'all' (32 cases), 'defects' (16 cases), 'clean' (16 cases), or 'stockpile'",
+        ),
+    ] = "all",
+    format: Annotated[
+        str,
+        typer.Option(
+            "--format",
+            help="Output summary format ('console', 'json', 'yaml')",
+        ),
+    ] = "console",
+) -> None:
+    """Execute independent defect-detection benchmarking, accuracy evaluation, and false-positive analysis."""
+    try:
+        from apiscope.benchmarking.service import BenchmarkService
+
+        out_base = Path.cwd()
+        p_out = Path(output_dir)
+        eff_base = p_out.parent if p_out.is_absolute() else out_base
+        safe_output = validate_safe_path(base_dir=eff_base, ref_path=output_dir)
+
+        svc = BenchmarkService(base_dir=out_base)
+        report = svc.run_benchmark(mode=mode, output_dir=safe_output)
+
+        if format == "json":
+            typer.echo(report.to_json(indent=2))
+        elif format == "yaml":
+            typer.echo(report.to_yaml())
+        else:
+            m = report.metrics
+            st = report.stockpile_validation
+            typer.echo(
+                "================================================================================"
+            )
+            typer.echo(
+                "          APISCOPE 1.0 — DEFECT-DETECTION BENCHMARK & ACCURACY REPORT           "
+            )
+            typer.echo(
+                "================================================================================"
+            )
+            typer.echo(f"  Target: {report.target_app}")
+            typer.echo(
+                f"  Manifest Version: {report.manifest_version} | Duration: {report.duration_sec:.2f}s"
+            )
+            typer.echo(
+                "--------------------------------------------------------------------------------"
+            )
+            typer.echo(
+                f"  Precision:           {m.precision * 100.0:>6.1f}%   (TP / [TP + FP])"
+            )
+            typer.echo(
+                f"  Recall:              {m.recall * 100.0:>6.1f}%   (TP / [TP + FN])"
+            )
+            typer.echo(f"  F1 Score:            {m.f1_score * 100.0:>6.1f}%")
+            typer.echo(
+                f"  False Positive Rate: {m.false_positive_rate * 100.0:>6.1f}%   (FP / [FP + TN])"
+            )
+            typer.echo(
+                f"  Deduplication Rate:  {m.deduplication_rate * 100.0:>6.1f}%   ({m.deduplicated_findings} / {m.total_raw_findings} raw findings)"
+            )
+            typer.echo(
+                f"  Misclassification:   {m.misclassification_rate * 100.0:>6.1f}%"
+            )
+            typer.echo(
+                "--------------------------------------------------------------------------------"
+            )
+            typer.echo(
+                f"  Confusion Matrix:    TP={m.tp:<3} FP={m.fp:<3} FN={m.fn:<3} TN={m.tn:<3}"
+            )
+            typer.echo(
+                "--------------------------------------------------------------------------------"
+            )
+            typer.echo("  Authentic StockPile Evidence Verification:")
+            typer.echo(
+                f"    Total Documented Operations:   {st.total_documented_operations} (30 GET, 30 Mutating)"
+            )
+            typer.echo(
+                f"    Verified Read-Only Smoke:      {st.smoke_tests_passed} passed"
+            )
+            typer.echo(
+                f"    Verified Extended Read-Only:   {st.extended_get_tests_passed} passed"
+            )
+            typer.echo(
+                f"    Unverified Mutating:           {st.unverified_mutating_operations_count} (unexecuted)"
+            )
+            typer.echo(
+                f"    Fabricated Live Mutations:     {st.fabricated_mutations_count}"
+            )
+            typer.echo(
+                f"    Fabricated App Defects:        {st.fabricated_application_defects_count}"
+            )
+            typer.echo(
+                f"    Honest Reporting Verified:     {st.honest_reporting_verified}"
+            )
+            typer.echo(
+                "================================================================================"
+            )
+            typer.echo(f"Artifacts exported to: {safe_output}")
+
+        raise typer.Exit(code=EXIT_OK)
+    except typer.Exit:
+        raise
+    except ApiScopeError as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+    except Exception as err:
+        typer.echo(f"Error: {err}", err=True)
+        raise typer.Exit(code=EXIT_TOOL_ERROR) from err
+
+
 def main() -> None:
     """Primary entry point for the console script."""
     app()

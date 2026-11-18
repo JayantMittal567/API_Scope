@@ -150,31 +150,6 @@ tests:
             type: integer
             format: int64
         _original_ref: '#/components/schemas/SurplusListingDetails'
-- name: '[SCN-SURPLUS_LISTINGS-POS-062] POST /api/surplus-listings'
-  module: surplus_listings
-  tags:
-  - surplus_listings
-  - contract_positive
-  - priority:high
-  - risk:mutating
-  - deterministic
-  source: rule-generated
-  status: proposed
-  request:
-    method: POST
-    url: '{{base_url}}/api/surplus-listings'
-    headers:
-      Content-Type: application/json
-    body:
-      productId: 1
-      quantity: 1
-      discountedPricePaise: 1
-      reason: sample_reason
-      notes: sample_notes
-    body_type: json
-  assertions:
-  - type: status
-    equals: 201
 - name: '[SCN-SURPLUS_LISTINGS-SCH-063] POST /api/surplus-listings'
   module: surplus_listings
   tags:
@@ -499,28 +474,6 @@ tests:
             type: integer
             format: int32
         _original_ref: '#/components/schemas/StockAuditSummary'
-- name: '[SCN-STOCK_AUDITS-POS-084] POST /api/stock-audits'
-  module: stock_audits
-  tags:
-  - stock_audits
-  - contract_positive
-  - priority:high
-  - risk:mutating
-  - deterministic
-  source: rule-generated
-  status: proposed
-  request:
-    method: POST
-    url: '{{base_url}}/api/stock-audits'
-    headers:
-      Content-Type: application/json
-    body:
-      productIds: []
-      notes: sample_notes
-    body_type: json
-  assertions:
-  - type: status
-    equals: 201
 - name: '[SCN-STOCK_AUDITS-SCH-085] POST /api/stock-audits'
   module: stock_audits
   tags:
@@ -889,29 +842,6 @@ tests:
             type: integer
             format: int32
         _original_ref: '#/components/schemas/PurchaseOrderSummary'
-- name: '[SCN-PURCHASE_ORDERS-POS-110] POST /api/purchase-orders'
-  module: purchase_orders
-  tags:
-  - purchase_orders
-  - contract_positive
-  - priority:high
-  - risk:mutating
-  - deterministic
-  source: rule-generated
-  status: proposed
-  request:
-    method: POST
-    url: '{{base_url}}/api/purchase-orders'
-    headers:
-      Content-Type: application/json
-    body:
-      supplierId: 1
-      notes: sample_notes
-      items: []
-    body_type: json
-  assertions:
-  - type: status
-    equals: 201
 - name: '[SCN-PURCHASE_ORDERS-SCH-111] POST /api/purchase-orders'
   module: purchase_orders
   tags:
@@ -1079,37 +1009,6 @@ tests:
           supplierName:
             type: string
         _original_ref: '#/components/schemas/Product'
-- name: '[SCN-PRODUCTS-POS-130] POST /api/products'
-  module: products
-  tags:
-  - products
-  - contract_positive
-  - priority:high
-  - risk:mutating
-  - deterministic
-  source: rule-generated
-  status: proposed
-  request:
-    method: POST
-    url: '{{base_url}}/api/products'
-    headers:
-      Content-Type: application/json
-    body:
-      name: sample_name
-      sku: sample_sku
-      category: sample_category
-      purchasePricePaise: 1
-      sellingPricePaise: 1
-      quantity: 1
-      minStockLevel: 1
-      targetStockLevel: 1
-      averageDailySales: 9.99
-      leadTimeDays: 1
-      supplierId: 1
-    body_type: json
-  assertions:
-  - type: status
-    equals: 201
 - name: '[SCN-PRODUCTS-SCH-131] POST /api/products'
   module: products
   tags:
@@ -1236,30 +1135,6 @@ tests:
           createdAt:
             type: string
         _original_ref: '#/components/schemas/RecentMovement'
-- name: '[SCN-MOVEMENTS-POS-136] POST /api/movements'
-  module: movements
-  tags:
-  - movements
-  - contract_positive
-  - priority:high
-  - risk:mutating
-  - deterministic
-  source: rule-generated
-  status: proposed
-  request:
-    method: POST
-    url: '{{base_url}}/api/movements'
-    headers:
-      Content-Type: application/json
-    body:
-      productId: 1
-      movementType: sample_movementType
-      quantity: 1
-      reason: sample_reason
-    body_type: json
-  assertions:
-  - type: status
-    equals: 201
 - name: '[SCN-MOVEMENTS-SCH-137] POST /api/movements'
   module: movements
   tags:
@@ -1305,30 +1180,6 @@ tests:
         createdAt:
           type: string
       _original_ref: '#/components/schemas/RecentMovement'
-- name: '[SCN-INVENTORY-POS-140] POST /api/inventory/stock-out'
-  module: inventory
-  tags:
-  - inventory
-  - contract_positive
-  - priority:high
-  - risk:mutating
-  - deterministic
-  source: rule-generated
-  status: proposed
-  request:
-    method: POST
-    url: '{{base_url}}/api/inventory/stock-out'
-    headers:
-      Content-Type: application/json
-    body:
-      productId: 1
-      movementType: sample_movementType
-      quantity: 1
-      reason: sample_reason
-    body_type: json
-  assertions:
-  - type: status
-    equals: 201
 - name: '[SCN-INVENTORY-SCH-141] POST /api/inventory/stock-out'
   module: inventory
   tags:
@@ -1374,30 +1225,6 @@ tests:
         createdAt:
           type: string
       _original_ref: '#/components/schemas/RecentMovement'
-- name: '[SCN-INVENTORY-POS-144] POST /api/inventory/stock-in'
-  module: inventory
-  tags:
-  - inventory
-  - contract_positive
-  - priority:high
-  - risk:mutating
-  - deterministic
-  source: rule-generated
-  status: proposed
-  request:
-    method: POST
-    url: '{{base_url}}/api/inventory/stock-in'
-    headers:
-      Content-Type: application/json
-    body:
-      productId: 1
-      movementType: sample_movementType
-      quantity: 1
-      reason: sample_reason
-    body_type: json
-  assertions:
-  - type: status
-    equals: 201
 - name: '[SCN-INVENTORY-SCH-145] POST /api/inventory/stock-in'
   module: inventory
   tags:
@@ -1443,30 +1270,6 @@ tests:
         createdAt:
           type: string
       _original_ref: '#/components/schemas/RecentMovement'
-- name: '[SCN-INVENTORY-POS-148] POST /api/inventory/adjust'
-  module: inventory
-  tags:
-  - inventory
-  - contract_positive
-  - priority:high
-  - risk:mutating
-  - deterministic
-  source: rule-generated
-  status: proposed
-  request:
-    method: POST
-    url: '{{base_url}}/api/inventory/adjust'
-    headers:
-      Content-Type: application/json
-    body:
-      productId: 1
-      movementType: sample_movementType
-      quantity: 1
-      reason: sample_reason
-    body_type: json
-  assertions:
-  - type: status
-    equals: 201
 - name: '[SCN-INVENTORY-SCH-149] POST /api/inventory/adjust'
   module: inventory
   tags:

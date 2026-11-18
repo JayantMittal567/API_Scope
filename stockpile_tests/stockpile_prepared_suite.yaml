@@ -1,0 +1,2232 @@
+name: 'Prepared Suite: OpenAPI definition'
+module: openapi-definition
+tags:
+- prepared-suite
+- fixture-resolved
+tests:
+- name: '[SCN-SURPLUS_LISTINGS-RES-003] GET /api/surplus-listings/999999'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - resource_existence
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings/999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-SURPLUS_LISTINGS-RES-007] PUT /api/surplus-listings/999999'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/surplus-listings/999999'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-SUPPLIERS-RES-011] GET /api/suppliers/999999'
+  module: suppliers
+  tags:
+  - suppliers
+  - resource_existence
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/suppliers/999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-SUPPLIERS-RES-015] PUT /api/suppliers/999999'
+  module: suppliers
+  tags:
+  - suppliers
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/suppliers/999999'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-SUPPLIERS-RES-019] DELETE /api/suppliers/999999'
+  module: suppliers
+  tags:
+  - suppliers
+  - resource_existence
+  - priority:medium
+  - risk:destructive
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/suppliers/999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-STOCK_AUDITS-RES-023] PUT /api/stock-audits/999999/items/999999'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/stock-audits/999999/items/999999'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-PURCHASE_ORDERS-RES-027] GET /api/purchase-orders/999999'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - resource_existence
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/purchase-orders/999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-PURCHASE_ORDERS-RES-031] PUT /api/purchase-orders/999999'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/purchase-orders/999999'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-PRODUCTS-RES-036] PUT /api/products/999999/supplier'
+  module: products
+  tags:
+  - products
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/999999/supplier'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-PRODUCTS-RES-040] DELETE /api/products/999999/supplier'
+  module: products
+  tags:
+  - products
+  - resource_existence
+  - priority:medium
+  - risk:destructive
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/products/999999/supplier'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-PRODUCTS-RES-043] GET /api/products/999999'
+  module: products
+  tags:
+  - products
+  - resource_existence
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/products/999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-PRODUCTS-RES-047] PUT /api/products/999999'
+  module: products
+  tags:
+  - products
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/products/999999'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-PRODUCTS-RES-051] DELETE /api/products/999999'
+  module: products
+  tags:
+  - products
+  - resource_existence
+  - priority:medium
+  - risk:destructive
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/products/999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-EXPENSES-RES-055] PUT /api/expenses/999999'
+  module: expenses
+  tags:
+  - expenses
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: PUT
+    url: '{{base_url}}/api/expenses/999999'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-EXPENSES-RES-059] DELETE /api/expenses/999999'
+  module: expenses
+  tags:
+  - expenses
+  - resource_existence
+  - priority:medium
+  - risk:destructive
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: DELETE
+    url: '{{base_url}}/api/expenses/999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-SURPLUS_LISTINGS-POS-060] GET /api/surplus-listings'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SURPLUS_LISTINGS-SCH-061] GET /api/surplus-listings'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SURPLUS_LISTINGS-SCH-063] POST /api/surplus-listings'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-SURPLUS_LISTINGS-SEC-064] POST /api/surplus-listings'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - auth_security
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 401
+- name: '[SCN-SURPLUS_LISTINGS-ERR-065] POST /api/surplus-listings'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - error_handling
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 400
+- name: '[SCN-SURPLUS_LISTINGS-RES-069] POST /api/surplus-listings/999999/sell'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings/999999/sell'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-SURPLUS_LISTINGS-RES-074] POST /api/surplus-listings/999999/cancel'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings/999999/cancel'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-SUPPLIERS-POS-076] GET /api/suppliers'
+  module: suppliers
+  tags:
+  - suppliers
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/suppliers'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SUPPLIERS-SCH-077] GET /api/suppliers'
+  module: suppliers
+  tags:
+  - suppliers
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/suppliers'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SUPPLIERS-POS-078] POST /api/suppliers'
+  module: suppliers
+  tags:
+  - suppliers
+  - contract_positive
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers'
+    headers:
+      Content-Type: application/json
+    body:
+      name: sample_name
+      contactPerson: sample_contactPerson
+      phone: sample_phone
+      email: sample_email
+      address: sample_address
+      notes: sample_notes
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-SUPPLIERS-SCH-079] POST /api/suppliers'
+  module: suppliers
+  tags:
+  - suppliers
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-SUPPLIERS-SEC-080] POST /api/suppliers'
+  module: suppliers
+  tags:
+  - suppliers
+  - auth_security
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 401
+- name: '[SCN-SUPPLIERS-ERR-081] POST /api/suppliers'
+  module: suppliers
+  tags:
+  - suppliers
+  - error_handling
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 400
+- name: '[SCN-STOCK_AUDITS-POS-082] GET /api/stock-audits'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/stock-audits'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-STOCK_AUDITS-SCH-083] GET /api/stock-audits'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/stock-audits'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-STOCK_AUDITS-SCH-085] POST /api/stock-audits'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-STOCK_AUDITS-SEC-086] POST /api/stock-audits'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - auth_security
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 401
+- name: '[SCN-STOCK_AUDITS-ERR-087] POST /api/stock-audits'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - error_handling
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 400
+- name: '[SCN-STOCK_AUDITS-RES-091] POST /api/stock-audits/999999/complete'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits/999999/complete'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-STOCK_AUDITS-RES-095] POST /api/stock-audits/999999/cancel'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits/999999/cancel'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-SALES-POS-097] GET /api/sales'
+  module: sales
+  tags:
+  - sales
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SALES-SCH-098] GET /api/sales'
+  module: sales
+  tags:
+  - sales
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SALES-POS-099] POST /api/sales'
+  module: sales
+  tags:
+  - sales
+  - contract_positive
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales'
+    headers:
+      Content-Type: application/json
+    body:
+      items: []
+      discountPaise: 1
+      discountPercent: 9.99
+      paymentMethod: sample_paymentMethod
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-SALES-SCH-100] POST /api/sales'
+  module: sales
+  tags:
+  - sales
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-SALES-SEC-101] POST /api/sales'
+  module: sales
+  tags:
+  - sales
+  - auth_security
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 401
+- name: '[SCN-SALES-ERR-102] POST /api/sales'
+  module: sales
+  tags:
+  - sales
+  - error_handling
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 400
+- name: '[SCN-SALES-RES-106] POST /api/sales/999999/cancel'
+  module: sales
+  tags:
+  - sales
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales/999999/cancel'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-PURCHASE_ORDERS-POS-108] GET /api/purchase-orders'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/purchase-orders'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-PURCHASE_ORDERS-SCH-109] GET /api/purchase-orders'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/purchase-orders'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-PURCHASE_ORDERS-SCH-111] POST /api/purchase-orders'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-PURCHASE_ORDERS-SEC-112] POST /api/purchase-orders'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - auth_security
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 401
+- name: '[SCN-PURCHASE_ORDERS-ERR-113] POST /api/purchase-orders'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - error_handling
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 400
+- name: '[SCN-PURCHASE_ORDERS-RES-117] POST /api/purchase-orders/999999/receive'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders/999999/receive'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-PURCHASE_ORDERS-RES-122] POST /api/purchase-orders/999999/place'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders/999999/place'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-PURCHASE_ORDERS-RES-126] POST /api/purchase-orders/999999/cancel'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - resource_existence
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders/999999/cancel'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-PRODUCTS-POS-128] GET /api/products'
+  module: products
+  tags:
+  - products
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/products'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-PRODUCTS-SCH-129] GET /api/products'
+  module: products
+  tags:
+  - products
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/products'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-PRODUCTS-SCH-131] POST /api/products'
+  module: products
+  tags:
+  - products
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-PRODUCTS-SEC-132] POST /api/products'
+  module: products
+  tags:
+  - products
+  - auth_security
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 401
+- name: '[SCN-PRODUCTS-ERR-133] POST /api/products'
+  module: products
+  tags:
+  - products
+  - error_handling
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 400
+- name: '[SCN-MOVEMENTS-POS-134] GET /api/movements'
+  module: movements
+  tags:
+  - movements
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/movements'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-MOVEMENTS-SCH-135] GET /api/movements'
+  module: movements
+  tags:
+  - movements
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/movements'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-MOVEMENTS-SCH-137] POST /api/movements'
+  module: movements
+  tags:
+  - movements
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/movements'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-MOVEMENTS-SEC-138] POST /api/movements'
+  module: movements
+  tags:
+  - movements
+  - auth_security
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/movements'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 401
+- name: '[SCN-MOVEMENTS-ERR-139] POST /api/movements'
+  module: movements
+  tags:
+  - movements
+  - error_handling
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/movements'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 400
+- name: '[SCN-INVENTORY-SCH-141] POST /api/inventory/stock-out'
+  module: inventory
+  tags:
+  - inventory
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-out'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-INVENTORY-SEC-142] POST /api/inventory/stock-out'
+  module: inventory
+  tags:
+  - inventory
+  - auth_security
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-out'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 401
+- name: '[SCN-INVENTORY-ERR-143] POST /api/inventory/stock-out'
+  module: inventory
+  tags:
+  - inventory
+  - error_handling
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-out'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 400
+- name: '[SCN-INVENTORY-SCH-145] POST /api/inventory/stock-in'
+  module: inventory
+  tags:
+  - inventory
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-in'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-INVENTORY-SEC-146] POST /api/inventory/stock-in'
+  module: inventory
+  tags:
+  - inventory
+  - auth_security
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-in'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 401
+- name: '[SCN-INVENTORY-ERR-147] POST /api/inventory/stock-in'
+  module: inventory
+  tags:
+  - inventory
+  - error_handling
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/stock-in'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 400
+- name: '[SCN-INVENTORY-SCH-149] POST /api/inventory/adjust'
+  module: inventory
+  tags:
+  - inventory
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/adjust'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-INVENTORY-SEC-150] POST /api/inventory/adjust'
+  module: inventory
+  tags:
+  - inventory
+  - auth_security
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/adjust'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 401
+- name: '[SCN-INVENTORY-ERR-151] POST /api/inventory/adjust'
+  module: inventory
+  tags:
+  - inventory
+  - error_handling
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/inventory/adjust'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 400
+- name: '[SCN-EXPENSES-POS-152] GET /api/expenses'
+  module: expenses
+  tags:
+  - expenses
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/expenses'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-EXPENSES-SCH-153] GET /api/expenses'
+  module: expenses
+  tags:
+  - expenses
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/expenses'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-EXPENSES-POS-154] POST /api/expenses'
+  module: expenses
+  tags:
+  - expenses
+  - contract_positive
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/expenses'
+    headers:
+      Content-Type: application/json
+    body:
+      category: sample_category
+      amountPaise: 1
+      description: sample_description
+      date: sample_date
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-EXPENSES-SCH-155] POST /api/expenses'
+  module: expenses
+  tags:
+  - expenses
+  - response_schema
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/expenses'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 201
+- name: '[SCN-EXPENSES-SEC-156] POST /api/expenses'
+  module: expenses
+  tags:
+  - expenses
+  - auth_security
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/expenses'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 401
+- name: '[SCN-EXPENSES-ERR-157] POST /api/expenses'
+  module: expenses
+  tags:
+  - expenses
+  - error_handling
+  - priority:medium
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: POST
+    url: '{{base_url}}/api/expenses'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 400
+- name: '[SCN-SURPLUS_LISTINGS-POS-158] GET /api/surplus-listings/summary'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SURPLUS_LISTINGS-SCH-159] GET /api/surplus-listings/summary'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SURPLUS_LISTINGS-POS-160] GET /api/surplus-listings/suggestions'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings/suggestions'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SURPLUS_LISTINGS-SCH-161] GET /api/surplus-listings/suggestions'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings/suggestions'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SUPPLIERS-RES-164] GET /api/suppliers/999999/products'
+  module: suppliers
+  tags:
+  - suppliers
+  - resource_existence
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/suppliers/999999/products'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-STOCK_AUDITS-RES-167] GET /api/stock-audits/999999'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - resource_existence
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/stock-audits/999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-STOCK_AUDITS-POS-168] GET /api/stock-audits/summary'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/stock-audits/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-STOCK_AUDITS-SCH-169] GET /api/stock-audits/summary'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/stock-audits/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SALES-RES-172] GET /api/sales/999999'
+  module: sales
+  tags:
+  - sales
+  - resource_existence
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales/999999'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-SALES-POS-173] GET /api/sales/trend'
+  module: sales
+  tags:
+  - sales
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales/trend'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SALES-SCH-174] GET /api/sales/trend'
+  module: sales
+  tags:
+  - sales
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales/trend'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SALES-POS-175] GET /api/sales/summary'
+  module: sales
+  tags:
+  - sales
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SALES-SCH-176] GET /api/sales/summary'
+  module: sales
+  tags:
+  - sales
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-POS-177] GET /api/reports/summary'
+  module: reports
+  tags:
+  - reports
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-SCH-178] GET /api/reports/summary'
+  module: reports
+  tags:
+  - reports
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/summary'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-POS-179] GET /api/reports/sales'
+  module: reports
+  tags:
+  - reports
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-SCH-180] GET /api/reports/sales'
+  module: reports
+  tags:
+  - reports
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-POS-181] GET /api/reports/purchases'
+  module: reports
+  tags:
+  - reports
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/purchases'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-SCH-182] GET /api/reports/purchases'
+  module: reports
+  tags:
+  - reports
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/purchases'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-POS-183] GET /api/reports/profit-loss'
+  module: reports
+  tags:
+  - reports
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/profit-loss'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-SCH-184] GET /api/reports/profit-loss'
+  module: reports
+  tags:
+  - reports
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/profit-loss'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-POS-185] GET /api/reports/inventory-loss'
+  module: reports
+  tags:
+  - reports
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/inventory-loss'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-REPORTS-SCH-186] GET /api/reports/inventory-loss'
+  module: reports
+  tags:
+  - reports
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/reports/inventory-loss'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-PRODUCTS-RES-189] GET /api/products/999999/movements'
+  module: products
+  tags:
+  - products
+  - resource_existence
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/products/999999/movements'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 404
+- name: '[SCN-INTELLIGENCE-POS-190] GET /api/intelligence'
+  module: intelligence
+  tags:
+  - intelligence
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/intelligence'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-INTELLIGENCE-SCH-191] GET /api/intelligence'
+  module: intelligence
+  tags:
+  - intelligence
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/intelligence'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-INTELLIGENCE-POS-192] GET /api/intelligence/sales'
+  module: intelligence
+  tags:
+  - intelligence
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/intelligence/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-INTELLIGENCE-SCH-193] GET /api/intelligence/sales'
+  module: intelligence
+  tags:
+  - intelligence
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/intelligence/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-HEALTH-POS-194] GET /api/health'
+  module: health
+  tags:
+  - health
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/health'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-HEALTH-SCH-195] GET /api/health'
+  module: health
+  tags:
+  - health
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/health'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-DASHBOARD-POS-196] GET /api/dashboard'
+  module: dashboard
+  tags:
+  - dashboard
+  - contract_positive
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/dashboard'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-DASHBOARD-SCH-197] GET /api/dashboard'
+  module: dashboard
+  tags:
+  - dashboard
+  - response_schema
+  - priority:medium
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: approved
+  request:
+    method: GET
+    url: '{{base_url}}/api/dashboard'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SURPLUS_LISTINGS-CONS-198] POST /api/surplus-listings'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - consistency_check
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/surplus-listings'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SURPLUS_LISTINGS-CONS-198] GET /api/surplus-listings'
+  module: surplus_listings
+  tags:
+  - surplus_listings
+  - consistency_check
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: GET
+    url: '{{base_url}}/api/surplus-listings'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SUPPLIERS-CONS-199] POST /api/suppliers'
+  module: suppliers
+  tags:
+  - suppliers
+  - consistency_check
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/suppliers'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SUPPLIERS-CONS-199] GET /api/suppliers'
+  module: suppliers
+  tags:
+  - suppliers
+  - consistency_check
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: GET
+    url: '{{base_url}}/api/suppliers'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-STOCK_AUDITS-CONS-200] POST /api/stock-audits'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - consistency_check
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/stock-audits'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-STOCK_AUDITS-CONS-200] GET /api/stock-audits'
+  module: stock_audits
+  tags:
+  - stock_audits
+  - consistency_check
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: GET
+    url: '{{base_url}}/api/stock-audits'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SALES-CONS-201] POST /api/sales'
+  module: sales
+  tags:
+  - sales
+  - consistency_check
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/sales'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-SALES-CONS-201] GET /api/sales'
+  module: sales
+  tags:
+  - sales
+  - consistency_check
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: GET
+    url: '{{base_url}}/api/sales'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-PURCHASE_ORDERS-CONS-202] POST /api/purchase-orders'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - consistency_check
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/purchase-orders'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-PURCHASE_ORDERS-CONS-202] GET /api/purchase-orders'
+  module: purchase_orders
+  tags:
+  - purchase_orders
+  - consistency_check
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: GET
+    url: '{{base_url}}/api/purchase-orders'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-PRODUCTS-CONS-203] POST /api/products'
+  module: products
+  tags:
+  - products
+  - consistency_check
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/products'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-PRODUCTS-CONS-203] GET /api/products'
+  module: products
+  tags:
+  - products
+  - consistency_check
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: GET
+    url: '{{base_url}}/api/products'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-MOVEMENTS-CONS-204] POST /api/movements'
+  module: movements
+  tags:
+  - movements
+  - consistency_check
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/movements'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-MOVEMENTS-CONS-204] GET /api/movements'
+  module: movements
+  tags:
+  - movements
+  - consistency_check
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: GET
+    url: '{{base_url}}/api/movements'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-EXPENSES-CONS-205] POST /api/expenses'
+  module: expenses
+  tags:
+  - expenses
+  - consistency_check
+  - priority:high
+  - risk:mutating
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: POST
+    url: '{{base_url}}/api/expenses'
+    headers:
+      Content-Type: application/json
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200
+- name: '[SCN-EXPENSES-CONS-205] GET /api/expenses'
+  module: expenses
+  tags:
+  - expenses
+  - consistency_check
+  - priority:high
+  - risk:read_only
+  - fixture_resolved
+  source: rule-generated
+  status: proposed
+  request:
+    method: GET
+    url: '{{base_url}}/api/expenses'
+    body_type: json
+  assertions:
+  - type: status
+    equals: 200

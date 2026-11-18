@@ -1,0 +1,1010 @@
+manifest_version: 1.0.0
+target_app: ApiScope Benchmark Reference API v1.0.0
+execution_timestamp: '2026-11-18T14:56:49Z'
+duration_sec: 1.742
+environment_info:
+  python_version: 3.13.14
+  platform: win32
+  manifest_version: 1.0.0
+  evaluation_mode: all
+  total_benchmark_cases: '32'
+metrics:
+  total_cases: 32
+  defect_cases_count: 16
+  clean_cases_count: 16
+  tp: 16
+  fp: 0
+  fn: 0
+  tn: 16
+  precision: 1.0
+  recall: 1.0
+  f1_score: 1.0
+  false_positive_rate: 0.0
+  confusion_matrix:
+    true_positives: 16
+    false_positives: 0
+    false_negatives: 0
+    true_negatives: 16
+    unsupported: 0
+    inconclusive: 0
+  scores:
+    precision: 1.0
+    recall: 1.0
+    f1_score: 1.0
+    false_positive_rate: 0.0
+  deduplication:
+    total_raw_findings: 38
+    deduplicated_findings: 21
+    duplicate_findings_count: 21
+    deduplication_rate: 0.5526
+  classification_accuracy:
+    misclassifications_count: 0
+    misclassification_rate: 0.0
+  per_category:
+    A_RESPONSE_SCHEMA_VIOLATION:
+      category: A_RESPONSE_SCHEMA_VIOLATION
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    B_INCORRECT_HTTP_STATUS:
+      category: B_INCORRECT_HTTP_STATUS
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    C_200_ERROR_ENVELOPE:
+      category: C_200_ERROR_ENVELOPE
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    D_MISSING_REQUIRED_DATA:
+      category: D_MISSING_REQUIRED_DATA
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    E_BROKEN_CREATION_SIDE_EFFECT:
+      category: E_BROKEN_CREATION_SIDE_EFFECT
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    F_DELETE_WITHOUT_REMOVAL:
+      category: F_DELETE_WITHOUT_REMOVAL
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    G_BUSINESS_INVARIANT_VIOLATION:
+      category: G_BUSINESS_INVARIANT_VIOLATION
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    H_BROKEN_STATE_TRANSITION:
+      category: H_BROKEN_STATE_TRANSITION
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    I_ACCESS_CONTROL_CONTRADICTION:
+      category: I_ACCESS_CONTROL_CONTRADICTION
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    J_CONTRACT_HEADER_CONTRADICTION:
+      category: J_CONTRACT_HEADER_CONTRADICTION
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    K_REPEATABLE_LATENCY_REGRESSION:
+      category: K_REPEATABLE_LATENCY_REGRESSION
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    L_FLAKY_BEHAVIOUR:
+      category: L_FLAKY_BEHAVIOUR
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    M_SOURCE_SPEC_RUNTIME_INCONSISTENCY:
+      category: M_SOURCE_SPEC_RUNTIME_INCONSISTENCY
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    N_OBSOLETE_ENDPOINT:
+      category: N_OBSOLETE_ENDPOINT
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    O_MULTIPLE_SIGNALS_SINGLE_DEFECT:
+      category: O_MULTIPLE_SIGNALS_SINGLE_DEFECT
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    P_FIXTURE_PRODUCER_FAILURE:
+      category: P_FIXTURE_PRODUCER_FAILURE
+      total_cases: 1
+      tp: 1
+      fp: 0
+      fn: 0
+      tn: 0
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_COMPLIANT_RESPONSE:
+      category: CLEAN_COMPLIANT_RESPONSE
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_EMPTY_COLLECTION:
+      category: CLEAN_EMPTY_COLLECTION
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_204_NO_CONTENT:
+      category: CLEAN_204_NO_CONTENT
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_HANDLED_404_NOT_FOUND:
+      category: CLEAN_HANDLED_404_NOT_FOUND
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_EXPECTED_401_UNAUTHORIZED:
+      category: CLEAN_EXPECTED_401_UNAUTHORIZED
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_UNTESTED_ENDPOINT:
+      category: CLEAN_UNTESTED_ENDPOINT
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_AUTHORIZED_MUTATION:
+      category: CLEAN_AUTHORIZED_MUTATION
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_VERIFIED_SIDE_EFFECT:
+      category: CLEAN_VERIFIED_SIDE_EFFECT
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_PAGINATION_AND_OPTIONALS:
+      category: CLEAN_PAGINATION_AND_OPTIONALS
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_NORMAL_TIMING_VARIATION:
+      category: CLEAN_NORMAL_TIMING_VARIATION
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_INSUFFICIENT_LATENCY_SAMPLES:
+      category: CLEAN_INSUFFICIENT_LATENCY_SAMPLES
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_DRY_RUN_POLICY_BLOCK:
+      category: CLEAN_DRY_RUN_POLICY_BLOCK
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_MISSING_TELEMETRY:
+      category: CLEAN_MISSING_TELEMETRY
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_EXPECTED_403_FORBIDDEN:
+      category: CLEAN_EXPECTED_403_FORBIDDEN
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_CONSISTENT_IDEMPOTENT_GET:
+      category: CLEAN_CONSISTENT_IDEMPOTENT_GET
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+    CLEAN_SOURCE_SPEC_MATCH:
+      category: CLEAN_SOURCE_SPEC_MATCH
+      total_cases: 1
+      tp: 0
+      fp: 0
+      fn: 0
+      tn: 1
+      unsupported: 0
+      inconclusive: 0
+      precision: 1.0
+      recall: 1.0
+      f1_score: 1.0
+stockpile_validation:
+  total_documented_operations: 60
+  readonly_operations_count: 30
+  mutating_operations_count: 30
+  smoke_tests_passed: 8
+  extended_get_tests_passed: 30
+  mutating_tests_executed: 0
+  unverified_mutating_operations_count: 30
+  read_only_coverage_pct: 50.0
+  honest_reporting_verified: true
+  fabricated_mutations_count: 0
+  fabricated_application_defects_count: 0
+  operations_breakdown:
+    get_operations: 30
+    mutating_operations: 30
+  verified_executions:
+    smoke_tests_passed: 8
+    extended_get_tests_passed: 30
+    mutating_tests_executed: 0
+  coverage_metrics:
+    unverified_mutating_operations_count: 30
+    read_only_coverage_pct: 50.0
+  integrity_checks:
+    honest_reporting_verified: true
+    fabricated_mutations_count: 0
+    fabricated_application_defects_count: 0
+  evidence_artifacts_present:
+  - stockpile_contract_quality_report.json
+  - stockpile_readonly_results.json
+  - stockpile_extended_results.json
+  - stockpile_preparation_report.json
+  - stockpile_openapi.yaml
+  - stockpile_test_plan.json
+  - stockpile_compilation_report.json
+  - stockpile_compiled_suite.yaml
+  - stockpile_prepared_suite.yaml
+  notes:
+  - 'Contract verified: 60 total operations (30 GET, 30 mutating).'
+  - 'Smoke evaluation verified: 8 read-only tests passed.'
+  - 'Extended GET evaluation verified: 30 operations passed (0 failed).'
+  - 'Preparation analysis: 14 unverified entity references identified for mutations;
+    8 stateful workflows planned.'
+  - 'Integrity confirmed: 0 live mutations executed against unisolated StockPile target.'
+  - 'Honest coverage: 50.0% (30/60 operations). 30 mutating operations honestly recorded
+    as unexecuted/unverified.'
+case_results:
+- case_id: BM-DEF-A01
+  title: Product creation returns string price violating numeric schema
+  is_defect: true
+  category: A_RESPONSE_SCHEMA_VIOLATION
+  expected_verdict: VERIFIED_CONTRACT_MISMATCH
+  classification: TRUE_POSITIVE
+  detected_verdict: VERIFIED_CONTRACT_MISMATCH
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  findings_count: 2
+  duplicate_count: 1
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 2 corroborating finding(s): VERIFIED_CONTRACT_MISMATCH,
+    CONTRACT_OR_RESPONSE_MISMATCH.'
+- case_id: BM-DEF-B01
+  title: Order creation returns HTTP 200 instead of documented 201 Created
+  is_defect: true
+  category: B_INCORRECT_HTTP_STATUS
+  expected_verdict: VERIFIED_CONTRACT_MISMATCH
+  classification: TRUE_POSITIVE
+  detected_verdict: VERIFIED_CONTRACT_MISMATCH
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  findings_count: 2
+  duplicate_count: 1
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 2 corroborating finding(s): VERIFIED_CONTRACT_MISMATCH,
+    CONTRACT_OR_RESPONSE_MISMATCH.'
+- case_id: BM-DEF-C01
+  title: Invoice sync returns HTTP 200 containing swallowed application error envelope
+  is_defect: true
+  category: C_200_ERROR_ENVELOPE
+  expected_verdict: VERIFIED_SEMANTIC_MISMATCH
+  classification: TRUE_POSITIVE
+  detected_verdict: VERIFIED_CONTRACT_MISMATCH
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  - S4-HDR-[BM-DEF-C01] Invoice sync returns HTTP 200 containing swallowed application
+    error envelope-x-apiscope-warning
+  - S4-BODY-ERR-[BM-DEF-C01] Invoice sync returns HTTP 200 containing swallowed application
+    error envelope
+  findings_count: 4
+  duplicate_count: 3
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 4 corroborating finding(s): VERIFIED_CONTRACT_MISMATCH,
+    CONTRACT_OR_RESPONSE_MISMATCH, S4_SUSPICIOUS_2XX.'
+- case_id: BM-DEF-D01
+  title: Product retrieval omits documented required identifier and name fields
+  is_defect: true
+  category: D_MISSING_REQUIRED_DATA
+  expected_verdict: VERIFIED_CONTRACT_MISMATCH
+  classification: TRUE_POSITIVE
+  detected_verdict: VERIFIED_CONTRACT_MISMATCH
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  findings_count: 2
+  duplicate_count: 1
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 2 corroborating finding(s): VERIFIED_CONTRACT_MISMATCH,
+    CONTRACT_OR_RESPONSE_MISMATCH.'
+- case_id: BM-DEF-E01
+  title: Product creation returns 201 but resource is absent on subsequent GET
+  is_defect: true
+  category: E_BROKEN_CREATION_SIDE_EFFECT
+  expected_verdict: VERIFIED_SEMANTIC_MISMATCH
+  classification: TRUE_POSITIVE
+  detected_verdict: VERIFIED_CONTRACT_MISMATCH
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  findings_count: 2
+  duplicate_count: 1
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 2 corroborating finding(s): VERIFIED_CONTRACT_MISMATCH,
+    CONTRACT_OR_RESPONSE_MISMATCH.'
+- case_id: BM-DEF-F01
+  title: Product deletion returns success without removing target resource
+  is_defect: true
+  category: F_DELETE_WITHOUT_REMOVAL
+  expected_verdict: VERIFIED_SEMANTIC_MISMATCH
+  classification: TRUE_POSITIVE
+  detected_verdict: VERIFIED_CONTRACT_MISMATCH
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  findings_count: 2
+  duplicate_count: 1
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 2 corroborating finding(s): VERIFIED_CONTRACT_MISMATCH,
+    CONTRACT_OR_RESPONSE_MISMATCH.'
+- case_id: BM-DEF-G01
+  title: Order creation permits negative quantity violating business invariant
+  is_defect: true
+  category: G_BUSINESS_INVARIANT_VIOLATION
+  expected_verdict: VERIFIED_SEMANTIC_MISMATCH
+  classification: TRUE_POSITIVE
+  detected_verdict: VERIFIED_CONTRACT_MISMATCH
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  findings_count: 2
+  duplicate_count: 1
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 2 corroborating finding(s): VERIFIED_CONTRACT_MISMATCH,
+    CONTRACT_OR_RESPONSE_MISMATCH.'
+- case_id: BM-DEF-H01
+  title: Order cancellation allows cancelling already shipped order
+  is_defect: true
+  category: H_BROKEN_STATE_TRANSITION
+  expected_verdict: VERIFIED_SEMANTIC_MISMATCH
+  classification: TRUE_POSITIVE
+  detected_verdict: VERIFIED_CONTRACT_MISMATCH
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  findings_count: 2
+  duplicate_count: 1
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 2 corroborating finding(s): VERIFIED_CONTRACT_MISMATCH,
+    CONTRACT_OR_RESPONSE_MISMATCH.'
+- case_id: BM-DEF-I01
+  title: Protected user profile accessible without authentication
+  is_defect: true
+  category: I_ACCESS_CONTROL_CONTRADICTION
+  expected_verdict: VERIFIED_CONTRACT_MISMATCH
+  classification: TRUE_POSITIVE
+  detected_verdict: VERIFIED_CONTRACT_MISMATCH
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  findings_count: 2
+  duplicate_count: 1
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 2 corroborating finding(s): VERIFIED_CONTRACT_MISMATCH,
+    CONTRACT_OR_RESPONSE_MISMATCH.'
+- case_id: BM-DEF-J01
+  title: Health endpoint returns text/plain contradicting application/json declaration
+  is_defect: true
+  category: J_CONTRACT_HEADER_CONTRADICTION
+  expected_verdict: VERIFIED_CONTRACT_MISMATCH
+  classification: TRUE_POSITIVE
+  detected_verdict: VERIFIED_CONTRACT_MISMATCH
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  findings_count: 2
+  duplicate_count: 1
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 2 corroborating finding(s): VERIFIED_CONTRACT_MISMATCH,
+    CONTRACT_OR_RESPONSE_MISMATCH.'
+- case_id: BM-DEF-K01
+  title: Recommendations endpoint exhibits severe latency regression over 5 samples
+  is_defect: true
+  category: K_REPEATABLE_LATENCY_REGRESSION
+  expected_verdict: SUSPECTED_APPLICATION_DEFECT
+  classification: TRUE_POSITIVE
+  detected_verdict: S3_LATENCY_DRIFT
+  matched_finding_ids:
+  - S3-REGRESSION-GET /api/products/recommendations
+  findings_count: 1
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 1 corroborating finding(s): S3_LATENCY_DRIFT.'
+- case_id: BM-DEF-L01
+  title: Status endpoint exhibits non-deterministic flakiness across identical calls
+  is_defect: true
+  category: L_FLAKY_BEHAVIOUR
+  expected_verdict: SUSPECTED_APPLICATION_DEFECT
+  classification: TRUE_POSITIVE
+  detected_verdict: SUSPECTED_APPLICATION_DEFECT
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  - S8-INCONSISTENT-http://127.0.0.1:8000/api/flaky-status
+  findings_count: 3
+  duplicate_count: 2
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 3 corroborating finding(s): SUSPECTED_APPLICATION_DEFECT,
+    SUSPECTED_APPLICATION_FAILURE, S8_INCONSISTENT_OBSERVATION.'
+- case_id: BM-DEF-M01
+  title: Contracted streaming endpoint missing from implementation returns 404 at
+    runtime
+  is_defect: true
+  category: M_SOURCE_SPEC_RUNTIME_INCONSISTENCY
+  expected_verdict: VERIFIED_CONTRACT_MISMATCH
+  classification: TRUE_POSITIVE
+  detected_verdict: VERIFIED_CONTRACT_MISMATCH
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  findings_count: 2
+  duplicate_count: 1
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 2 corroborating finding(s): VERIFIED_CONTRACT_MISMATCH,
+    CONTRACT_OR_RESPONSE_MISMATCH.'
+- case_id: BM-DEF-N01
+  title: Legacy archive endpoint is deprecated in spec and uncalled in access logs
+  is_defect: true
+  category: N_OBSOLETE_ENDPOINT
+  expected_verdict: SUSPECTED_APPLICATION_DEFECT
+  classification: TRUE_POSITIVE
+  detected_verdict: DEPRECATED_OR_OBSOLETE_CANDIDATE
+  matched_finding_ids:
+  - EP-0016
+  findings_count: 1
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 1 corroborating finding(s): DEPRECATED_OR_OBSOLETE_CANDIDATE.'
+- case_id: BM-DEF-O01
+  title: Failed billing sync triggers multiple signals for one underlying defect
+  is_defect: true
+  category: O_MULTIPLE_SIGNALS_SINGLE_DEFECT
+  expected_verdict: VERIFIED_SEMANTIC_MISMATCH
+  classification: TRUE_POSITIVE
+  detected_verdict: VERIFIED_CONTRACT_MISMATCH
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  - S1-LOG-ERR-1
+  - S4-HDR-[BM-DEF-O01] Failed billing sync triggers multiple signals for one underlying
+    defect-x-apiscope-warning
+  - S4-BODY-ERR-[BM-DEF-O01] Failed billing sync triggers multiple signals for one
+    underlying defect
+  findings_count: 5
+  duplicate_count: 4
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Detected planted defect with 5 corroborating finding(s): VERIFIED_CONTRACT_MISMATCH,
+    CONTRACT_OR_RESPONSE_MISMATCH, S1_LOG_ERROR.'
+- case_id: BM-DEF-P01
+  title: Prerequisite setup failure causes downstream skips correctly attributed to
+    fixture
+  is_defect: true
+  category: P_FIXTURE_PRODUCER_FAILURE
+  expected_verdict: FIXTURE_OR_DEPENDENCY_ISSUE
+  classification: TRUE_POSITIVE
+  detected_verdict: SUSPECTED_APPLICATION_DEFECT
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  findings_count: 2
+  duplicate_count: 1
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Correctly diagnosed fixture/setup issue rather than blaming application.
+- case_id: BM-CLN-01
+  title: Clean compliant product details retrieval
+  is_defect: false
+  category: CLEAN_COMPLIANT_RESPONSE
+  expected_verdict: PASS_WITHIN_VERIFIED_COVERAGE
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (Endpoint returns
+    200 OK with valid product schema and data.).
+- case_id: BM-CLN-02
+  title: Clean empty collection response for non-matching query
+  is_defect: false
+  category: CLEAN_EMPTY_COLLECTION
+  expected_verdict: PASS_WITHIN_VERIFIED_COVERAGE
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (Filtering products
+    by non-existent category returns 200 OK with empty array [].).
+- case_id: BM-CLN-03
+  title: Clean HTTP 204 No Content response on entity touch
+  is_defect: false
+  category: CLEAN_204_NO_CONTENT
+  expected_verdict: PASS_WITHIN_VERIFIED_COVERAGE
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (Touching a product
+    timestamp returns 204 No Content with empty body.).
+- case_id: BM-CLN-04
+  title: Properly handled missing entity ID returns documented 404
+  is_defect: false
+  category: CLEAN_HANDLED_404_NOT_FOUND
+  expected_verdict: PASS_WITHIN_VERIFIED_COVERAGE
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (Requesting a
+    non-existent product ID (e.g. 999999) must return documented 404 Not Found.).
+- case_id: BM-CLN-05
+  title: Expected 401 Unauthorized for unauthenticated access on protected route
+  is_defect: false
+  category: CLEAN_EXPECTED_401_UNAUTHORIZED
+  expected_verdict: PASS_WITHIN_VERIFIED_COVERAGE
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (Protected endpoint
+    must reject unauthenticated request with 401 Unauthorized.).
+- case_id: BM-CLN-06
+  title: Documented healthy but untested endpoint
+  is_defect: false
+  category: CLEAN_UNTESTED_ENDPOINT
+  expected_verdict: NOT_TESTED
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (Endpoints declared
+    in OpenAPI that have not yet been executed must be reported as NOT_TESTED, not
+    as defects.).
+- case_id: BM-CLN-07
+  title: Properly authorized product creation returns 201 Created
+  is_defect: false
+  category: CLEAN_AUTHORIZED_MUTATION
+  expected_verdict: PASS_WITHIN_VERIFIED_COVERAGE
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (Valid product
+    creation payload with auth token returns 201 Created with valid schema.).
+- case_id: BM-CLN-08
+  title: Successful verified product creation side effect
+  is_defect: false
+  category: CLEAN_VERIFIED_SIDE_EFFECT
+  expected_verdict: PASS_WITHIN_VERIFIED_COVERAGE
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (Product creation
+    successfully persists entity and follow-up GET confirms its existence.).
+- case_id: BM-CLN-09
+  title: Valid pagination parameters and optional fields handling
+  is_defect: false
+  category: CLEAN_PAGINATION_AND_OPTIONALS
+  expected_verdict: PASS_WITHIN_VERIFIED_COVERAGE
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (Request with
+    page=1&limit=2 returns paginated collection with valid optional fields.).
+- case_id: BM-CLN-10
+  title: Normal timing variation within statistical tolerance
+  is_defect: false
+  category: CLEAN_NORMAL_TIMING_VARIATION
+  expected_verdict: PASS_WITHIN_VERIFIED_COVERAGE
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (Normal response
+    time fluctuations below tolerance threshold (< 40%) must be classified as STABLE.).
+- case_id: BM-CLN-11
+  title: Insufficient latency samples correctly classified without false alarm
+  is_defect: false
+  category: CLEAN_INSUFFICIENT_LATENCY_SAMPLES
+  expected_verdict: INCONCLUSIVE
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (A latency increase
+    with fewer than 5 samples must NOT be promoted to a verified regression.).
+- case_id: BM-CLN-12
+  title: Safe dry-run execution policy block on mutation
+  is_defect: false
+  category: CLEAN_DRY_RUN_POLICY_BLOCK
+  expected_verdict: ACCESS_OR_POLICY_BLOCK
+  classification: TRUE_NEGATIVE
+  detected_verdict: ACCESS_OR_POLICY_BLOCK
+  matched_finding_ids:
+  - TF-0001
+  - FINDING-001
+  findings_count: 2
+  duplicate_count: 1
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: 'Clean control: safely blocked mutation in dry-run mode without claiming
+    app bug.'
+- case_id: BM-CLN-13
+  title: Missing server telemetry handled gracefully without false alarms
+  is_defect: false
+  category: CLEAN_MISSING_TELEMETRY
+  expected_verdict: PASS_WITHIN_VERIFIED_COVERAGE
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (Absence of an
+    application log file must be noted as missing evidence, not an application failure.).
+- case_id: BM-CLN-14
+  title: Expected 403 Forbidden for non-admin user accessing admin endpoint
+  is_defect: false
+  category: CLEAN_EXPECTED_403_FORBIDDEN
+  expected_verdict: PASS_WITHIN_VERIFIED_COVERAGE
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (Standard customer
+    token attempting admin deletion must be rejected with 403 Forbidden.).
+- case_id: BM-CLN-15
+  title: Consistent idempotent GET executions exhibit zero flakiness
+  is_defect: false
+  category: CLEAN_CONSISTENT_IDEMPOTENT_GET
+  expected_verdict: PASS_WITHIN_VERIFIED_COVERAGE
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (Identical repeated
+    requests to clean endpoint consistently return identical 200 status codes.).
+- case_id: BM-CLN-16
+  title: Clean contract-source reconciliation where spec and code match 1:1
+  is_defect: false
+  category: CLEAN_SOURCE_SPEC_MATCH
+  expected_verdict: PASS_WITHIN_VERIFIED_COVERAGE
+  classification: TRUE_NEGATIVE
+  detected_verdict: null
+  matched_finding_ids: []
+  findings_count: 0
+  duplicate_count: 0
+  is_misclassified: false
+  evidence_adequate: true
+  evidence_notes: ''
+  explanation: Clean control correctly verified without false alarms (Endpoint inventory
+    matching source router to OpenAPI specification finds 1:1 parity.).
+false_positive_investigations: []
+false_negative_investigations: []
+limitations:
+- Evaluation executed in-memory against deterministic reference API; external cloud
+  network jitter not measured.
+- StockPile evaluation performed on authentic pre-recorded artifacts without mutating
+  live external services.
+- Ground-truth defect labels isolated from detector; evaluator scores findings strictly
+  post-hoc.
+recommendations:
+- Maintain strict separation between benchmark ground truth and diagnostic engines.
+- Ensure negative assertions (e.g. 401, 404, 204) are registered as clean verifications
+  rather than anomalies.
+- Keep multi-signal deduplication active across Failure Investigation and Silent Failure
+  subsystems.

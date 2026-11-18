@@ -1,0 +1,1072 @@
+{
+  "plan_id": "plan_openapi_definition_9382",
+  "title": "OpenAPI definition",
+  "generated_at": "2026-11-14T13:19:16.284622+00:00",
+  "summary": {
+    "total_scenarios_evaluated": 205,
+    "fixture_ready_count": 115,
+    "unresolved_fixture_count": 90,
+    "unverified_placeholder_count": 14,
+    "workflows_planned_count": 8,
+    "mutating_setup_allowed": false
+  },
+  "resolved_fixtures": {},
+  "missing_fixtures": [
+    "Field 'auditId' (StockAudit) on PUT /api/stock-audits/{auditId}/items/{itemId}",
+    "Field 'itemId' (Item) on PUT /api/stock-audits/{auditId}/items/{itemId}",
+    "Field 'productId' (Product) on DELETE /api/products/{productId}/supplier",
+    "Field 'productId' (Product) on POST /api/inventory/adjust",
+    "Field 'productId' (Product) on POST /api/inventory/stock-in",
+    "Field 'productId' (Product) on POST /api/inventory/stock-out",
+    "Field 'productId' (Product) on POST /api/movements",
+    "Field 'productId' (Product) on POST /api/surplus-listings",
+    "Field 'productId' (Product) on PUT /api/products/{productId}/supplier",
+    "Field 'productIds' (Product) on POST /api/stock-audits",
+    "Field 'supplierId' (Supplier) on POST /api/products",
+    "Field 'supplierId' (Supplier) on POST /api/purchase-orders",
+    "Field 'supplierId' (Supplier) on PUT /api/products/{productId}/supplier",
+    "Field 'supplierId' (Supplier) on PUT /api/purchase-orders/{id}",
+    "Path parameter 'auditId' on PUT /api/stock-audits/{auditId}/items/{itemId}",
+    "Path parameter 'id' on DELETE /api/expenses/{id}",
+    "Path parameter 'id' on DELETE /api/products/{id}",
+    "Path parameter 'id' on DELETE /api/suppliers/{id}",
+    "Path parameter 'id' on GET /api/products/{id}",
+    "Path parameter 'id' on GET /api/products/{id}/movements",
+    "Path parameter 'id' on GET /api/purchase-orders/{id}",
+    "Path parameter 'id' on GET /api/sales/{id}",
+    "Path parameter 'id' on GET /api/stock-audits/{id}",
+    "Path parameter 'id' on GET /api/suppliers/{id}",
+    "Path parameter 'id' on GET /api/suppliers/{id}/products",
+    "Path parameter 'id' on GET /api/surplus-listings/{id}",
+    "Path parameter 'id' on POST /api/purchase-orders/{id}/cancel",
+    "Path parameter 'id' on POST /api/purchase-orders/{id}/place",
+    "Path parameter 'id' on POST /api/purchase-orders/{id}/receive",
+    "Path parameter 'id' on POST /api/sales/{id}/cancel",
+    "Path parameter 'id' on POST /api/stock-audits/{id}/cancel",
+    "Path parameter 'id' on POST /api/stock-audits/{id}/complete",
+    "Path parameter 'id' on POST /api/surplus-listings/{id}/cancel",
+    "Path parameter 'id' on POST /api/surplus-listings/{id}/sell",
+    "Path parameter 'id' on PUT /api/expenses/{id}",
+    "Path parameter 'id' on PUT /api/products/{id}",
+    "Path parameter 'id' on PUT /api/purchase-orders/{id}",
+    "Path parameter 'id' on PUT /api/suppliers/{id}",
+    "Path parameter 'id' on PUT /api/surplus-listings/{id}",
+    "Path parameter 'itemId' on PUT /api/stock-audits/{auditId}/items/{itemId}",
+    "Path parameter 'productId' on DELETE /api/products/{productId}/supplier",
+    "Path parameter 'productId' on PUT /api/products/{productId}/supplier"
+  ],
+  "unverified_entity_references": [
+    {
+      "field_name": "auditId",
+      "target_entity": "StockAudit",
+      "current_value": 1,
+      "is_placeholder": true,
+      "location": "query",
+      "status": "UNVERIFIED",
+      "description": "Field 'auditId' references 'StockAudit' but uses an unverified literal placeholder value (1).",
+      "scenario_id": "SCN-STOCK_AUDITS-POS-020",
+      "step": 1,
+      "operation": "PUT /api/stock-audits/{auditId}/items/{itemId}",
+      "field": "auditId",
+      "placeholder_value": 1,
+      "issue": "Field 'auditId' references 'StockAudit' but uses an unverified literal placeholder value (1)."
+    },
+    {
+      "field_name": "itemId",
+      "target_entity": "Item",
+      "current_value": 1,
+      "is_placeholder": true,
+      "location": "query",
+      "status": "UNVERIFIED",
+      "description": "Field 'itemId' references 'Item' but uses an unverified literal placeholder value (1).",
+      "scenario_id": "SCN-STOCK_AUDITS-POS-020",
+      "step": 1,
+      "operation": "PUT /api/stock-audits/{auditId}/items/{itemId}",
+      "field": "itemId",
+      "placeholder_value": 1,
+      "issue": "Field 'itemId' references 'Item' but uses an unverified literal placeholder value (1)."
+    },
+    {
+      "field_name": "supplierId",
+      "target_entity": "Supplier",
+      "current_value": 1,
+      "is_placeholder": true,
+      "location": "body",
+      "status": "UNVERIFIED",
+      "description": "Field 'supplierId' references 'Supplier' but uses an unverified literal placeholder value (1).",
+      "scenario_id": "SCN-PURCHASE_ORDERS-POS-028",
+      "step": 1,
+      "operation": "PUT /api/purchase-orders/{id}",
+      "field": "supplierId",
+      "placeholder_value": 1,
+      "issue": "Field 'supplierId' references 'Supplier' but uses an unverified literal placeholder value (1)."
+    },
+    {
+      "field_name": "supplierId",
+      "target_entity": "Supplier",
+      "current_value": 1,
+      "is_placeholder": true,
+      "location": "body",
+      "status": "UNVERIFIED",
+      "description": "Field 'supplierId' references 'Supplier' but uses an unverified literal placeholder value (1).",
+      "scenario_id": "SCN-PRODUCTS-POS-033",
+      "step": 1,
+      "operation": "PUT /api/products/{productId}/supplier",
+      "field": "supplierId",
+      "placeholder_value": 1,
+      "issue": "Field 'supplierId' references 'Supplier' but uses an unverified literal placeholder value (1)."
+    },
+    {
+      "field_name": "productId",
+      "target_entity": "Product",
+      "current_value": 1,
+      "is_placeholder": true,
+      "location": "query",
+      "status": "UNVERIFIED",
+      "description": "Field 'productId' references 'Product' but uses an unverified literal placeholder value (1).",
+      "scenario_id": "SCN-PRODUCTS-POS-033",
+      "step": 1,
+      "operation": "PUT /api/products/{productId}/supplier",
+      "field": "productId",
+      "placeholder_value": 1,
+      "issue": "Field 'productId' references 'Product' but uses an unverified literal placeholder value (1)."
+    },
+    {
+      "field_name": "productId",
+      "target_entity": "Product",
+      "current_value": 1,
+      "is_placeholder": true,
+      "location": "query",
+      "status": "UNVERIFIED",
+      "description": "Field 'productId' references 'Product' but uses an unverified literal placeholder value (1).",
+      "scenario_id": "SCN-PRODUCTS-POS-038",
+      "step": 1,
+      "operation": "DELETE /api/products/{productId}/supplier",
+      "field": "productId",
+      "placeholder_value": 1,
+      "issue": "Field 'productId' references 'Product' but uses an unverified literal placeholder value (1)."
+    },
+    {
+      "field_name": "productId",
+      "target_entity": "Product",
+      "current_value": 1,
+      "is_placeholder": true,
+      "location": "body",
+      "status": "UNVERIFIED",
+      "description": "Field 'productId' references 'Product' but uses an unverified literal placeholder value (1).",
+      "scenario_id": "SCN-SURPLUS_LISTINGS-POS-062",
+      "step": 1,
+      "operation": "POST /api/surplus-listings",
+      "field": "productId",
+      "placeholder_value": 1,
+      "issue": "Field 'productId' references 'Product' but uses an unverified literal placeholder value (1)."
+    },
+    {
+      "field_name": "productIds",
+      "target_entity": "Product",
+      "current_value": [],
+      "is_placeholder": true,
+      "location": "body",
+      "status": "UNVERIFIED",
+      "description": "Field 'productIds' references 'Product' but uses an unverified literal placeholder value ([]).",
+      "scenario_id": "SCN-STOCK_AUDITS-POS-084",
+      "step": 1,
+      "operation": "POST /api/stock-audits",
+      "field": "productIds",
+      "placeholder_value": [],
+      "issue": "Field 'productIds' references 'Product' but uses an unverified literal placeholder value ([])."
+    },
+    {
+      "field_name": "supplierId",
+      "target_entity": "Supplier",
+      "current_value": 1,
+      "is_placeholder": true,
+      "location": "body",
+      "status": "UNVERIFIED",
+      "description": "Field 'supplierId' references 'Supplier' but uses an unverified literal placeholder value (1).",
+      "scenario_id": "SCN-PURCHASE_ORDERS-POS-110",
+      "step": 1,
+      "operation": "POST /api/purchase-orders",
+      "field": "supplierId",
+      "placeholder_value": 1,
+      "issue": "Field 'supplierId' references 'Supplier' but uses an unverified literal placeholder value (1)."
+    },
+    {
+      "field_name": "supplierId",
+      "target_entity": "Supplier",
+      "current_value": 1,
+      "is_placeholder": true,
+      "location": "body",
+      "status": "UNVERIFIED",
+      "description": "Field 'supplierId' references 'Supplier' but uses an unverified literal placeholder value (1).",
+      "scenario_id": "SCN-PRODUCTS-POS-130",
+      "step": 1,
+      "operation": "POST /api/products",
+      "field": "supplierId",
+      "placeholder_value": 1,
+      "issue": "Field 'supplierId' references 'Supplier' but uses an unverified literal placeholder value (1)."
+    },
+    {
+      "field_name": "productId",
+      "target_entity": "Product",
+      "current_value": 1,
+      "is_placeholder": true,
+      "location": "body",
+      "status": "UNVERIFIED",
+      "description": "Field 'productId' references 'Product' but uses an unverified literal placeholder value (1).",
+      "scenario_id": "SCN-MOVEMENTS-POS-136",
+      "step": 1,
+      "operation": "POST /api/movements",
+      "field": "productId",
+      "placeholder_value": 1,
+      "issue": "Field 'productId' references 'Product' but uses an unverified literal placeholder value (1)."
+    },
+    {
+      "field_name": "productId",
+      "target_entity": "Product",
+      "current_value": 1,
+      "is_placeholder": true,
+      "location": "body",
+      "status": "UNVERIFIED",
+      "description": "Field 'productId' references 'Product' but uses an unverified literal placeholder value (1).",
+      "scenario_id": "SCN-INVENTORY-POS-140",
+      "step": 1,
+      "operation": "POST /api/inventory/stock-out",
+      "field": "productId",
+      "placeholder_value": 1,
+      "issue": "Field 'productId' references 'Product' but uses an unverified literal placeholder value (1)."
+    },
+    {
+      "field_name": "productId",
+      "target_entity": "Product",
+      "current_value": 1,
+      "is_placeholder": true,
+      "location": "body",
+      "status": "UNVERIFIED",
+      "description": "Field 'productId' references 'Product' but uses an unverified literal placeholder value (1).",
+      "scenario_id": "SCN-INVENTORY-POS-144",
+      "step": 1,
+      "operation": "POST /api/inventory/stock-in",
+      "field": "productId",
+      "placeholder_value": 1,
+      "issue": "Field 'productId' references 'Product' but uses an unverified literal placeholder value (1)."
+    },
+    {
+      "field_name": "productId",
+      "target_entity": "Product",
+      "current_value": 1,
+      "is_placeholder": true,
+      "location": "body",
+      "status": "UNVERIFIED",
+      "description": "Field 'productId' references 'Product' but uses an unverified literal placeholder value (1).",
+      "scenario_id": "SCN-INVENTORY-POS-148",
+      "step": 1,
+      "operation": "POST /api/inventory/adjust",
+      "field": "productId",
+      "placeholder_value": 1,
+      "issue": "Field 'productId' references 'Product' but uses an unverified literal placeholder value (1)."
+    }
+  ],
+  "planned_workflows": [
+    {
+      "workflow_id": "WF-GET-API-SURPLUS-LISTINGS-ID",
+      "title": "Stateful Workflow: GET /api/surplus-listings/{id}",
+      "description": "Prepared stateful lifecycle testing for GET /api/surplus-listings/{id}.",
+      "setup_steps": [
+        {
+          "step_number": 1,
+          "name": "[SETUP:1] Create Products",
+          "action_type": "SETUP",
+          "method": "POST",
+          "url": "{{base_url}}/api/products",
+          "headers": {},
+          "body": {
+            "name": "test_name",
+            "sku": "test_sku",
+            "category": "test_category",
+            "purchasePricePaise": 1,
+            "sellingPricePaise": 1,
+            "quantity": 1,
+            "minStockLevel": 1,
+            "targetStockLevel": 1,
+            "leadTimeDays": 1,
+            "supplierId": "{{chain_supplier_id}}"
+          },
+          "extract": {
+            "chain_product_id": "$.id"
+          },
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 201
+            }
+          ],
+          "risk": "risk:mutating",
+          "can_rollback": true,
+          "rollback_endpoint": "DELETE /api/products/{id}"
+        },
+        {
+          "step_number": 2,
+          "name": "[SETUP:2] Create Surplus_listings",
+          "action_type": "SETUP",
+          "method": "POST",
+          "url": "{{base_url}}/api/surplus-listings",
+          "headers": {},
+          "body": {
+            "productId": "{{chain_product_id}}",
+            "quantity": 1,
+            "discountedPricePaise": 1,
+            "reason": "test_reason",
+            "notes": "test_notes"
+          },
+          "extract": {
+            "chain_surplus_listing_id": "$.id"
+          },
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 201
+            }
+          ],
+          "risk": "risk:mutating",
+          "can_rollback": false,
+          "rollback_endpoint": null
+        }
+      ],
+      "test_steps": [
+        {
+          "step_number": 3,
+          "name": "[TEST] GET /api/surplus-listings/{id}",
+          "action_type": "TEST",
+          "method": "GET",
+          "url": "{{base_url}}/api/surplus-listings/{{chain_surplus_listing_id}}",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 200
+            }
+          ],
+          "risk": "risk:read_only",
+          "can_rollback": true,
+          "rollback_endpoint": null
+        }
+      ],
+      "cleanup_steps": [
+        {
+          "step_number": 4,
+          "name": "[CLEANUP:4] Delete Products",
+          "action_type": "CLEANUP",
+          "method": "DELETE",
+          "url": "{{base_url}}/api/products/{{chain_product_id}}",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 204
+            }
+          ],
+          "risk": "risk:destructive",
+          "can_rollback": false,
+          "rollback_endpoint": null
+        }
+      ],
+      "required_fixtures": [
+        "Surplus_listings"
+      ],
+      "provided_fixtures": [
+        "chain_product_id",
+        "chain_surplus_listing_id"
+      ],
+      "status": "PLANNED",
+      "blocker_reasons": [],
+      "is_mutation_authorized": false
+    },
+    {
+      "workflow_id": "WF-GET-API-SUPPLIERS-ID",
+      "title": "Stateful Workflow: GET /api/suppliers/{id}",
+      "description": "Prepared stateful lifecycle testing for GET /api/suppliers/{id}.",
+      "setup_steps": [
+        {
+          "step_number": 1,
+          "name": "[SETUP:1] Create Suppliers",
+          "action_type": "SETUP",
+          "method": "POST",
+          "url": "{{base_url}}/api/suppliers",
+          "headers": {},
+          "body": {
+            "name": "test_name",
+            "contactPerson": "test_contactPerson",
+            "phone": "test_phone",
+            "email": "test_email",
+            "address": "test_address",
+            "notes": "test_notes"
+          },
+          "extract": {
+            "chain_supplier_id": "$.id"
+          },
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 201
+            }
+          ],
+          "risk": "risk:mutating",
+          "can_rollback": true,
+          "rollback_endpoint": "DELETE /api/suppliers/{id}"
+        }
+      ],
+      "test_steps": [
+        {
+          "step_number": 2,
+          "name": "[TEST] GET /api/suppliers/{id}",
+          "action_type": "TEST",
+          "method": "GET",
+          "url": "{{base_url}}/api/suppliers/{{chain_supplier_id}}",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 200
+            }
+          ],
+          "risk": "risk:read_only",
+          "can_rollback": true,
+          "rollback_endpoint": null
+        }
+      ],
+      "cleanup_steps": [
+        {
+          "step_number": 3,
+          "name": "[CLEANUP:3] Delete Suppliers",
+          "action_type": "CLEANUP",
+          "method": "DELETE",
+          "url": "{{base_url}}/api/suppliers/{{chain_supplier_id}}",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 204
+            }
+          ],
+          "risk": "risk:destructive",
+          "can_rollback": false,
+          "rollback_endpoint": null
+        }
+      ],
+      "required_fixtures": [
+        "Suppliers"
+      ],
+      "provided_fixtures": [
+        "chain_supplier_id"
+      ],
+      "status": "PLANNED",
+      "blocker_reasons": [],
+      "is_mutation_authorized": false
+    },
+    {
+      "workflow_id": "WF-GET-API-PURCHASE-ORDERS-ID",
+      "title": "Stateful Workflow: GET /api/purchase-orders/{id}",
+      "description": "Prepared stateful lifecycle testing for GET /api/purchase-orders/{id}.",
+      "setup_steps": [
+        {
+          "step_number": 1,
+          "name": "[SETUP:1] Create Suppliers",
+          "action_type": "SETUP",
+          "method": "POST",
+          "url": "{{base_url}}/api/suppliers",
+          "headers": {},
+          "body": {
+            "name": "test_name",
+            "contactPerson": "test_contactPerson",
+            "phone": "test_phone",
+            "email": "test_email",
+            "address": "test_address",
+            "notes": "test_notes"
+          },
+          "extract": {
+            "chain_supplier_id": "$.id"
+          },
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 201
+            }
+          ],
+          "risk": "risk:mutating",
+          "can_rollback": true,
+          "rollback_endpoint": "DELETE /api/suppliers/{id}"
+        },
+        {
+          "step_number": 2,
+          "name": "[SETUP:2] Create Purchase_orders",
+          "action_type": "SETUP",
+          "method": "POST",
+          "url": "{{base_url}}/api/purchase-orders",
+          "headers": {},
+          "body": {
+            "supplierId": "{{chain_supplier_id}}",
+            "notes": "test_notes"
+          },
+          "extract": {
+            "chain_purchase_order_id": "$.id"
+          },
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 201
+            }
+          ],
+          "risk": "risk:mutating",
+          "can_rollback": false,
+          "rollback_endpoint": null
+        }
+      ],
+      "test_steps": [
+        {
+          "step_number": 3,
+          "name": "[TEST] GET /api/purchase-orders/{id}",
+          "action_type": "TEST",
+          "method": "GET",
+          "url": "{{base_url}}/api/purchase-orders/{{chain_purchase_order_id}}",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 200
+            }
+          ],
+          "risk": "risk:read_only",
+          "can_rollback": true,
+          "rollback_endpoint": null
+        }
+      ],
+      "cleanup_steps": [
+        {
+          "step_number": 4,
+          "name": "[CLEANUP:4] Delete Suppliers",
+          "action_type": "CLEANUP",
+          "method": "DELETE",
+          "url": "{{base_url}}/api/suppliers/{{chain_supplier_id}}",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 204
+            }
+          ],
+          "risk": "risk:destructive",
+          "can_rollback": false,
+          "rollback_endpoint": null
+        }
+      ],
+      "required_fixtures": [
+        "Purchase_orders"
+      ],
+      "provided_fixtures": [
+        "chain_supplier_id",
+        "chain_purchase_order_id"
+      ],
+      "status": "PLANNED",
+      "blocker_reasons": [],
+      "is_mutation_authorized": false
+    },
+    {
+      "workflow_id": "WF-GET-API-PRODUCTS-ID",
+      "title": "Stateful Workflow: GET /api/products/{id}",
+      "description": "Prepared stateful lifecycle testing for GET /api/products/{id}.",
+      "setup_steps": [
+        {
+          "step_number": 1,
+          "name": "[SETUP:1] Create Suppliers",
+          "action_type": "SETUP",
+          "method": "POST",
+          "url": "{{base_url}}/api/suppliers",
+          "headers": {},
+          "body": {
+            "name": "test_name",
+            "contactPerson": "test_contactPerson",
+            "phone": "test_phone",
+            "email": "test_email",
+            "address": "test_address",
+            "notes": "test_notes"
+          },
+          "extract": {
+            "chain_supplier_id": "$.id"
+          },
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 201
+            }
+          ],
+          "risk": "risk:mutating",
+          "can_rollback": true,
+          "rollback_endpoint": "DELETE /api/suppliers/{id}"
+        },
+        {
+          "step_number": 2,
+          "name": "[SETUP:2] Create Products",
+          "action_type": "SETUP",
+          "method": "POST",
+          "url": "{{base_url}}/api/products",
+          "headers": {},
+          "body": {
+            "name": "test_name",
+            "sku": "test_sku",
+            "category": "test_category",
+            "purchasePricePaise": 1,
+            "sellingPricePaise": 1,
+            "quantity": 1,
+            "minStockLevel": 1,
+            "targetStockLevel": 1,
+            "leadTimeDays": 1,
+            "supplierId": "{{chain_supplier_id}}"
+          },
+          "extract": {
+            "chain_product_id": "$.id"
+          },
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 201
+            }
+          ],
+          "risk": "risk:mutating",
+          "can_rollback": true,
+          "rollback_endpoint": "DELETE /api/products/{id}"
+        }
+      ],
+      "test_steps": [
+        {
+          "step_number": 3,
+          "name": "[TEST] GET /api/products/{id}",
+          "action_type": "TEST",
+          "method": "GET",
+          "url": "{{base_url}}/api/products/{{chain_product_id}}",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 200
+            }
+          ],
+          "risk": "risk:read_only",
+          "can_rollback": true,
+          "rollback_endpoint": null
+        }
+      ],
+      "cleanup_steps": [
+        {
+          "step_number": 4,
+          "name": "[CLEANUP:4] Delete Products",
+          "action_type": "CLEANUP",
+          "method": "DELETE",
+          "url": "{{base_url}}/api/products/{{chain_product_id}}",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 204
+            }
+          ],
+          "risk": "risk:destructive",
+          "can_rollback": false,
+          "rollback_endpoint": null
+        },
+        {
+          "step_number": 5,
+          "name": "[CLEANUP:5] Delete Suppliers",
+          "action_type": "CLEANUP",
+          "method": "DELETE",
+          "url": "{{base_url}}/api/suppliers/{{chain_supplier_id}}",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 204
+            }
+          ],
+          "risk": "risk:destructive",
+          "can_rollback": false,
+          "rollback_endpoint": null
+        }
+      ],
+      "required_fixtures": [
+        "Products"
+      ],
+      "provided_fixtures": [
+        "chain_supplier_id",
+        "chain_product_id"
+      ],
+      "status": "PLANNED",
+      "blocker_reasons": [],
+      "is_mutation_authorized": false
+    },
+    {
+      "workflow_id": "WF-GET-API-SUPPLIERS-ID-PRODUCTS",
+      "title": "Stateful Workflow: GET /api/suppliers/{id}/products",
+      "description": "Prepared stateful lifecycle testing for GET /api/suppliers/{id}/products.",
+      "setup_steps": [
+        {
+          "step_number": 1,
+          "name": "[SETUP:1] Create Suppliers",
+          "action_type": "SETUP",
+          "method": "POST",
+          "url": "{{base_url}}/api/suppliers",
+          "headers": {},
+          "body": {
+            "name": "test_name",
+            "contactPerson": "test_contactPerson",
+            "phone": "test_phone",
+            "email": "test_email",
+            "address": "test_address",
+            "notes": "test_notes"
+          },
+          "extract": {
+            "chain_supplier_id": "$.id"
+          },
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 201
+            }
+          ],
+          "risk": "risk:mutating",
+          "can_rollback": true,
+          "rollback_endpoint": "DELETE /api/suppliers/{id}"
+        }
+      ],
+      "test_steps": [
+        {
+          "step_number": 2,
+          "name": "[TEST] GET /api/suppliers/{id}/products",
+          "action_type": "TEST",
+          "method": "GET",
+          "url": "{{base_url}}/api/suppliers/{{chain_supplier_id}}/products",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 200
+            }
+          ],
+          "risk": "risk:read_only",
+          "can_rollback": true,
+          "rollback_endpoint": null
+        }
+      ],
+      "cleanup_steps": [
+        {
+          "step_number": 3,
+          "name": "[CLEANUP:3] Delete Suppliers",
+          "action_type": "CLEANUP",
+          "method": "DELETE",
+          "url": "{{base_url}}/api/suppliers/{{chain_supplier_id}}",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 204
+            }
+          ],
+          "risk": "risk:destructive",
+          "can_rollback": false,
+          "rollback_endpoint": null
+        }
+      ],
+      "required_fixtures": [
+        "Suppliers"
+      ],
+      "provided_fixtures": [
+        "chain_supplier_id"
+      ],
+      "status": "PLANNED",
+      "blocker_reasons": [],
+      "is_mutation_authorized": false
+    },
+    {
+      "workflow_id": "WF-GET-API-STOCK-AUDITS-ID",
+      "title": "Stateful Workflow: GET /api/stock-audits/{id}",
+      "description": "Prepared stateful lifecycle testing for GET /api/stock-audits/{id}.",
+      "setup_steps": [
+        {
+          "step_number": 1,
+          "name": "[SETUP:1] Create Stock_audits",
+          "action_type": "SETUP",
+          "method": "POST",
+          "url": "{{base_url}}/api/stock-audits",
+          "headers": {},
+          "body": {
+            "notes": "test_notes"
+          },
+          "extract": {
+            "chain_stock_audit_id": "$.id"
+          },
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 201
+            }
+          ],
+          "risk": "risk:mutating",
+          "can_rollback": false,
+          "rollback_endpoint": null
+        }
+      ],
+      "test_steps": [
+        {
+          "step_number": 2,
+          "name": "[TEST] GET /api/stock-audits/{id}",
+          "action_type": "TEST",
+          "method": "GET",
+          "url": "{{base_url}}/api/stock-audits/{{chain_stock_audit_id}}",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 200
+            }
+          ],
+          "risk": "risk:read_only",
+          "can_rollback": true,
+          "rollback_endpoint": null
+        }
+      ],
+      "cleanup_steps": [],
+      "required_fixtures": [
+        "Stock_audits"
+      ],
+      "provided_fixtures": [
+        "chain_stock_audit_id"
+      ],
+      "status": "PLANNED",
+      "blocker_reasons": [],
+      "is_mutation_authorized": false
+    },
+    {
+      "workflow_id": "WF-GET-API-SALES-ID",
+      "title": "Stateful Workflow: GET /api/sales/{id}",
+      "description": "Prepared stateful lifecycle testing for GET /api/sales/{id}.",
+      "setup_steps": [
+        {
+          "step_number": 1,
+          "name": "[SETUP:1] Create Sales",
+          "action_type": "SETUP",
+          "method": "POST",
+          "url": "{{base_url}}/api/sales",
+          "headers": {},
+          "body": {
+            "discountPaise": 1,
+            "paymentMethod": "test_paymentMethod"
+          },
+          "extract": {
+            "chain_sale_id": "$.id"
+          },
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 201
+            }
+          ],
+          "risk": "risk:mutating",
+          "can_rollback": false,
+          "rollback_endpoint": null
+        }
+      ],
+      "test_steps": [
+        {
+          "step_number": 2,
+          "name": "[TEST] GET /api/sales/{id}",
+          "action_type": "TEST",
+          "method": "GET",
+          "url": "{{base_url}}/api/sales/{{chain_sale_id}}",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 200
+            }
+          ],
+          "risk": "risk:read_only",
+          "can_rollback": true,
+          "rollback_endpoint": null
+        }
+      ],
+      "cleanup_steps": [],
+      "required_fixtures": [
+        "Sales"
+      ],
+      "provided_fixtures": [
+        "chain_sale_id"
+      ],
+      "status": "PLANNED",
+      "blocker_reasons": [],
+      "is_mutation_authorized": false
+    },
+    {
+      "workflow_id": "WF-GET-API-PRODUCTS-ID-MOVEMENTS",
+      "title": "Stateful Workflow: GET /api/products/{id}/movements",
+      "description": "Prepared stateful lifecycle testing for GET /api/products/{id}/movements.",
+      "setup_steps": [
+        {
+          "step_number": 1,
+          "name": "[SETUP:1] Create Suppliers",
+          "action_type": "SETUP",
+          "method": "POST",
+          "url": "{{base_url}}/api/suppliers",
+          "headers": {},
+          "body": {
+            "name": "test_name",
+            "contactPerson": "test_contactPerson",
+            "phone": "test_phone",
+            "email": "test_email",
+            "address": "test_address",
+            "notes": "test_notes"
+          },
+          "extract": {
+            "chain_supplier_id": "$.id"
+          },
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 201
+            }
+          ],
+          "risk": "risk:mutating",
+          "can_rollback": true,
+          "rollback_endpoint": "DELETE /api/suppliers/{id}"
+        },
+        {
+          "step_number": 2,
+          "name": "[SETUP:2] Create Products",
+          "action_type": "SETUP",
+          "method": "POST",
+          "url": "{{base_url}}/api/products",
+          "headers": {},
+          "body": {
+            "name": "test_name",
+            "sku": "test_sku",
+            "category": "test_category",
+            "purchasePricePaise": 1,
+            "sellingPricePaise": 1,
+            "quantity": 1,
+            "minStockLevel": 1,
+            "targetStockLevel": 1,
+            "leadTimeDays": 1,
+            "supplierId": "{{chain_supplier_id}}"
+          },
+          "extract": {
+            "chain_product_id": "$.id"
+          },
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 201
+            }
+          ],
+          "risk": "risk:mutating",
+          "can_rollback": true,
+          "rollback_endpoint": "DELETE /api/products/{id}"
+        }
+      ],
+      "test_steps": [
+        {
+          "step_number": 3,
+          "name": "[TEST] GET /api/products/{id}/movements",
+          "action_type": "TEST",
+          "method": "GET",
+          "url": "{{base_url}}/api/products/{{chain_product_id}}/movements",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 200
+            }
+          ],
+          "risk": "risk:read_only",
+          "can_rollback": true,
+          "rollback_endpoint": null
+        }
+      ],
+      "cleanup_steps": [
+        {
+          "step_number": 4,
+          "name": "[CLEANUP:4] Delete Products",
+          "action_type": "CLEANUP",
+          "method": "DELETE",
+          "url": "{{base_url}}/api/products/{{chain_product_id}}",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 204
+            }
+          ],
+          "risk": "risk:destructive",
+          "can_rollback": false,
+          "rollback_endpoint": null
+        },
+        {
+          "step_number": 5,
+          "name": "[CLEANUP:5] Delete Suppliers",
+          "action_type": "CLEANUP",
+          "method": "DELETE",
+          "url": "{{base_url}}/api/suppliers/{{chain_supplier_id}}",
+          "headers": {},
+          "body": null,
+          "extract": {},
+          "assertions": [
+            {
+              "type": "status",
+              "equals": 204
+            }
+          ],
+          "risk": "risk:destructive",
+          "can_rollback": false,
+          "rollback_endpoint": null
+        }
+      ],
+      "required_fixtures": [
+        "Products"
+      ],
+      "provided_fixtures": [
+        "chain_supplier_id",
+        "chain_product_id"
+      ],
+      "status": "PLANNED",
+      "blocker_reasons": [],
+      "is_mutation_authorized": false
+    }
+  ]
+}
